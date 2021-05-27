@@ -1,0 +1,7 @@
+.container 
+each tour in tours 
+    a(href= `tours/${tour._id}`)
+        p= tour.name
+    p= tour.rating
+    p= `${tour.price}€`
+
