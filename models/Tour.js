@@ -13,11 +13,24 @@ const tourSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        default: 4.5
     },
     price: {
         type: Number,
         required: 'please provide a price'
+    },
+    location: {
+        type: {
+            type: String,
+            default: 'Point'
+        },
+        coordinates: [{
+            type: Number,
+            required: 'You must supply coordinates!'
+        }],
+        address: {
+            type: String,
+            required: 'You must supply an address!'
+        }
     }
 });
 

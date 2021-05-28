@@ -23,9 +23,9 @@ exports.addTour = (req, res) => {
 
 // create a Tour
 exports.createTour = async (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     const tour = await (new Tour(req.body)).save();
-    // console.log(tour)
+    console.log(tour)
     res.redirect(`/tours/${tour._id}`)
 }
 
@@ -38,6 +38,7 @@ exports.editTour = async (req, res) => {
 // update the tour info
 exports.updateTour = async (req, res) => {
     const tour = await Tour.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true });
+    console.log(tour)
     res.redirect(`/tours/${tour._id}`)
 }
 
@@ -46,3 +47,5 @@ exports.deleteTour = async (req, res) => {
     const tour = await Tour.findByIdAndDelete({ _id: req.params.id })
     res.redirect('/tours')
 }
+
+

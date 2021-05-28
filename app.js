@@ -4,7 +4,8 @@ const path = require('path');
 const app = express();
 const routes = require('./routes/index');
 const errorHandlers = require('./handlers/errorHandler');
-// const flash = require('connect-flash');
+const geolib = require('geolib');
+const bodyParser = require('body-parser');
 
 
 
@@ -19,6 +20,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 // app.use(flash());
 
+// Takes the raw requests and turns them into usable properties on req.body
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 //we need this app.use(express.urlencoded({ extended: false }))because forms submit  as HTML POST using Content-Type: application/x-www-form-urlencoded.
 app.use(express.urlencoded({ extended: false }))
 

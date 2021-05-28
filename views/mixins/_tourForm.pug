@@ -3,18 +3,20 @@ mixin tourForm(tour = {})
     form(action=`/tours/${tour._id || ''}` method="POST")
         label(for="name") Name
         input(type="text" name="name" value=tour.name)
-        //- label(for="description") Description
-        //- textarea(name="description")= tour.description
+        label(for="description") Description
+        textarea(name="description")= tour.description
         //- Image Upload
         //- label(for="photo") Photo
         //- input(type="file" name="photo" id="photo" accept="image/gif, image/png, image/jpeg")
         //- if tour.photo
         //-     img(src=`/uploads/${tour.photo}`, alt=tour.name width=200)
         //- //- address, lng and lat
-        //- label(for="address") Address
-        //- input(type="text" id="address" name="location[address]" value=(tour.location && tour.location.address))
+        label(for="address") Address
+        input(type="text" id="address" name="location[address]" value=(tour.location && tour.location.address))
+        input(type="hidden" id="lng" name="location[coordinates][0]" value=(tour.location && tour.location.coordinates[0]))
+        input(type="hidden" id="lat" name="location[coordinates][1]" value=(tour.location && tour.location.coordinates[1]))
         label(for="price") price
-        input(type="text" name="price" value=tour.price)   
+        input(type="bernum" name="price" value=tour.price)   
         label(for="rating") Rating
-        input(type="text" name="rating" value=tour.rating)
+        input(type="number" name="rating" value=tour.rating)
         input(type="submit" value="Save →" class="button")

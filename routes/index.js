@@ -9,6 +9,7 @@ router.get('/tours', catchErrors(tourController.allTours));
 router.get('/tours/add', tourController.addTour);
 
 router.post('/tours', catchErrors(tourController.createTour));
+
 router.get('/tours/:id', catchErrors(tourController.tour));
 
 router.get('/tours/:id/edit', catchErrors(tourController.editTour));

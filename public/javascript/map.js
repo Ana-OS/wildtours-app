@@ -1,3 +1,39 @@
+let map;
+function initMap() {
+    const map_coor = JSON.parse(document.querySelector(".map").dataset.locations)
+    const place = { lat: map_coor[1], lng: map_coor[0] };
+    // The map, centered at Uluru
+    map = new google.maps.Map(document.querySelector(".map"), {
+        zoom: 10,
+        center: place,
+    });
+    // The marker, positioned at Uluru
+    const marker = new google.maps.Marker({
+        position: place,
+        map: map,
+    });
+
+    marker.addListener('click', function () {
+        console.log(this.position);
+        // const html = `
+        //         <div class="popup">
+        //         <a href="/store/${this.place.slug}">
+        //             <img src="/uploads/${this.place.photo || 'store.png'}" alt="${this.place.name}" />
+        //             <p>${this.place.name} - ${this.place.location.address}</p>
+        //         </a>
+        //         </div>
+        //     `;
+        // infoWindow.setContent(html);
+        // infoWindow.open(map, this);
+    });
+
+
+    // const infoWindow = new google.maps.InfoWindow();
+
+}
+
+
+
 // const mapOptions = {
 //     center: { lat: 43.2, lng: -79.8 },
 //     zoom: 10
@@ -60,4 +96,3 @@
 //     });
 // }
 
-// export default makeMap;
