@@ -1,13 +1,42 @@
 const mongoose = require('mongoose');
 const Tour = mongoose.model('Tour');
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, query } = require('express-validator');
 
 
 // show all tours
 exports.allTours = async (req, res) => {
-    const tours = await Tour.find();
-    res.render('layout', { tours })
-    // console.log(tours)
+    // destructuring req.query and storing in querySearch
+    // let querySearch;
+
+    if (Object.keys(req.query).length > 0) {
+        let querySearch = { ...req.query }
+        const searchableFields = ["name", "price", "difficulty"];
+
+        querySearch = Object.keys(querySearch)
+            .filter(key => searchableFields.includes(key))
+            .reduce((obj, key) => {
+                obj[key] = querySearch[key];
+                return obj;
+            }, {});
+
+        console.log(querySearch);
+
+        if (Object.keys(querySearch).length === 0) {
+            res.send("sorry no results ")
+        }
+        else {
+            const queriedTours = await Tour.find(querySearch);
+            res.render('layout', { tours: queriedTours })
+            // res.send("poop")
+        }
+
+    } else {
+        const tours = await Tour.find();
+        res.render('layout', { tours })
+        // console.log("no query")
+    }
+
+
 };
 
 // show specific Tour

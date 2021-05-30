@@ -13,19 +13,19 @@ function initMap() {
         map: map,
     });
 
-    marker.addListener('click', function () {
-        console.log(this.position);
-        // const html = `
-        //         <div class="popup">
-        //         <a href="/store/${this.place.slug}">
-        //             <img src="/uploads/${this.place.photo || 'store.png'}" alt="${this.place.name}" />
-        //             <p>${this.place.name} - ${this.place.location.address}</p>
-        //         </a>
-        //         </div>
-        //     `;
-        // infoWindow.setContent(html);
-        // infoWindow.open(map, this);
-    });
+    // marker.addListener('click', function () {
+    //     // console.log(this);
+    //     // const html = `
+    //     //         <div class="popup">
+    //     //         <a href="/store/${this.place.slug}">
+    //     //             <img src="/uploads/${this.place.photo || 'store.png'}" alt="${this.place.name}" />
+    //     //             <p>${this.place.name} - ${this.place.location.address}</p>
+    //     //         </a>
+    //     //         </div>
+    //     //     `;
+    //     // infoWindow.setContent(html);
+    //     // infoWindow.open(map, this);
+    // });
 
 
     // const infoWindow = new google.maps.InfoWindow();
