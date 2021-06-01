@@ -74,6 +74,38 @@
             "tour-5-1.jpg",
             "tour-5-2.jpg",
             "tour-5-3.jpg"
+        ],
+        "startDates": [
+            "2021-01-05T10:00:00.000Z",
+            "2023-12-12T10:00:00.000Z",
+            "2028-09-06T10:00:00.000Z"
+        ]
+    },
+    {
+        "name": "The wine tour",
+        "description": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum!\nDolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, exercitation ullamco laboris nisi ut aliquip. Lorem ipsum dolor sit amet, consectetur adipisicing elit!",
+        "duration": 2,
+        "maxGroupSize": 5,
+        "difficulty": "easy",
+        "price": 1950,
+        "location": {
+            "coordinates": [
+                119.56267,
+                2.80783
+            ],
+            "address": "Douro vale"
+        },
+        "summary": "Exciting adventure with wine",
+        "imageCover": "tour-7-cover.jpg",
+        "images": [
+            "tour-7-1.jpg",
+            "tour-7-2.jpg",
+            "tour-7-3.jpg"
+        ],
+        "startDates": [
+            "2023-01-05T10:00:00.000Z",
+            "2024-02-12T10:00:00.000Z",
+            "2025-01-06T10:00:00.000Z"
         ]
     }
 ]

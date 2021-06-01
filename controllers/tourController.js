@@ -5,8 +5,6 @@ const { body, validationResult, query } = require('express-validator');
 
 // show all tours
 exports.allTours = async (req, res) => {
-    // destructuring req.query and storing in querySearch
-    // let querySearch;
 
     if (Object.keys(req.query).length > 0) {
         let querySearch = { ...req.query }
@@ -38,6 +36,29 @@ exports.allTours = async (req, res) => {
 
 
 };
+
+// number of tours per month
+exports.monthlyTours = async (req, res) => {
+    const monthlyTours = await Tour.aggregate([
+        {    // unwinde the array of startDates
+            $unwind: '$startDates'
+        },
+        {
+            $match: {
+                rating: { $gte: 4 }
+            },
+        },
+        {
+            $group: {
+                _id: '$name'
+            }
+        }
+    ]);
+    res.send(monthlyTours)
+}
+
+
+
 
 // show specific Tour
 exports.tour = async (req, res) => {
