@@ -6,6 +6,8 @@ const routes = require('./routes/index');
 const errorHandlers = require('./handlers/errorHandler');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
+const promisify = require('promisify');
+
 
 
 
@@ -27,6 +29,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //we need this app.use(express.urlencoded({ extended: false }))because forms submit  as HTML POST using Content-Type: application/x-www-form-urlencoded.
 app.use(express.urlencoded({ extended: false }))
+
+app.use((req, res, next) => {
+    // console.log(req.headers)
+    next();
+});
 
 app.use('/', routes);
 

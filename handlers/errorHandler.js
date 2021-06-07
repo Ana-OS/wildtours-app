@@ -46,6 +46,7 @@ exports.flashValidationErrors = (err, req, res, next) => {
 exports.developmentErrors = (err, req, res, next) => {
   err.stack = err.stack || '';
   const errorDetails = {
+    name: err,
     message: err.message,
     status: err.status,
     stackHighlighted: err.stack.replace(/[a-z_-\d]+.js:\d+:\d+/gi, '<mark>$&</mark>')
