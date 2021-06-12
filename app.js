@@ -6,12 +6,22 @@ const routes = require('./routes/index');
 const errorHandlers = require('./handlers/errorHandler');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const promisify = require('promisify');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
 
 
+// Set security HTTP headers
+app.use(helmet());
 
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
 
-// app.engine('pug', require('pug').renderFile);
+// Data sanitization against XSS
+app.use(xss());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views')); // this is the folder where we keep our pug files
 app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work great too
@@ -20,15 +30,17 @@ app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work gr
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(cookieParser());
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
 // app.use(expressValidator());
 // Takes the raw requests and turns them into usable properties on req.body
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 //we need this app.use(express.urlencoded({ extended: false }))because forms submit  as HTML POST using Content-Type: application/x-www-form-urlencoded.
-app.use(express.urlencoded({ extended: false }))
+// app.use(express.urlencoded({ extended: false }))
 
 app.use((req, res, next) => {
     // console.log(req.headers)
@@ -41,14 +53,14 @@ app.use(errorHandlers.notFound);
 
 
 // One of our error handlers will see if these errors are just validation errors
-app.use(errorHandlers.flashValidationErrors);
+app.use(errorHandlers.validationErrors);
 
-if (app.get('env') === 'development') {
-    /* Development Error Handler - Prints stack trace */
-    app.use(errorHandlers.developmentErrors);
-}
+// if (app.get('env') === 'development') {
+//     /* Development Error Handler - Prints stack trace */
+//     app.use(errorHandlers.developmentErrors);
+// };
 
 // production error handler
-app.use(errorHandlers.productionErrors);
+// app.use(errorHandlers.productionErrors);
 
 module.exports = app;

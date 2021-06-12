@@ -65,7 +65,12 @@ const tourSchema = new mongoose.Schema({
         select: false
     },
     startDates: [Date]
-});
+},
+    {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true }
+    }
+);
 
 
 // before saving the model slugify the name
@@ -73,5 +78,13 @@ tourSchema.pre('save', function (next) {
     this.slug = slugify(this.name, { lower: true });
     next();
 });
+
+// instead of saying that a tour has many reviews we create a virtual attribute of reviews. reviews will be filled by each review that is refrencing THIS tour.id
+tourSchema.virtual('reviews', {
+    ref: 'Review',
+    foreignField: 'tour',
+    localField: '_id'
+});
+
 
 module.exports = mongoose.model('Tour', tourSchema);

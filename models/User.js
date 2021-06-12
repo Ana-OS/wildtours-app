@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        // required: 'Please provide a name',
+        required: 'Please provide a name',
     },
     email: {
         type: String,
@@ -20,14 +20,15 @@ const userSchema = new mongoose.Schema({
     photo: String,
     password: {
         type: String,
-        // required: 'please provide a password',
+        required: 'please provide a password',
         minlength: 6,
         // select: false prevents the password to show in an output
         select: false
     },
     confirmPassword: {
         type: String,
-        // required: 'please confirm your password',
+        required: 'please confirm your password',
+        select: false,
         validates: {
             // only works on save or create
             validator: function (el) {
@@ -62,19 +63,21 @@ userSchema.methods.comparePassword = async function (candidatePassword, userPass
 }
 
 userSchema.methods.hasChangedPassword = function (JWTTimestamps) {
-    let changedTimestamp;
-    if (this.changedPasswordAt) {
-        changedTimestamp = parseInt(this.changedPasswordAt.getTime / 1000, 10)
-    }
-    return JWTTimestamps < changedTimestamp;
+    if (this.passwordChangedAt) {
+        const changedTimestamp = parseInt(
+            this.passwordChangedAt.getTime() / 1000,
+            10
+        );
+
+        return JWTTimestamp < changedTimestamp;
+    };
 };
 
-
 userSchema.methods.resetPassword = function () {
-    // create token 
+    // create the token that will be sent to the user
     const newToken = crypto.randomBytes(32).toString('hex');
 
-    // encrypt that new token and save it to the DB
+    // encrypt that new token for safety reasons and save it to the DB  (we'll later compare both)
     this.passwordResetToken = crypto.createHash('sha256').update(newToken).digest('hex');
     // save to the DB the date when we created the new token plus a few seconds more so we can have the time to await on the result where we call this instance method
     this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;

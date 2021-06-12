@@ -62,8 +62,9 @@ exports.monthlyTours = async (req, res) => {
 
 // show specific Tour
 exports.tour = async (req, res) => {
-    const tour = await Tour.findOne({ _id: req.params.id });
-    res.render('tour', { tour })
+    const tour = await Tour.findOne({ _id: req.params.id }).populate('reviews');
+    // res.render('tour', { tour })
+    res.json({ tour })
 };
 
 // add a tour
@@ -76,7 +77,7 @@ exports.createTour = async (req, res) => {
     console.log(req.body);
     const tour = await (new Tour(req.body)).save();
     console.log(tour)
-    res.redirect(`/tours/${tour._id}`)
+    // res.redirect(`/tours/${tour._id}`)
 }
 
 // render the edit form

@@ -1,10 +1,4 @@
-/*
-  Catch Errors Handler
-
-  With async/await, you need some way to catch errors
-  Instead of using try{} catch(e) {} in each controller, we wrap the function in
-  catchErrors(), catch and errors they throw, and pass it along to our express middleware with next()
-*/
+const appError = require('../helpers/newError');
 
 exports.catchErrors = (fn) => {
   return function (req, res, next) {
@@ -29,47 +23,77 @@ exports.notFound = (req, res, next) => {
   Detect if there are mongodb validation errors that we can nicely show via flash messages
 */
 
-exports.flashValidationErrors = (err, req, res, next) => {
-  if (!err.errors) return next(err);
-  // validation errors look like
-  const errorKeys = Object.keys(err.errors);
-  errorKeys.forEach(key => console.log('error', err.errors[key].message));
-  res.redirect('back');
+exports.validationErrors = (err, req, res, next) => {
+  // console.log(err)
+  // if (process.env.NODE_ENV === 'development') {
+  res.status(err.statusCode).json({
+    statusCode: err.status,
+    message: err.message,
+    stack: err.stack
+  })
+  // }
+  // else if (process.env.NODE_ENV === 'production') {
+  //   // Operational, trusted error: send message to client
+  //   if (err.isOperational) {
+  //     res.status(err.statusCode).json({
+  //       status: err.status,
+  //       message: err.message
+  //     });
+
+  // Programming or other unknown error: don't leak error details
+  // } else {
+  //   // 1) Log error
+  //   console.error('ERROR 💥', err);
+
+  //   // 2) Send generic message
+  //   res.status(500).json({
+  //     status: 'error',
+  //     message: 'Something went very wrong!'
+  //   });
+  // }
 };
+
+// if (!err.errors) return next(err);
+// validation errors look like
+// const errorKeys = Object.keys(err);
+// console.log(errorKeys)
+// errorKeys.forEach(key => res.json('error', err.errors[key].message));
+// res.redirect('back');
+// };
 
 
 /*
   Development Error Hanlder
- 
+
   In development we show good error messages so if we hit a syntax error or any other previously un-handled error, we can show good info on what happened
 */
-exports.developmentErrors = (err, req, res, next) => {
-  err.stack = err.stack || '';
-  const errorDetails = {
-    name: err,
-    message: err.message,
-    status: err.status,
-    stackHighlighted: err.stack.replace(/[a-z_-\d]+.js:\d+:\d+/gi, '<mark>$&</mark>')
-  };
-  res.status(err.status || 500);
-  res.format({
-    // Based on the `Accept` http header
-    'text/html': () => {
-      res.render('error', errorDetails);
-    }, // Form Submit, Reload the page
-    'application/json': () => res.json(errorDetails) // Ajax call, send JSON back
-  });
-};
+// exports.developmentErrors = (err, req, res, next) => {
+//   err.stack = err.stack || '';
+//   const errorDetails = {
+//     name: err,
+//     message: err.message,
+//     status: err.status,
+//     stackHighlighted: err.stack.replace(/[a-z_-\d]+.js:\d+:\d+/gi, '<mark>$&</mark>')
+//   };
+//   res.status(err.status || 500);
+//   // res.format({
+//   //   // Based on the `Accept` http header
+//   //   'text/html': () => {
+//   //     res.render('error', errorDetails);
+//   //   }, // Form Submit, Reload the page
+//   //   'application/json': () => res.json(errorDetails) // Ajax call, send JSON back
+//   // });
+// };
 
 
-/*
-  Production Error Handler
- 
-  No stacktraces are leaked to user
-*/
-exports.productionErrors = (err, req, res, next) => {
-  res.status(err.status || 500);
-  // res.send('this is the last catch error')
-  console.log(err)
-  res.status(status).send(body)
-};
+// /*
+//   Production Error Handler
+
+//   No stacktraces are leaked to user
+// */
+// exports.productionErrors = (err, req, res, next) => {
+//   res.status(err.status || 500);
+//   // res.send('this is the last catch error')
+//   console.log(err)
+//   res.status(status).send(body)
+// };

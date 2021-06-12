@@ -16,20 +16,13 @@ exports.register = (req, res) => {
     res.send("poop")
 };
 
-
-// create the user
-exports.createUser = async (req, res) => {
-    const user = await User.create({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        confirmPassword: req.body.confirmPassword,
-        changedPasswordAt: req.body.changedPasswordAt
-    });
-
-    // console.log(user)
-    const token = createToken(user._id);
+// prompt the login form to the user
+exports.login = (req, res) => {
+    res.send('this is a login form')
 };
 
 
-
+// prompt the reset Password form and send email with link with new token to user
+exports.forgotPassword = (req, res, next) => {
+    res.send('this is a reset form')
+};
