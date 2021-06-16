@@ -58,8 +58,6 @@ exports.monthlyTours = async (req, res) => {
 }
 
 
-
-
 // show specific Tour
 exports.tour = async (req, res) => {
     const tour = await Tour.findOne({ _id: req.params.id }).populate('reviews');

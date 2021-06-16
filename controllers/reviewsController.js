@@ -38,9 +38,23 @@ exports.createReview = async (req, res, next) => {
 
 exports.review = async (req, res, next) => {
     const review = await Review.findOne({ _id: req.params.id })
+
+    // if (!review) {
+    //     return next(new appError('error', 500))
+    // }
+
+    res.json({
+        description: review.description,
+        rating: review.rating,
+        author: review.author,
+    })
 };
 
 exports.reviews = async (req, res, next) => {
-    const reviews = await Review.find()
-    // console.log(review)
+    // res.send(req.params.id)
+    const filter = {}
+    if (req.params.tour) filter = { tour: req.params.id }
+
+    const reviews = await Review.find({ tour: req.params.id })
+    res.json(reviews)
 };

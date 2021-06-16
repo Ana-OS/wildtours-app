@@ -4,6 +4,7 @@ const tourController = require('../controllers/tourController');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const reviewsController = require('../controllers/reviewsController');
+const bookingsController = require('../controllers/bookingsController');
 const { catchErrors } = require('../handlers/errorHandler');
 
 
@@ -16,9 +17,13 @@ router.get('/tours/monthly', catchErrors(tourController.monthlyTours));
 router.post('/tours', catchErrors(authController.protect), catchErrors(tourController.createTour))
 router.get('/tours/:id', catchErrors(tourController.tour));
 router.get('/tours/:id/edit', catchErrors(tourController.editTour));
-router.post('/tours/:id', catchErrors(tourController.updateTour));
 
+// Book a tour
+router.get('/tours/:id/book', catchErrors(authController.protect), catchErrors(bookingsController.book));
+
+router.post('/tours/:id', catchErrors(tourController.updateTour));
 router.get('/tours/:id/delete', catchErrors(tourController.deleteTour));
+
 
 
 
@@ -36,7 +41,6 @@ router.post('/forgotpassword', catchErrors(authController.forgotPassword));
 
 // the link resets the token
 router.patch('/resetToken/:token', catchErrors(authController.resetPassword));
-
 router.patch('/updatePassword', catchErrors(authController.protect), catchErrors(authController.updatePassword));
 router.patch('/updateProfile', catchErrors(authController.protect), catchErrors(authController.updateProfile));
 
@@ -52,6 +56,6 @@ router.post('/tours/:id/addReview', catchErrors(authController.protect), catchEr
 router.get('/reviews/:id', catchErrors(reviewsController.review));
 
 // get all reviews
-router.get('/tours/:id/reviews', catchErrors(tourController.tour));
+router.get('/tours/:id/reviews', catchErrors(reviewsController.reviews));
 
 module.exports = router;

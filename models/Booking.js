@@ -1,20 +1,19 @@
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
-    description: {
-        type: String
-    },
-    rating: {
-        type: Number,
-        min: 1,
-        masx: 5,
-        required: 'Please rate this Tour'
-    },
     createdAt: {
         type: Date,
         default: Date.now(),
     },
-    author: {
+    startDate: {
+        type: Date,
+        required: 'please provide a start date'
+    },
+    endDate: {
+        type: Date,
+        required: 'please provide an end date'
+    },
+    user: {
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     },

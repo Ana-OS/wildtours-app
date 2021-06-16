@@ -32,6 +32,12 @@ const tourSchema = new mongoose.Schema({
     rating: {
         type: Number,
     },
+    ratingAverage: {
+        type: Number
+    },
+    numberOfRatings: {
+        type: Number
+    },
     price: {
         type: Number,
         required: 'please provide a price'

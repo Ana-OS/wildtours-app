@@ -19,6 +19,7 @@ mongoose.connect(DB, {
 require('./models/Tour');
 require('./models/User');
 require('./models/Review');
+require('./models/Booking');
 
 const app = require('./app');
 const port = process.env.PORT || 3001;
