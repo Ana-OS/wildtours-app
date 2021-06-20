@@ -1,5 +1,101 @@
+/* layout navbar */
+#navbar-main {
+  border:1px solid red;
+  justify-content: space-between;
+  background: white;
+}
+
+#navbar-main .navbar-collapse {
+  flex-grow: 0;
+}
+
+#navbar-main .navbar-brand img {
+  border:1px solid red; 
+  border-radius: 50%;
+  width: 40px;
+}
+
+.dropdown img{
+  border-radius: 50%;
+}
+
+.tours-wrapper{
+  width:80%;
+  display:flex;
+  flex-wrap:wrap;
+  border:1px solid red; 
+  margin:0 auto;
+}
+.tours-wrapper a{
+  text-decoration: none !important;
+}
+
+.card-trip {
+  /* border:1px solid blue;  */
+  width:400px;
+  margin:30px 50px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  color: black;
+  cursor:pointer;
+}
+
+.card-trip > img {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  transition:all ease-in-out .2s;
+
+  
+}
+.card-trip > img:hover{
+  width: 105%;
+}
+
+.card-trip h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card-trip p {
+  font-size: 12px;
+  opacity: .7;
+  margin: 0;
+}
+
+.card-trip .card-trip-infos {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+}
+.card__data {
+  font-size: 1.3rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.card__data svg {
+  margin-right: 0.7rem;
+  color:red;
+}
+.card__icon {
+  color:red;
+  height: 2rem;
+  width: 2rem;
+  fill: #55c57a;
+}
+  
+/* tour page  */
+
 .map{
-    width:600px;
-    height:800px;
-    border:1px solid red;
-  }
+  width:600px;
+  height:800px;
+  border:1px solid red;
+}

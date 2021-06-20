@@ -24,17 +24,15 @@ exports.allTours = async (req, res) => {
         }
         else {
             const queriedTours = await Tour.find(querySearch);
-            res.render('layout', { tours: queriedTours })
+            res.render('tours', { tours: queriedTours })
             // res.send("poop")
         }
 
     } else {
         const tours = await Tour.find();
-        res.render('layout', { tours })
+        res.render('tours', { tours })
         // console.log("no query")
     }
-
-
 };
 
 // number of tours per month
@@ -61,8 +59,9 @@ exports.monthlyTours = async (req, res) => {
 // show specific Tour
 exports.tour = async (req, res) => {
     const tour = await Tour.findOne({ _id: req.params.id }).populate('reviews');
-    // res.render('tour', { tour })
-    res.json({ tour })
+    res.render('tour', { tour })
+    // res.json({ tour })
+    // console.log(tour.rating)
 };
 
 // add a tour
@@ -74,7 +73,7 @@ exports.addTour = (req, res) => {
 exports.createTour = async (req, res) => {
     console.log(req.body);
     const tour = await (new Tour(req.body)).save();
-    console.log(tour)
+    // console.log(tour)
     // res.redirect(`/tours/${tour._id}`)
 }
 
@@ -85,9 +84,16 @@ exports.editTour = async (req, res) => {
 }
 
 // update the tour info
-exports.updateTour = async (req, res) => {
-    const tour = await Tour.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true });
-    console.log(tour)
+exports.updateTour = async (req, res, next) => {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    });
+
+    if (!tour) {
+        return next(new AppError('No document found with that ID', 404));
+    }
+    // console.log(tour)
     res.redirect(`/tours/${tour._id}`)
 }
 

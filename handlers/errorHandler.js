@@ -26,7 +26,7 @@ exports.notFound = (req, res, next) => {
 exports.validationErrors = (err, req, res, next) => {
   // console.log(err)
   // if (process.env.NODE_ENV === 'development') {
-  res.status(err.statusCode).json({
+  res.json({
     statusCode: err.status,
     message: err.message,
     stack: err.stack

@@ -15,15 +15,11 @@ const tourSchema = new mongoose.Schema({
     slug: String,
     duration: {
         type: Number,
-        // required: [true, 'A tour must have a duration']
-    },
-    maxGroupSize: {
-        type: Number,
-        // required: [true, 'A tour must have a group size']
+        required: [true, 'A tour must have a duration']
     },
     difficulty: {
         type: String,
-        // required: [true, 'A tour must have a difficulty'],
+        required: [true, 'A tour must have a level of difficulty'],
         enum: {
             values: ['easy', 'medium', 'difficult'],
             message: 'Difficulty is either: easy, medium, difficult'
@@ -31,12 +27,14 @@ const tourSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
+
     },
     ratingAverage: {
         type: Number
     },
     numberOfRatings: {
-        type: Number
+        type: Number,
+        default: 0
     },
     price: {
         type: Number,
@@ -54,11 +52,6 @@ const tourSchema = new mongoose.Schema({
             type: String,
             required: 'You must supply an address!'
         }
-    },
-    summary: {
-        type: String,
-        trim: true,
-        // required: [true, 'A tour must have a description']
     },
     imageCover: {
         type: String,
@@ -84,6 +77,11 @@ tourSchema.pre('save', function (next) {
     this.slug = slugify(this.name, { lower: true });
     next();
 });
+// tourSchema.post(/^findByIdAndUpdate/, function (next) {
+//     this.slug = slugify(this.name, { lower: true });
+//     next();
+// });
+
 
 // instead of saying that a tour has many reviews we create a virtual attribute of reviews. reviews will be filled by each review that is refrencing THIS tour.id
 tourSchema.virtual('reviews', {

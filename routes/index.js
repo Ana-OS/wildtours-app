@@ -8,7 +8,7 @@ const bookingsController = require('../controllers/bookingsController');
 const { catchErrors } = require('../handlers/errorHandler');
 
 
-router.get('/', catchErrors(authController.protect), catchErrors(tourController.allTours));
+router.get('/', catchErrors(tourController.allTours));
 router.get('/tours', catchErrors(tourController.allTours));
 router.get('/tours/add', tourController.addTour);
 
@@ -54,6 +54,7 @@ router.post('/tours/:id/addReview', catchErrors(authController.protect), catchEr
 
 // getting one review
 router.get('/reviews/:id', catchErrors(reviewsController.review));
+router.patch('/reviews/:id', catchErrors(reviewsController.updateReview));
 
 // get all reviews
 router.get('/tours/:id/reviews', catchErrors(reviewsController.reviews));

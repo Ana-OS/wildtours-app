@@ -1,31 +1,35 @@
-
 const mongoose = require('mongoose');
-const User = mongoose.model('User');
 const Tour = mongoose.model('Tour');
 
-const reviewSchema = new mongoose.Schema({
-    description: {
-        type: String
+const reviewSchema = new mongoose.Schema(
+    {
+        description: {
+            type: String
+        },
+        rating: {
+            type: Number,
+            min: 1,
+            masx: 5,
+            required: 'Please rate this Tour'
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now(),
+        },
+        author: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'User'
+        },
+        tour: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Tour'
+        }
     },
-    rating: {
-        type: Number,
-        min: 1,
-        masx: 5,
-        required: 'Please rate this Tour'
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now(),
-    },
-    author: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
-    },
-    tour: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Tour'
+    {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true }
     }
-});
+);
 
 
 reviewSchema.statics.calcAverageRatings = async function (tourId) {
@@ -47,17 +51,18 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
         }
     ]);
     //Depois de calcularmos a averago das ratings temos de encontrar a Tour a que a review se refere e fazer o update dos campos ratingAverage e numberOfRatings
-    console.log(stats)
+    console.log({ stats })
+
 
     if (stats.length > 0) {
         await Tour.findByIdAndUpdate(tourId, {
-            ratingsQuantity: stats[0].nRating,
-            ratingsAverage: stats[0].avgRating
+            numberOfRatings: stats[0].numberOfRatings,
+            ratingAverage: stats[0].ratingAverage
         });
     } else {
         await Tour.findByIdAndUpdate(tourId, {
-            ratingsQuantity: 0,
-            ratingsAverage: 0
+            numberOfRatings: 0,
+            ratingAverage: 0
         });
     }
 };
@@ -65,13 +70,14 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
 reviewSchema.post('save', function () {
     // antes de salvar cada review aplicamos a função calcAverageRatings
     this.constructor.calcAverageRatings(this.tour)
+
 });
 
 // findByIdAndUpdate  
 // findByIdAndDelete
 reviewSchema.pre(/^findOneAnd/, async function (next) {
     this.review = await this.findOne();
-    // console.log(this.r);
+    console.log(this.review);
     next();
 });
 
@@ -79,11 +85,5 @@ reviewSchema.post(/^findOneAnd/, async function () {
     // await this.findOne(); does NOT work here, query has already executed
     await this.review.constructor.calcAverageRatings(this.review.tour);
 });
-
-// reviewSchema.s
-
-
-
-
 
 module.exports = mongoose.model('Review', reviewSchema);

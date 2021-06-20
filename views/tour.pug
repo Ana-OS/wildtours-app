@@ -1,13 +1,12 @@
-doctype html
-html
-  head
-    title Natours
-    link(rel='stylesheet', href='/css/style.css')
-    script(defer src="/javascript/map.js")
-  body
-    h2= tour.name
-    h4= tour.description 
-    p= tour.price
-    .map(data-locations=`${JSON.stringify(tour.location.coordinates)}`)
-  block scripts
-      script(async="false" src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&callback=initMap`)
+extends layout
+
+block content
+  //-.card-category(style={background: "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg)"})
+
+  //- img.card-category(src=`/img/tours/${tour.imageCover}`)
+
+  h2= tour.name
+  h4= tour.description 
+  p= tour.price
+  .map(data-locations=`${JSON.stringify(tour.location.coordinates)}`)
+  

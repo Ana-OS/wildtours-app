@@ -14,6 +14,7 @@ exports.book = async (req, res, next) => {
         user: req.user,
         tour: req.params.id
     });
+    
     console.log(newBooking)
 
 }

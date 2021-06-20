@@ -9,12 +9,14 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const promisify = require('promisify');
 const mongoSanitize = require('express-mongo-sanitize');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const xss = require('xss-clean');
+const cors = require('cors');
 
 
+app.use(cors())
 // Set security HTTP headers
-app.use(helmet());
+// app.use(helmet());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
