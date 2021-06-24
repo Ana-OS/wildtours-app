@@ -7,7 +7,7 @@ const reviewsController = require('../controllers/reviewsController');
 const bookingsController = require('../controllers/bookingsController');
 const { catchErrors } = require('../handlers/errorHandler');
 
-router.use(catchErrors(authController.isLoggedIn))
+router.use(authController.isLoggedIn)
 
 router.get('/', catchErrors(tourController.allTours));
 router.get('/tours', catchErrors(tourController.allTours));
@@ -35,7 +35,7 @@ router.post('/register', catchErrors(authController.createUser));
 router.get('/login', userController.login);
 router.post('/login', catchErrors(authController.loginUser));
 
-// router.get('/logout', authController.logout)
+router.get('/logout', authController.logout)
 
 // forgotPassword send an email to the user with the link to reset the token
 router.post('/forgotpassword', catchErrors(authController.forgotPassword));

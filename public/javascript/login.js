@@ -1,30 +1,50 @@
 const loginForm = document.querySelector('.form--login');
-console.log(loginForm)
+const logout = document.querySelector("#logout");
 
-loginForm.addEventListener('submit', e => {
-    e.preventDefault();
+console.log(logout)
+// console.log(loginForm)
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    // console.log({ email })
-    // console.log({ password })
+if (loginForm) {
+    loginForm.addEventListener('submit', e => {
+        e.preventDefault();
 
-    fetch("http://localhost:3001/login", {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    })
-        .then(response => response.json())
-        .then(res => {
-            console.log(res.data.user.name)
-            if (res.data.user.name) {
-                window.alert('success', 'Logged in successfully!');
-                window.setTimeout(() => {
-                    location.assign('/');
-                }, 1500);
-            }
-        });
-});
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        // console.log({ email })
+        // console.log({ password })
+
+        fetch("http://localhost:3001/login", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+            .then(response => response.json())
+            .then(res => {
+                console.log(res.data.user.name)
+                if (res.data.user.name) {
+                    // window.alert('success', 'Logged in successfully!');
+                    window.setTimeout(() => {
+                        location.assign('/');
+                    }, 700);
+                }
+            });
+    });
+
+}
+
+if (logout) {
+    logout.addEventListener('click', () => {
+        fetch("http://localhost:3001/logout")
+            .then(response => response.json())
+            .then(res => {
+                console.log(res)
+                if (res.message == "logged out") {
+                    console.log("logge outd")
+                    location.reload()
+                }
+            });
+    });
+}

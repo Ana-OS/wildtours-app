@@ -213,33 +213,44 @@ exports.updateProfile = async (req, res) => {
 exports.isLoggedIn = async (req, res, next) => {
     console.log("I'm the loggedIn")
     if (req.cookies.jwt) {
-        const decoded = await (jwt.verify)(
-            req.cookies.jwt,
-            process.env.SECRET_KEY
-        );
+        try {
+            const decoded = await (jwt.verify)(
+                req.cookies.jwt,
+                process.env.SECRET_KEY
+            );
 
-        // 2) Check if user still exists
-        const currentUser = await User.findById(decoded.id);
-        console.log({ currentUser })
+            // 2) Check if user still exists
+            const currentUser = await User.findById(decoded.id);
+            // console.log({ currentUser })
 
-        if (!currentUser) {
+            if (!currentUser) {
+                return next();
+            }
+
+            // 3) Check if user changed password after the token was issued
+            if (currentUser.hasChangedPassword(decoded.iat)) {
+                return next();
+            }
+
+            //         // THERE IS A LOGGED IN USER
+            //         // req.user = currentUser;
+
+            res.locals.user = currentUser;
+
+            return next();
+        } catch (err) {
             return next();
         }
-
-        // 3) Check if user changed password after the token was issued
-        if (currentUser.hasChangedPassword(decoded.iat)) {
-            return next();
-        }
-
-        //         // THERE IS A LOGGED IN USER
-        //         // req.user = currentUser;
-
-        res.locals.user = currentUser;
-
-        //         return next();
-        //     } catch (err) {
-        //         return next();
-        //     }
     }
     next();
 };
+
+exports.logout = (req, res) => {
+    console.log("I'm the logout")
+    res.cookie('jwt', 'loggedout', {
+        expires: new Date(Date.now() + 1 * 1000),
+        httpOnly: true
+    });
+    // // send to client side that the user is loggedout
+    res.json({ message: "logged out" })
+}
