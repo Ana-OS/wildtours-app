@@ -71,7 +71,7 @@ exports.addTour = (req, res) => {
 
 // create a Tour
 exports.createTour = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const tour = await (new Tour(req.body)).save();
     // console.log(tour)
     // res.redirect(`/tours/${tour._id}`)

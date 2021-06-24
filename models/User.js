@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
         lowercase: true,
-        dropDups: true,
         unique: true,
         validate: [validator.isEmail, 'Invalid Email Address']
     },
@@ -59,8 +58,9 @@ userSchema.pre('save', async function (next) {
 // comparePasswords is an instance method that can be called on the userSchema model. bcrypt.compares is provided by bcrypt
 
 userSchema.methods.comparePassword = async function (candidatePassword, userPassword) {
-    return await bcrypt.compare(candidatePassword, userPassword)
-}
+    { return await bcrypt.compare(candidatePassword, userPassword) };
+};
+
 
 userSchema.methods.hasChangedPassword = function (JWTTimestamps) {
     if (this.passwordChangedAt) {

@@ -13,12 +13,12 @@ const createToken = (id) => {
 
 // prompt the registrations form
 exports.register = (req, res) => {
-    res.send("poop")
+    res.render("register")
 };
 
 // prompt the login form to the user
 exports.login = (req, res) => {
-    res.send('this is a login form')
+    res.render('login')
 };
 
 

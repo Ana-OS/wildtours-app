@@ -4,6 +4,7 @@ const path = require('path');
 const app = express();
 const routes = require('./routes/index');
 const errorHandlers = require('./handlers/errorHandler');
+const authController = require('./controllers/authController');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -44,10 +45,27 @@ app.use(cookieParser());
 //we need this app.use(express.urlencoded({ extended: false }))because forms submit  as HTML POST using Content-Type: application/x-www-form-urlencoded.
 // app.use(express.urlencoded({ extended: false }))
 
+// app.use((req, res, next) => {
+//     // console.log(req.headers)
+//     next();
+// });
+
+// pass variables to our templates + all requests
+// app.use((req, res, next) => {
+//     res.locals.user = req.user || null;
+//     res.locals.currentPath = req.path;
+//     next();
+// });
+
+// Test middleware
 app.use((req, res, next) => {
-    // console.log(req.headers)
+    req.requestTime = new Date().toISOString();
+    res.locals.user = req.user || null;
+    // console.log(res.locals.user);
     next();
 });
+
+// app.use(authController.isLoggedIn)
 
 app.use('/', routes);
 

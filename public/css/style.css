@@ -82,13 +82,11 @@
   align-items: center;
 }
 .card__data svg {
-  margin-right: 0.7rem;
-  color:red;
+  margin:20px;
 }
 .card__icon {
-  color:red;
-  height: 2rem;
-  width: 2rem;
+  height: 20px;
+  width: 20px;
   fill: #55c57a;
 }
   

@@ -25,11 +25,10 @@ const sendToken = (user, res) => {
     if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
     res.cookie('jwt', token, cookieOptions);
-
     // Remove password from output
     user.password = undefined;
 
-    res.json({
+    res.send({
         token,
         data: {
             user
@@ -38,16 +37,15 @@ const sendToken = (user, res) => {
 };
 
 // create the user for the first time
-exports.createUser = async (req, res) => {
+exports.createUser = async (req, res, next) => {
     const user = await User.create({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
-        changedPasswordAt: req.body.changedPasswordAt
     });
 
-
+    // console.log({ user })
     // send the token to the client side
     sendToken(user, res)
 };
@@ -55,19 +53,26 @@ exports.createUser = async (req, res) => {
 
 // handle the actual login
 exports.loginUser = async (req, res, next) => {
-    const { email, password } = req.body
+    const email = req.body.email
+    const password = req.body.password
+    // console.log(`this is the req. body ${req.body.email}`)
+    // console.log({ email })
+    // console.log({ password })
 
     if (!email || !password) {
         return next(new appError('please provide an email and a password', 404))
     }
 
     // .select allows to get the password even though it is not accessible in the model
-    const user = await User.findOne({ email }).select('password');
-
+    const user = await User.findOne({ email }).select('+password');
+    // console.log({ user })
     // compare the password in the DB with the one user provided in login
-    if (!user || !catchErrors((await user.comparePassword(password, user.password)))) {
+
+    if (!user || !(await user.comparePassword(password, user.password))) {
         return next(new appError('incorrect email or password', 404))
     }
+    // req.user = user;
+    // res.locals.user = user;
 
     // send the token to the client side
     sendToken(user, res)
@@ -80,7 +85,13 @@ exports.protect = async (req, res, next) => {
     let token;
 
     // get the token from the headers authorization
-    if (req.cookies.jwt) {
+    if (
+        req.headers.authorization &&
+        req.headers.authorization.startsWith('Bearer')
+    ) {
+        token = req.headers.authorization.split(' ')[1];
+        // or from the cookies
+    } else if (req.cookies.jwt) {
         token = req.cookies.jwt;
     }
 
@@ -99,7 +110,8 @@ exports.protect = async (req, res, next) => {
     };
 
     //create a user field in the request with all its data so we can use it in the next function
-    req.user = currentUser;
+    // req.user = currentUser;
+    // res.locals.user = currentUser;
 
     // allow user to the next route
     next()
@@ -194,4 +206,40 @@ exports.updateProfile = async (req, res) => {
 
     // // 4) Log user in, send JWT
     createSendToken(user, res);
+};
+
+
+// Only for rendered pages, no errors!
+exports.isLoggedIn = async (req, res, next) => {
+    console.log("I'm the loggedIn")
+    if (req.cookies.jwt) {
+        const decoded = await (jwt.verify)(
+            req.cookies.jwt,
+            process.env.SECRET_KEY
+        );
+
+        // 2) Check if user still exists
+        const currentUser = await User.findById(decoded.id);
+        console.log({ currentUser })
+
+        if (!currentUser) {
+            return next();
+        }
+
+        // 3) Check if user changed password after the token was issued
+        if (currentUser.hasChangedPassword(decoded.iat)) {
+            return next();
+        }
+
+        //         // THERE IS A LOGGED IN USER
+        //         // req.user = currentUser;
+
+        res.locals.user = currentUser;
+
+        //         return next();
+        //     } catch (err) {
+        //         return next();
+        //     }
+    }
+    next();
 };

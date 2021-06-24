@@ -12,6 +12,6 @@ block content
                             p= tour.difficulty
                             p= tour.description.split('').slice(0, 50).concat("...").join('')
                             svg.card__icon
-                                use(xlink:href='/img/icons.svg#icon-map-pin')
-                            span= tour.location.address
+                                use(xlink:href='/img/tours/icons.svg#icon-map-pin')
+                            span.ml-2.mt-3= tour.location.address
                         h2.card-trip-pricing= `${tour.price} €`
