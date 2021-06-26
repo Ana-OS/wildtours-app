@@ -13,7 +13,7 @@ html
     meta(name="viewport" content="width=device-width, initial-scale=1")
   body
     .navbar.navbar-expand-sm.navbar-light(id="navbar-main")
-        a.navbar-brand(href="#" )
+        a.navbar-brand(href="/" )
             img.cover_image.logo(src="../img/tours/logo.jpg")
         button.navbar-toggler(type='button' data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
             span.navbar-toggler-icon 
@@ -24,7 +24,7 @@ html
                     li.nav-item 
                         a#login.nav-link(href="/login") login
                     li.nav-item
-                        a#register.nav-link(href="#") Register      
+                        a#register.nav-link(href="/register") Register      
                 else   
                     li.nav-item 
                         p= `Hey ${user.name}`
@@ -34,7 +34,7 @@ html
                         img.avatar.dropdown-toggle(id="navbarDropdown"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="https://via.placeholder.com/70")
                         .dropdown-menu.dropdown-menu-right( aria-labelledby="navbarDropdown")
-                            a.dropdown-item(href="#") Account 
+                            a.dropdown-item(href="/account") Account 
                             a.dropdown-item(href="#") My bookings
                    
 

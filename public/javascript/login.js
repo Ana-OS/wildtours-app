@@ -1,8 +1,9 @@
 const loginForm = document.querySelector('.form--login');
 const logout = document.querySelector("#logout");
-
-console.log(logout)
-// console.log(loginForm)
+const registerForm = document.querySelector(".form--register");
+const account = document.querySelector(".form--account");
+// console.log(register)
+// console.log(account)
 
 if (loginForm) {
     loginForm.addEventListener('submit', e => {
@@ -47,4 +48,32 @@ if (logout) {
                 }
             });
     });
+};
+
+if (registerForm) {
+    registerForm.addEventListener("submit", e => {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.querySelector("#email").value;
+        const password = document.querySelector("#password").value;
+        const confirmPassword = document.querySelector("#confirm_password").value;
+        // console.log({ name })
+        // console.log({ email })
+
+        fetch("http://localhost:3001/register", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password, confirmPassword })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+
+            })
+    })
 }
+
+

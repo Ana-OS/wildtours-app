@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
         required: 'please provide a password',
         minlength: 6,
         // select: false prevents the password to show in an output
-        select: false
+        // select: false
     },
     confirmPassword: {
         type: String,
@@ -64,11 +64,14 @@ userSchema.methods.comparePassword = async function (candidatePassword, userPass
 
 userSchema.methods.hasChangedPassword = function (JWTTimestamps) {
     if (this.passwordChangedAt) {
+        // JWTT is in seconds somwe need
+        // since passwordChangedAt is a date we need to get it in miliseconds with getTime(); parseInt to have it as an integer. Because the tokenTimestamp is in seconds we do miliseconds /1000 so we can have both in seconds
         const changedTimestamp = parseInt(
             this.passwordChangedAt.getTime() / 1000,
             10
         );
 
+        // se o timstamp em que o token foi criado for menor que a data em que o user alterou a password então retorna true = o token for criado apenas depois da pass ter sido alterada portanto tudo ok
         return JWTTimestamp < changedTimestamp;
     };
 };

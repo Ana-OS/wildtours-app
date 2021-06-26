@@ -73,7 +73,7 @@ app.use(errorHandlers.notFound);
 
 
 // One of our error handlers will see if these errors are just validation errors
-app.use(errorHandlers.validationErrors);
+// app.use(errorHandlers.validationErrors);
 
 // if (app.get('env') === 'development') {
 //     /* Development Error Handler - Prints stack trace */

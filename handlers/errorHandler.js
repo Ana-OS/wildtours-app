@@ -19,18 +19,20 @@ exports.notFound = (req, res, next) => {
 
 /*
   MongoDB Validation Error Handler
- 
+
   Detect if there are mongodb validation errors that we can nicely show via flash messages
 */
 
-exports.validationErrors = (err, req, res, next) => {
-  // console.log(err)
-  // if (process.env.NODE_ENV === 'development') {
-  res.json({
-    statusCode: err.status,
-    message: err.message,
-    stack: err.stack
-  })
+// exports.validationErrors = (err, req, res, next) => {
+//   console.log("im the validation error")
+//   // if (process.env.NODE_ENV === 'development') {
+//   res.json({
+//     statusCode: err.status,
+//     message: err.message,
+//     stack: err.stack
+//   })
+
+  // next(err)
   // }
   // else if (process.env.NODE_ENV === 'production') {
   //   // Operational, trusted error: send message to client
@@ -51,7 +53,7 @@ exports.validationErrors = (err, req, res, next) => {
   //     message: 'Something went very wrong!'
   //   });
   // }
-};
+// };
 
 // if (!err.errors) return next(err);
 // validation errors look like

@@ -3,7 +3,7 @@ const User = mongoose.model('User');
 const crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 const { catchErrors } = require('../handlers/errorHandler');
-const promisify = require('promisify');
+// const promisify = require('promisify');
 const { options } = require('../routes');
 const sendMail = require('../helpers/email');
 const appError = require('../helpers/newError');
@@ -44,9 +44,13 @@ exports.createUser = async (req, res, next) => {
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
     });
-
-    // console.log({ user })
+    console.log({ user })
     // send the token to the client side
+    if (!user) {
+        return next(new appError('failed creating an account', 404))
+    }
+    req.user = user;
+    res.locals.user = user;
     sendToken(user, res)
 };
 
@@ -56,8 +60,6 @@ exports.loginUser = async (req, res, next) => {
     const email = req.body.email
     const password = req.body.password
     // console.log(`this is the req. body ${req.body.email}`)
-    // console.log({ email })
-    // console.log({ password })
 
     if (!email || !password) {
         return next(new appError('please provide an email and a password', 404))
@@ -100,18 +102,19 @@ exports.protect = async (req, res, next) => {
     }
     //verify token. because it will run a callback function after verifying the token we promisify it so we can await the verification of that token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY)
+    console.log(decoded)
 
-    // check if user still exists using the id that is in the token's payload
+    // use the id in the token payload to check if user still exists using the id that is in the token's payload
     const currentUser = await User.findById(decoded.id)
 
-    // check if the user changed password after the token was created
+    // check if the user changed password after the token was created using the iat in the token
     if (currentUser.hasChangedPassword(decoded.iat)) {
         return res.send('password has been changed')
     };
 
     //create a user field in the request with all its data so we can use it in the next function
-    // req.user = currentUser;
-    // res.locals.user = currentUser;
+    req.user = currentUser;
+    res.locals.user = currentUser;
 
     // allow user to the next route
     next()
@@ -194,7 +197,7 @@ exports.updatePassword = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     const user = await User.findById(req.user.id).select('+password');
-
+    console.log({ user })
     // 3) If so, update password
     user.name = req.body.name;
     user.email = req.body.email;
@@ -211,6 +214,7 @@ exports.updateProfile = async (req, res) => {
 
 // Only for rendered pages, no errors!
 exports.isLoggedIn = async (req, res, next) => {
+    // 
     console.log("I'm the loggedIn")
     if (req.cookies.jwt) {
         try {
@@ -218,7 +222,6 @@ exports.isLoggedIn = async (req, res, next) => {
                 req.cookies.jwt,
                 process.env.SECRET_KEY
             );
-
             // 2) Check if user still exists
             const currentUser = await User.findById(decoded.id);
             // console.log({ currentUser })
@@ -234,7 +237,6 @@ exports.isLoggedIn = async (req, res, next) => {
 
             //         // THERE IS A LOGGED IN USER
             //         // req.user = currentUser;
-
             res.locals.user = currentUser;
 
             return next();

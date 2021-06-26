@@ -10,7 +10,7 @@ const { catchErrors } = require('../handlers/errorHandler');
 router.use(authController.isLoggedIn)
 
 router.get('/', catchErrors(tourController.allTours));
-router.get('/tours', catchErrors(tourController.allTours));
+router.get('/tours', catchErrors(authController.protect), catchErrors(tourController.allTours));
 // router.use(authController.protect)
 
 // monthly tours
@@ -43,6 +43,8 @@ router.post('/forgotpassword', catchErrors(authController.forgotPassword));
 // the link resets the token
 router.patch('/resetToken/:token', catchErrors(authController.resetPassword));
 router.patch('/updatePassword', catchErrors(authController.protect), catchErrors(authController.updatePassword));
+
+router.get('/account', userController.updateProfile)
 router.patch('/updateProfile', catchErrors(authController.protect), catchErrors(authController.updateProfile));
 
 

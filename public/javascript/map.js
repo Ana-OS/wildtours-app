@@ -1,4 +1,7 @@
 let map;
+if (map) {
+
+}
 function initMap() {
     const map_coor = JSON.parse(document.querySelector(".map").dataset.locations)
     const place = { lat: map_coor[1], lng: map_coor[0] };

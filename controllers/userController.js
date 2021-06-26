@@ -26,3 +26,8 @@ exports.login = (req, res) => {
 exports.forgotPassword = (req, res, next) => {
     res.send('this is a reset form')
 };
+
+
+exports.updateProfile = async (req, res, next) => {
+    res.render('account')
+}
