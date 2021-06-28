@@ -1,14 +1,10 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Tour = mongoose.model('Tour');
 var jwt = require('jsonwebtoken');
 const { catchErrors } = require('../handlers/errorHandler');
-
-// const { body, validationResult } = require('express-validator');
-
-// create function that will create a token
-const createToken = (id) => {
-    return jwt.sign({ id }, process.env.SECRET_KEY, { expiresIn: process.env.EXPIRE })
-};
+const appError = require('../helpers/newError');
+const { tour } = require('./tourController');
 
 
 // prompt the registrations form
@@ -21,13 +17,30 @@ exports.login = (req, res) => {
     res.render('login')
 };
 
-
 // prompt the reset Password form and send email with link with new token to user
 exports.forgotPassword = (req, res, next) => {
     res.send('this is a reset form')
 };
 
-
 exports.updateProfile = async (req, res, next) => {
     res.render('account')
 }
+
+
+exports.userBookings = async (req, res, next) => {
+    let tours = [];
+    const userBookings = await User.findOne({ _id: req.user }).populate('bookings');
+    // if (!userBookings) {
+    //     return next(new appError('something went wrong', 404))
+    // }
+    userBookings.bookings.forEach(booking => { tours.push(booking.tour.toString()) });
+
+    const bookedTours = await Tour.find({ _id: { $in: tours } })
+    console.log({ bookedTours })
+    // const bookedTours = await Tour.find({ _id: userBookings.bookings[0].tour })
+    // console.log(typeof (tours[0]))
+    // res.render('myBookings', userBookings.bookings)
+    // res.json(userBookings)
+}
+
+// const reviews = await Review.find({ tour: req.params.id })

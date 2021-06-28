@@ -31,8 +31,10 @@ app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work gr
 
 // serves up static files from the public folder. Anything in public/ will just be served up as the file it is
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json({ limit: '50mb' }));
 
-app.use(express.json());
+// app.use(express.json());
+// // express.urlencoded allows us to send data from forms to the server side
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
@@ -73,7 +75,7 @@ app.use(errorHandlers.notFound);
 
 
 // One of our error handlers will see if these errors are just validation errors
-// app.use(errorHandlers.validationErrors);
+app.use(errorHandlers.validationErrors);
 
 // if (app.get('env') === 'development') {
 //     /* Development Error Handler - Prints stack trace */

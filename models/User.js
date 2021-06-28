@@ -41,7 +41,12 @@ const userSchema = new mongoose.Schema({
     },
     passwordResetToken: String,
     resetPasswordExpires: Date
-});
+},
+    {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true }
+    }
+);
 
 userSchema.pre('save', async function (next) {
     // isMofified comes from Mongo db
@@ -86,6 +91,13 @@ userSchema.methods.resetPassword = function () {
     this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
 
     return newToken;
+};
+
+userSchema.virtual('bookings', {
+    ref: 'Booking',
+    foreignField: 'user',
+    localField: '_id'
 }
+);
 
 module.exports = mongoose.model('User', userSchema);

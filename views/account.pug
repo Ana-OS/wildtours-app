@@ -2,18 +2,21 @@ extends layout
 
 block content
     h2 Edit Profile
-    form.form.form--register
+    form.form.form--edit
         .form__group
             label.mt-5.form__label(for='name')
             input#name.form__input(type='text', value=`${user.name}`, required)
         .form__group
             label.form__label(for='email') Email address
-            input#email.form__input(type='email', value=`${user.email}`, placeholder='your@example.com', required)
+            input#email.form__input(type='email', value=`${user.email}`,placeholder='your@example.com', required)
         .form__group.ma-bt-md
-            label.form__label(for='password') Password
-            input#password.form__input(type='password', placeholder='••••••••')
+            img(src=`/uploads/${user.photo}`, alt=`${user.name}`)
         .form__group.ma-bt-md
-            label.form__label(for='password') Confirm Password
-            input#confirm_password.form__input(type='password', placeholder='••••••••')
+            label.form__label(for='photo') 
+            input.form__upload(type='file', accept='image/*', id='photo', name='photo')
+            //- .form__group.ma-bt-md
+            //- a(href="/")
+            //- button.btn.btn-light Delete My Account 
+
         .form__group
             button.btn.btn--green enter

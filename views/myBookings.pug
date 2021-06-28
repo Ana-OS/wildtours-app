@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    .tours-wrapper
+        each booking in bookings
+            a(href=`/tours/${tour.id}`)  
+                .card-trip
+                    img.cover_image(src=`/img/tours/${tour.imageCover}`)
+                    .card-trip-infos 
+                        div 
+                            h2= tour.name 
+                            p= tour.difficulty
+                            p= tour.description.split('').slice(0, 50).concat("...").join('')
+                            svg.card__icon
+                                use(xlink:href='/img/tours/icons.svg#icon-map-pin')
+                            span.ml-2.mt-3= tour.location.address
+                        h2.card-trip-pricing= `${tour.price} €`

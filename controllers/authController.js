@@ -7,6 +7,9 @@ const { catchErrors } = require('../handlers/errorHandler');
 const { options } = require('../routes');
 const sendMail = require('../helpers/email');
 const appError = require('../helpers/newError');
+const multer = require('multer');
+const sharp = require('sharp');
+const uuid = require('uuid');
 
 // create function that will create a token
 const createToken = (id) => {
@@ -15,7 +18,6 @@ const createToken = (id) => {
 
 const sendToken = (user, res) => {
     const token = createToken(user._id);
-
     const cookieOptions = {
         expires: new Date(
             Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -36,18 +38,53 @@ const sendToken = (user, res) => {
     });
 };
 
+
+const multerStorage = multer.memoryStorage();
+const upload = multer({
+    storage: multerStorage,
+    fileFilter(req, file, cb) {
+        if (file.mimetype.startsWith('image')) {
+            cb(null, true);
+        } else {
+            cb(new AppError('Not an image! Please upload only images.', 400), false);
+        }
+    }
+});
+
+exports.upload = upload.single('photo');
+
+exports.resize = async (req, res, next) => {
+    if (!req.file) return next();
+
+    req.file.filename = `${uuid.v4()}.jpeg`;
+
+    await sharp(req.file.buffer)
+        .resize(400, 400)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`public/uploads/${req.file.filename}`);
+
+    next();
+};
+
+
 // create the user for the first time
 exports.createUser = async (req, res, next) => {
+    console.log(`Im the req.file ${req.file}`)
+
     const user = await User.create({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
+        photo: req.file.filename
     });
-    console.log({ user })
+    // console.log({ user })
     // send the token to the client side
+
     if (!user) {
         return next(new appError('failed creating an account', 404))
+        // res.send("provide a")
     }
     req.user = user;
     res.locals.user = user;
@@ -73,8 +110,8 @@ exports.loginUser = async (req, res, next) => {
     if (!user || !(await user.comparePassword(password, user.password))) {
         return next(new appError('incorrect email or password', 404))
     }
-    // req.user = user;
-    // res.locals.user = user;
+    req.user = user;
+    res.locals.user = user;
 
     // send the token to the client side
     sendToken(user, res)
@@ -176,39 +213,42 @@ exports.resetPassword = async (req, res) => {
 };
 
 
-exports.updatePassword = async (req, res) => {
-    // 1) Get user from collection
-    const user = await User.findById(req.user.id).select('+password');
+// exports.updatePassword = async (req, res) => {
+//     // 1) Get user from collection
+//     const user = await User.findById(req.user.id).select('+password');
 
-    // // 2) Check if POSTed current password is correct
-    if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-        return next(new AppError('Wrong password', 401));
-    }
-    // 3) If so, update password
-    user.password = req.body.password;
-    user.passwordConfirm = req.body.passwordConfirm;
+//     // // 2) Check if POSTed current password is correct
+//     if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+//         return next(new AppError('Wrong password', 401));
+//     }
+//     // 3) If so, update password
+//     user.password = req.body.password;
+//     user.passwordConfirm = req.body.passwordConfirm;
 
-    await user.save();
-    // User.findByIdAndUpdate will NOT work as intended! We need "user.save" so we can apply all the ".pre('save')" instance methods to the user
+//     await user.save();
+//     // User.findByIdAndUpdate will NOT work as intended! We need "user.save" so we can apply all the ".pre('save')" instance methods to the user
 
-    // // 4) Log user in, send JWT
-    createSendToken(user, res);
-};
+//     // // 4) Log user in, send JWT
+//     sendToken(user, res);
+// };
 
 exports.updateProfile = async (req, res) => {
-    const user = await User.findById(req.user.id).select('+password');
-    console.log({ user })
-    // 3) If so, update password
-    user.name = req.body.name;
-    user.email = req.body.email;
-    user.password = req.body.password;
-    user.passwordConfirm = req.body.passwordConfirm;
+    let updateBody = {
+        name: req.body.name,
+        email: req.body.email,
+    }
+    if (req.file) {
+        updateBody.photo = req.file.filename
+    }
+    //  3) Update user document
+    const updatedUser = await User.findByIdAndUpdate(req.user.id,
+        updateBody, {
+        new: true,
+        runValidators: false
+    });
 
-    await user.save();
-    // User.findByIdAndUpdate will NOT work as intended! We need "user.save" so we can apply all the ".pre('save')" instance methods to the user
-
-    // // 4) Log user in, send JWT
-    createSendToken(user, res);
+    //  4) Log user in, send JWT
+    sendToken(updatedUser, res);
 };
 
 
@@ -236,7 +276,7 @@ exports.isLoggedIn = async (req, res, next) => {
             }
 
             //         // THERE IS A LOGGED IN USER
-            //         // req.user = currentUser;
+            req.user = currentUser;
             res.locals.user = currentUser;
 
             return next();
@@ -248,11 +288,17 @@ exports.isLoggedIn = async (req, res, next) => {
 };
 
 exports.logout = (req, res) => {
-    console.log("I'm the logout")
     res.cookie('jwt', 'loggedout', {
         expires: new Date(Date.now() + 1 * 1000),
         httpOnly: true
     });
-    // // send to client side that the user is loggedout
+    // send to client side that the user is loggedout
     res.json({ message: "logged out" })
-}
+};
+
+// exports.deleteAccount = async (req, res, next) => {
+//     const user = await User.findOneAndDelete({ _id: req.user.id });
+//     if (!user) {
+//         return next(new appError('something went wrong', 500))
+//     }
+// }

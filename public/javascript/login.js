@@ -1,7 +1,8 @@
 const loginForm = document.querySelector('.form--login');
 const logout = document.querySelector("#logout");
-const registerForm = document.querySelector(".form--register");
-const account = document.querySelector(".form--account");
+const userDataForm = document.querySelector('.form-user-data');
+const userEditData = document.querySelector('.form--edit');
+
 // console.log(register)
 // console.log(account)
 
@@ -50,30 +51,55 @@ if (logout) {
     });
 };
 
-if (registerForm) {
-    registerForm.addEventListener("submit", e => {
+if (userDataForm) {
+    userDataForm.addEventListener('submit', e => {
         e.preventDefault();
-        const name = document.getElementById("name").value;
-        const email = document.querySelector("#email").value;
-        const password = document.querySelector("#password").value;
-        const confirmPassword = document.querySelector("#confirm_password").value;
-        // console.log({ name })
-        // console.log({ email })
+        const form = new FormData();
+        // const name = document.getElementById('name').value
+        form.append('name', document.getElementById('name').value);
+        form.append('email', document.getElementById('email').value);
+        form.append('password', document.getElementById('password').value);
+        form.append('confirmPassword', document.getElementById('confirm_password').value);
+        form.append('photo', document.getElementById('photo').files[0]);
+        // console.log(form)
+        console.log(form);
 
         fetch("http://localhost:3001/register", {
             method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, email, password, confirmPassword })
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
+            body: form
+        }).then(response => response.json())
+            .then(res => {
+                console.log(res)
 
-            })
+            });
+
     })
 }
 
+if (userEditData) {
+    userEditData.addEventListener('submit', e => {
+        e.preventDefault();
+        const form = new FormData();
+        // const name = document.getElementById('name').value
+        form.append('name', document.getElementById('name').value);
+        form.append('email', document.getElementById('email').value);
+        form.append('photo', document.getElementById('photo').files[0]);
+        // console.log(form)
+        console.log(form);
 
+        fetch("http://localhost:3001/updateProfile", {
+            method: "POST",
+            body: form
+        }).then(response => response.json())
+            .then(res => {
+                // console.log(res)
+                if (res.data) {
+                    // window.alert('success', 'Logged in successfully!');
+                    window.setTimeout(() => {
+                        location.assign('/');
+                    }, 500);
+                }
+            });
+
+    })
+}

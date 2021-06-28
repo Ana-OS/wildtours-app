@@ -12,10 +12,12 @@
 #navbar-main .navbar-brand img {
   border:1px solid red; 
   border-radius: 50%;
-  width: 40px;
+  width: 100px;
 }
 
 .dropdown img{
+  width:100px;
+  height:auto;
   border-radius: 50%;
 }
 
