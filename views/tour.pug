@@ -6,7 +6,10 @@ block content
   //- img.card-category(src=`/img/tours/${tour.imageCover}`)
 
   h2= tour.name
+  p= tour.startDates.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
   h4= tour.description 
-  p= tour.price
+  p= `$ ${tour.price}`
+  a(href=`/tours/${tour.id}/book`)  
+    button.btn.btn-info Book Tour 
   .map(data-locations=`${JSON.stringify(tour.location.coordinates)}`)
   

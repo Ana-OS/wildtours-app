@@ -2,6 +2,7 @@ const loginForm = document.querySelector('.form--login');
 const logout = document.querySelector("#logout");
 const userDataForm = document.querySelector('.form-user-data');
 const userEditData = document.querySelector('.form--edit');
+const deleteTour = document.querySelector("#deleteBooking");
 
 // console.log(register)
 // console.log(account)
@@ -102,4 +103,27 @@ if (userEditData) {
             });
 
     })
+}
+
+if (deleteTour) {
+    deleteTour.addEventListener("click", () => {
+        // console.log(deleteTour.dataset.bookingid)
+
+        const url = `/myBookings/${deleteTour.dataset.bookingid}`;
+
+        // console.log(`http://localhost:3001${url}`)
+
+
+        fetch(`http://localhost:3001${url}`, {
+            method: "DELETE",
+            body: null
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.message == "booking deleted")
+                    location.reload()
+            })
+            .catch(err => console.log(err))
+    })
+
 }

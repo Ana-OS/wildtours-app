@@ -90,5 +90,4 @@ tourSchema.virtual('reviews', {
     localField: '_id'
 });
 
-
 module.exports = mongoose.model('Tour', tourSchema);

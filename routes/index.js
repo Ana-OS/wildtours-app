@@ -15,7 +15,7 @@ router.use(authController.isLoggedIn)
 
 //  get all tours
 router.get('/', catchErrors(tourController.allTours));
-router.get('/tours', catchErrors(authController.protect), catchErrors(tourController.allTours));
+router.get('/tours', catchErrors(tourController.allTours));
 router.get('/tours/monthly', catchErrors(tourController.monthlyTours));
 // create a tour
 router.get('/tours/add', tourController.addTour);
@@ -26,19 +26,27 @@ router.get('/tours/:id', catchErrors(tourController.tour));
 router.get('/tours/:id/edit', catchErrors(tourController.editTour));
 router.post('/tours/:id', catchErrors(tourController.updateTour));
 // delete tour
-router.get('/tours/:id/delete', catchErrors(tourController.deleteTour));
+router.delete('/tours/:id', catchErrors(tourController.deleteTour));
 
 
 //////     Booking Routes     //////
 
 // get booking
-router.get('/tours/:id/book', catchErrors(authController.protect), catchErrors(bookingsController.createBooking));
+router.get('/tours/:id/book', catchErrors(authController.protect), bookingsController.bookingForm);
 
 // create booking
 router.post('/tours/:id/book', catchErrors(bookingsController.createBooking));
 
 // get all User Bookings
-router.get('/myBookings', catchErrors(userController.userBookings));
+router.get('/myBookings', catchErrors(bookingsController.userBookings));
+
+// get soecific booking 
+router.get('/myBookings/:id', catchErrors(bookingsController.booking))
+
+// router.delete('/myBookings')
+router.delete('/myBookings/:id', catchErrors(bookingsController.deleteBooking))
+
+
 //////     User Routes     //////
 
 // create 

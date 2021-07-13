@@ -14,7 +14,7 @@ html
   body
     .navbar.navbar-expand-sm.navbar-light(id="navbar-main")
         a.navbar-brand(href="/" )
-            img.cover_image.logo(src="../img/tours/logo.jpg")
+            img.cover_image.logo(src="/img/tours/logo.jpg")
         button.navbar-toggler(type='button' data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
             span.navbar-toggler-icon 
 
@@ -32,15 +32,17 @@ html
                         a.nav-link(href="#") Logout
                     li.nav-item.dropdown
                         img.avatar.dropdown-toggle(id="navbarDropdown"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src=`uploads/${user.photo}`)
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src=`/uploads/${user.photo}`)
                         .dropdown-menu.dropdown-menu-right( aria-labelledby="navbarDropdown")
                             a.dropdown-item(href="/account") Account 
-                            a.dropdown-item(href="#") My bookings
+                            a.dropdown-item(href="/myBookings") My bookings
                    
 
     .content
       block content
-        p This is the default!
-
+        h2= tour.name
+        h4= tour.description 
+        p= tour.price
+        .map(data-locations=`${JSON.stringify(tour.location.coordinates)}`)
     block scripts
       script(async="false"  src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&callback=initMap`)

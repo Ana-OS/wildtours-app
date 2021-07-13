@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
 const routes = require('./routes/index');
-const errorHandlers = require('./handlers/errorHandler');
+const { globalErrorHandler } = require('./handlers/errorHandler');
 const authController = require('./controllers/authController');
 const expressValidator = require('express-validator');
+const appError = require('./helpers/newError');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const promisify = require('promisify');
@@ -38,26 +39,11 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
-// Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
-// app.use(expressValidator());
-// Takes the raw requests and turns them into usable properties on req.body
-// app.use(bodyParser.json());
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 //we need this app.use(express.urlencoded({ extended: false }))because forms submit  as HTML POST using Content-Type: application/x-www-form-urlencoded.
 // app.use(express.urlencoded({ extended: false }))
 
-// app.use((req, res, next) => {
-//     // console.log(req.headers)
-//     next();
-// });
-
-// pass variables to our templates + all requests
-// app.use((req, res, next) => {
-//     res.locals.user = req.user || null;
-//     res.locals.currentPath = req.path;
-//     next();
-// });
 
 // Test middleware
 app.use((req, res, next) => {
@@ -71,18 +57,14 @@ app.use((req, res, next) => {
 
 app.use('/', routes);
 
-app.use(errorHandlers.notFound);
+// if no route is found
+app.all('*', (req, res, next) => {
+    next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
 
 
-// One of our error handlers will see if these errors are just validation errors
-app.use(errorHandlers.validationErrors);
+// pass on to other routes
+app.use(globalErrorHandler);
 
-// if (app.get('env') === 'development') {
-//     /* Development Error Handler - Prints stack trace */
-//     app.use(errorHandlers.developmentErrors);
-// };
-
-// production error handler
-// app.use(errorHandlers.productionErrors);
 
 module.exports = app;

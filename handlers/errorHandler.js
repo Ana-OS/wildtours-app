@@ -1,4 +1,4 @@
-const appError = require('../helpers/newError');
+const AppError = require('../helpers/newError');
 
 exports.catchErrors = (fn) => {
   return function (req, res, next) {
@@ -6,96 +6,93 @@ exports.catchErrors = (fn) => {
   };
 };
 
-/*
-  Not Found Error Handler
- 
-  If we hit a route that is not found, we mark it as 404 and pass it along to the next error handler to display
-*/
-exports.notFound = (req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+
+const handleCastErrorDB = err => {
+  const message = `Invalid ${err.path}: ${err.value}.`;
+  return new AppError(message, 400);
 };
 
-/*
-  MongoDB Validation Error Handler
+const handleDuplicateFieldsDB = err => {
+  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
+  console.log(value);
 
-  Detect if there are mongodb validation errors that we can nicely show via flash messages
-*/
+  const message = `Duplicate field value: ${value}. Please use another value!`;
+  return new AppError(message, 400);
+};
 
-exports.validationErrors = (err, req, res, next) => {
-  console.log("im the validation error")
-  // if (process.env.NODE_ENV === 'development') {
-  res.json({
-    statusCode: err.status,
+const handleValidationErrorDB = err => {
+  const errors = Object.values(err.errors).map(el => el.message);
+
+  const message = `Invalid input data. ${errors.join('. ')}`;
+  return new AppError(message, 400);
+};
+
+const devError = (err, req, res) => {
+  return res.status(err.statusCode).json({
+    status: err.status,
+    error: err,
     message: err.message,
     stack: err.stack
-  })
-
-  // next(err)
-  // }
-  // else if (process.env.NODE_ENV === 'production') {
-  //   // Operational, trusted error: send message to client
-  //   if (err.isOperational) {
-  //     res.status(err.statusCode).json({
-  //       status: err.status,
-  //       message: err.message
-  //     });
-
-  // Programming or other unknown error: don't leak error details
-  // } else {
-  //   // 1) Log error
-  //   console.error('ERROR 💥', err);
-
-  //   // 2) Send generic message
-  //   res.status(500).json({
-  //     status: 'error',
-  //     message: 'Something went very wrong!'
-  //   });
-  // }
+  });
 };
 
-// if (!err.errors) return next(err);
-// validation errors look like
-// const errorKeys = Object.keys(err);
-// console.log(errorKeys)
-// errorKeys.forEach(key => res.json('error', err.errors[key].message));
-// res.redirect('back');
-// };
+const prodError = (err, req, res) => {
+
+  if (err.isOperational) {
+    console.log(err.name);
+    return res.status(err.statusCode).render('error', {
+      title: 'Something went wrong!',
+      msg: err.message
+    });
+  }
 
 
-/*
-  Development Error Hanlder
-
-  In development we show good error messages so if we hit a syntax error or any other previously un-handled error, we can show good info on what happened
-*/
-// exports.developmentErrors = (err, req, res, next) => {
-//   err.stack = err.stack || '';
-//   const errorDetails = {
-//     name: err,
-//     message: err.message,
-//     status: err.status,
-//     stackHighlighted: err.stack.replace(/[a-z_-\d]+.js:\d+:\d+/gi, '<mark>$&</mark>')
-//   };
-//   res.status(err.status || 500);
-//   // res.format({
-//   //   // Based on the `Accept` http header
-//   //   'text/html': () => {
-//   //     res.render('error', errorDetails);
-//   //   }, // Form Submit, Reload the page
-//   //   'application/json': () => res.json(errorDetails) // Ajax call, send JSON back
-//   // });
-// };
+  // B) Programming or other unknown error: don't leak error details
+  // 1) Log error
+  console.error('ERROR 💥', err);
+  // // 2) Send generic message
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong!',
+    msg: 'please try again later'
+  });
+};
 
 
-// /*
-//   Production Error Handler
 
-//   No stacktraces are leaked to user
-// */
-// exports.productionErrors = (err, req, res, next) => {
-//   res.status(err.status || 500);
-//   // res.send('this is the last catch error')
-//   console.log(err)
-//   res.status(status).send(body)
-// };
+
+
+exports.globalErrorHandler = (err, req, res, next) => {
+  // console.log(`I'm the golbal ErrorHandler ${err.stack}`)
+
+  err.statusCode = err.statusCode || '500';
+  err.status = err.status || 'error';
+
+
+  // if it is in dev env just show the entire error
+  if (process.env.NODE_ENV === "development") {
+    devError(err, req, res)
+  }
+
+  // if it is in prod show the customized error messages
+  else if (process.env.NODE_ENV === "production") {
+    // destructure the err and assign to error so we can define new messages and new status
+    let error = { ...err };
+    error.name = err.name
+    error.message = err.message
+
+
+    // if the error has certain names or code we treat it differently
+    if (error.name === 'CastError') error = handleCastErrorDB(error);
+    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+    if (error.name === 'ValidationError')
+      error = handleValidationErrorDB(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
+
+
+
+    // else we just pass it to the prodError function as it is
+    prodError(error, req, res)
+  }
+
+};

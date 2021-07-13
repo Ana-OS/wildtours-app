@@ -2,16 +2,20 @@ extends layout
 
 block content
     .tours-wrapper
-        each booking in bookings
-            a(href=`/tours/${tour.id}`)  
+    h2 Your bookings 
+        if allBookings.length > 0
+        each booking in allBookings
+            a(href=`/tours/${booking.tour.id}`)  
                 .card-trip
-                    img.cover_image(src=`/img/tours/${tour.imageCover}`)
+                    img.cover_image(src=`/img/tours/${booking.tour.imageCover}`)
                     .card-trip-infos 
                         div 
-                            h2= tour.name 
-                            p= tour.difficulty
-                            p= tour.description.split('').slice(0, 50).concat("...").join('')
-                            svg.card__icon
-                                use(xlink:href='/img/tours/icons.svg#icon-map-pin')
-                            span.ml-2.mt-3= tour.location.address
-                        h2.card-trip-pricing= `${tour.price} €`
+                        h4 your booking dates
+                            p= booking.startDate
+                            p= booking.endtDate
+                            P= booking._id
+            button.btn.btn-danger(id="deleteBooking" data-bookingid=`${booking._id}`) Delete Booking    
+        else 
+            p Sorry you have no bookings   
+            a(href="/tours")  
+                button.btn.btn-info See Tours
