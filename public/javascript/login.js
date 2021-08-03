@@ -19,23 +19,31 @@ if (loginForm) {
         fetch("http://localhost:3001/login", {
             method: "POST",
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify({ email, password })
         })
             .then(response => response.json())
             .then(res => {
-                console.log(res.data.user.name)
-                if (res.data.user.name) {
-                    // window.alert('success', 'Logged in successfully!');
+                console.log(res)
+                // console.log(res.data.user.name)
+                if (res.data) {
+                    console.log(`res user logged in`)
+                    // console.log(res)
+                    window.alert('success', 'Logged in successfully!');
                     window.setTimeout(() => {
                         location.assign('/');
                     }, 700);
-                }
-            });
-    });
+                } else {
+                    window.alert('wrong credentials');
+                    window.setTimeout(() => {
+                        location.assign('/login');
+                    }, 700);
 
+                }
+            })
+    });
 }
 
 if (logout) {

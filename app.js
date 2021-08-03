@@ -6,7 +6,7 @@ const routes = require('./routes/index');
 const { globalErrorHandler } = require('./handlers/errorHandler');
 const authController = require('./controllers/authController');
 const expressValidator = require('express-validator');
-const appError = require('./helpers/newError');
+const AppError = require('./helpers/newError');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const promisify = require('promisify');
@@ -59,7 +59,7 @@ app.use('/', routes);
 
 // if no route is found
 app.all('*', (req, res, next) => {
-    next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));
+    next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
 

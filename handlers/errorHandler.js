@@ -8,7 +8,7 @@ exports.catchErrors = (fn) => {
 
 
 const handleCastErrorDB = err => {
-  const message = `Invalid ${err.path}: ${err.value}.`;
+  const message = "Invalid path dude.!";
   return new AppError(message, 400);
 };
 
@@ -27,30 +27,42 @@ const handleValidationErrorDB = err => {
   return new AppError(message, 400);
 };
 
+
 const devError = (err, req, res) => {
-  return res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: err.message,
-    stack: err.stack
-  });
+  // return res.status(err.statusCode).json({
+  //   status: err.status,
+  //   error: err,
+  //   message: err.message,
+  //   stack: err.stack
+  // });
+
+  console.log(err)
 };
+
 
 const prodError = (err, req, res) => {
 
   if (err.isOperational) {
-    console.log(err.name);
-    return res.status(err.statusCode).render('error', {
-      title: 'Something went wrong!',
-      msg: err.message
-    });
+    if (err.message === "incorrect email or password. Please review your access info")
+      return res.status(err.statusCode).json({
+        title: 'Something went wrong!',
+        msg: err.message
+      });
+    else {
+      return res.status(err.statusCode).render({
+        title: 'Something went wrong!',
+        msg: err.message
+      });
+    }
+
   }
 
 
   // B) Programming or other unknown error: don't leak error details
-  // 1) Log error
+
+  // // 1) Log error
   console.error('ERROR 💥', err);
-  // // 2) Send generic message
+  // // // 2) Send generic message
   return res.status(err.statusCode).render('error', {
     title: 'Something went wrong!',
     msg: 'please try again later'
@@ -80,15 +92,14 @@ exports.globalErrorHandler = (err, req, res, next) => {
     error.name = err.name
     error.message = err.message
 
-
     // if the error has certain names or code we treat it differently
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-    if (error.name === 'ValidationError')
-      error = handleValidationErrorDB(error);
+    if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
     if (error.name === 'JsonWebTokenError') error = handleJWTError();
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
-
+    if (error.name === 'TypeError') error = handleWrongCredentials(error);
+    // if (error.message === 'incorrect email or password. Please review your access info') handleWrongCredentials(error, req, res);
 
 
     // else we just pass it to the prodError function as it is

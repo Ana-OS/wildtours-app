@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Tour = mongoose.model('Tour');
 const { body, validationResult, query } = require('express-validator');
+const AppError = require('./../helpers/newError');
 
 
 // show all tours
@@ -57,9 +58,26 @@ exports.monthlyTours = async (req, res) => {
 
 
 // show specific Tour
-exports.tour = async (req, res) => {
-    const tour = await Tour.findOne({ _id: req.params.id }).populate('reviews');
-    res.render('tour', { tour })
+exports.tour = async (req, res, next) => {
+    if (mongoose.isValidObjectId(req.params.id)) {
+        const tour = await Tour.findById(req.params.id);
+
+        res.render('tour', { tour })
+    }
+
+    else {
+
+        return next(new AppError('No such tour', 400))
+    }
+
+    // // res.render('tour', { tour })
+    // if (!tour) {
+    //     console.log("poop")
+    //     return next(new AppError('No such tour', 400))
+
+    // }
+    // res.render('tour', { tour })
+
     // res.json({ tour })
     // console.log(tour.rating)
 };

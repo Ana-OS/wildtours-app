@@ -6,7 +6,7 @@ const { catchErrors } = require('../handlers/errorHandler');
 // const promisify = require('promisify');
 const { options } = require('../routes');
 const sendMail = require('../helpers/email');
-const appError = require('../helpers/newError');
+const AppError = require('../helpers/newError');
 const multer = require('multer');
 const sharp = require('sharp');
 const uuid = require('uuid');
@@ -83,7 +83,7 @@ exports.createUser = async (req, res, next) => {
     // send the token to the client side
 
     if (!user) {
-        return next(new appError('failed creating an account', 404))
+        return next(new AppError('failed creating an account', 404))
         // res.send("provide a")
     }
     req.user = user;
@@ -99,7 +99,7 @@ exports.loginUser = async (req, res, next) => {
     // console.log(`this is the req. body ${req.body.email}`)
 
     if (!email || !password) {
-        return next(new appError('please provide an email and a password', 404))
+        return next(new AppError('please provide an email and a password', 404))
     }
 
     // .select allows to get the password even though it is not accessible in the model
@@ -108,7 +108,7 @@ exports.loginUser = async (req, res, next) => {
     // compare the password in the DB with the one user provided in login
 
     if (!user || !(await user.comparePassword(password, user.password))) {
-        return next(new appError('incorrect email or password', 404))
+        return next(new appError('incorrect email or password. Please review your access info', 404))
     }
     req.user = user;
     res.locals.user = user;
