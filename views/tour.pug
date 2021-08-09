@@ -16,7 +16,7 @@ block content
   a(href=`/tours/${tour.id}/book`)  
     button.btn.btn-info Book Tour 
 
-  #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`)
+  #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-locations=`${JSON.stringify(tour.locations) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`)
   
   block scripts
     //- script(async="false"  src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&callback=initMap`)

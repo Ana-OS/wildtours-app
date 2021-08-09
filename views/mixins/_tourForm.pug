@@ -1,6 +1,7 @@
 mixin tourForm(tour = {})
 
     form(action=`/tours/${tour._id || ''}` method="POST")
+        h2 Info about the tour 
         label(for="name") Name
         input(type="text" name="name" value=tour.name)
         label(for="description") Description
@@ -11,22 +12,42 @@ mixin tourForm(tour = {})
         //- if tour.photo
         //-     img(src=`/uploads/${tour.photo}`, alt=tour.name width=200)
         //- //- address, lng and lat
-        label(for="address") Tour Start location address
-        input(type="text" id="startLocation" name="startLocation[address]" value=(tour.startLocation && tour.startLocation.address))
-        input(type="hidden" id="lngStartLocation" name="startLocation[coordinates][0]" value=(tour.startLocation && tour.startLocation.coordinates[0]))
-        input(type="hidden" id="latStartLocation" name="startLocation[coordinates][1]" value=(tour.startLocation && tour.startLocation.coordinates[1]))
-
-        label(for="place") Tour Start Place Name
-        input(type="text" name="startLocation[place]" value=tour.place) 
-
-        label(for="address") Tour End location
-        input(type="text" id="endLocation" name="endLocation[address]" value=(tour.endLocation && tour.endLocation.address))
-        input(type="hidden" id="lngEndLocation" name="endLocation[coordinates][0]" value=(tour.endLocation && tour.endLocation.coordinates[0]))
-        input(type="hidden" id="latEndLocation" name="endLocation[coordinates][1]" value=(tour.endLocation && tour.endLocation.coordinates[1]))
-
-        label(for="place") Tour End Place Name
-        input(type="text" name="endLocation[place]" value=tour.place) 
-
+        .locations
+            h2 Info about the tour locations
+            div
+                h4 Tour Start location address
+                label(for="address") Tour Start location address
+                input(type="text" id="startLocation" name="startLocation[address]" value=(tour.startLocation && tour.startLocation.address))
+                input(type="hidden" id="lngStartLocation" name="startLocation[coordinates][0]" value=(tour.startLocation && tour.startLocation.coordinates[0]))
+                input(type="hidden" id="latStartLocation" name="startLocation[coordinates][1]" value=(tour.startLocation && tour.startLocation.coordinates[1]))
+                label(for="place") Tour Start Place Name
+                input(type="text" name="startLocation[place]" value=tour.startLocation.place) 
+            #extraLocations
+                h4 add more locations 
+                - let i = 0
+                div(id=`location${i+=1}`)
+                    label(for="address") Address
+                    input(type="text" id="locations" name="locations[address]")
+                    input(type="hidden" id="lnglocations" name="locations[coordinates][0]" )
+                    input(type="hidden" id="latlocations" name="locations[coordinates][1]" )
+                    label(for="place") Place Name
+                    input(type="text" name="locations[place]" ) 
+                div(id=`location${i+=1}`)
+                    label(for="address") Address
+                    input(type="text" id="locations" name="locations[address]")
+                    input(type="hidden" id="lnglocations" name="locations[coordinates][0]" )
+                    input(type="hidden" id="latlocations" name="locations[coordinates][1]" )
+                    label(for="place") Place Name
+                    input(type="text" name="locations[place]" )     
+            div
+                h4 Tour End location 
+                label(for="address") Tour End location
+                input(type="text" id="endLocation" name="endLocation[address]" value=(tour.endLocation && tour.endLocation.address))
+                input(type="hidden" id="lngEndLocation" name="endLocation[coordinates][0]" value=(tour.endLocation && tour.endLocation.coordinates[0]))
+                input(type="hidden" id="latEndLocation" name="endLocation[coordinates][1]" value=(tour.endLocation && tour.endLocation.coordinates[1]))
+                label(for="place") Tour End Place Name
+                input(type="text" name="endLocation[place]" value=tour.endLocation.place) 
+        h2 Tour Price
         label(for="price") price
         input(type="number" name="price" value=tour.price)   
         label(for="rating") Rating

@@ -1,19 +1,28 @@
 
-const locations = [JSON.parse(document.querySelector("#map").dataset.startlocations), JSON.parse(document.querySelector("#map").dataset.endlocations)]
-let coordinates = []
+let locations = [JSON.parse(document.querySelector("#map").dataset.startlocations), JSON.parse(document.querySelector("#map").dataset.endlocations)]
 
+let extraLocations = JSON.parse(document.querySelector("#map").dataset.locations)
+
+for (let i = 0; i < extraLocations.length; i++) {
+    locations.splice(1, 0, extraLocations[i])
+}
+
+console.log(locations)
+
+let coordinates = []
+// 33.20259230265763, -117.38440678435028
 // [JSON.parse(document.querySelector("#map").dataset.startlocations), JSON.parse(document.querySelector("#map").dataset.endlocations)]
-// console.log(locations)
+// console.log(extraLocations)
 mapboxgl.accessToken =
     'pk.eyJ1IjoiYW5hb3MiLCJhIjoiY2tzM3B6eXEyMGtwYjJwbmp4cmprZDdsMSJ9.W9wwXWCTw1knzg-AdBHGhQ';
 
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
-    scrollZoom: false
+    scrollZoom: true,
     // center: [-118.113491, 34.111745],
     // zoom: 10,
-    // interactive: false
+    interactive: true
 });
 
 const bounds = new mapboxgl.LngLatBounds();
@@ -24,8 +33,8 @@ locations.forEach(loc => {
     // Create marker
     const marker = document.createElement('div');
     marker.className = 'marker';
-    const img = document.createElement('img');
-    marker.appendChild(img)
+    // const img = document.createElement('img');
+    // marker.appendChild(img)
 
     // Add marker
     new mapboxgl.Marker({
@@ -40,13 +49,13 @@ locations.forEach(loc => {
         offset: 30
     })
         .setLngLat(loc.coordinates)
-        .setHTML(`<p>${loc.day} at ${loc.place}</p>`)
+        .setHTML(`<div class="popoUp_div"><p>${loc.day} at ${loc.place}</p></div>`)
         .addTo(map);
 
     // Extend map bounds to include current location
     bounds.extend(loc.coordinates);
 });
-console.log(coordinates)
+// console.log(coordinates)
 
 map.fitBounds(bounds, {
     padding: {

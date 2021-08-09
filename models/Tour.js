@@ -85,13 +85,14 @@ const tourSchema = new mongoose.Schema({
                 type: String,
                 default: 'Point'
             },
-            coordinates: {
-                type: [Number],
-                // required: 'You must supply coordinates'
+            coordinates: [Number],
+            address: {
+                type: String,
+                required: 'You must supply an address!'
             },
             place: {
                 type: String,
-                // required: 'Please provide the location name'
+                required: 'please supply a start place!'
             },
             day: Number
         }
