@@ -1,4 +1,7 @@
 extends layout
+block append head
+  //- script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
+  link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
 
 block content
   //-.card-category(style={background: "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg)"})
@@ -12,5 +15,13 @@ block content
   p= `$ ${tour.price}`
   a(href=`/tours/${tour.id}/book`)  
     button.btn.btn-info Book Tour 
-  .map(data-locations=`${JSON.stringify(tour.location.coordinates)}`)
+
+  #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`)
+  
+  block scripts
+    //- script(async="false"  src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&callback=initMap`)
+    script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
+    //- link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
+
+  
   

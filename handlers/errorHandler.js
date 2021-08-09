@@ -29,12 +29,12 @@ const handleValidationErrorDB = err => {
 
 
 const devError = (err, req, res) => {
-  // return res.status(err.statusCode).json({
-  //   status: err.status,
-  //   error: err,
-  //   message: err.message,
-  //   stack: err.stack
-  // });
+  return res.status(err.statusCode).json({
+    status: err.status,
+    error: err,
+    message: err.message,
+    stack: err.stack
+  });
 
   console.log(err)
 };
@@ -49,7 +49,7 @@ const prodError = (err, req, res) => {
         msg: err.message
       });
     else {
-      return res.status(err.statusCode).render({
+      return res.render('error', {
         title: 'Something went wrong!',
         msg: err.message
       });
@@ -98,7 +98,7 @@ exports.globalErrorHandler = (err, req, res, next) => {
     if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
     if (error.name === 'JsonWebTokenError') error = handleJWTError();
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
-    if (error.name === 'TypeError') error = handleWrongCredentials(error);
+    // if (error.name === 'TypeError') error = handleWrongCredentials(error);
     // if (error.message === 'incorrect email or password. Please review your access info') handleWrongCredentials(error, req, res);
 
 

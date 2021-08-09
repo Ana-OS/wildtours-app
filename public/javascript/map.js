@@ -1,20 +1,102 @@
-let map;
-if (map) {
 
-}
-function initMap() {
-    const map_coor = JSON.parse(document.querySelector(".map").dataset.locations)
-    const place = { lat: map_coor[1], lng: map_coor[0] };
-    // The map, centered at Uluru
-    map = new google.maps.Map(document.querySelector(".map"), {
-        zoom: 10,
-        center: place,
+const locations = [JSON.parse(document.querySelector("#map").dataset.startlocations), JSON.parse(document.querySelector("#map").dataset.endlocations)]
+let coordinates = []
+
+// [JSON.parse(document.querySelector("#map").dataset.startlocations), JSON.parse(document.querySelector("#map").dataset.endlocations)]
+// console.log(locations)
+mapboxgl.accessToken =
+    'pk.eyJ1IjoiYW5hb3MiLCJhIjoiY2tzM3B6eXEyMGtwYjJwbmp4cmprZDdsMSJ9.W9wwXWCTw1knzg-AdBHGhQ';
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    scrollZoom: false
+    // center: [-118.113491, 34.111745],
+    // zoom: 10,
+    // interactive: false
+});
+
+const bounds = new mapboxgl.LngLatBounds();
+
+locations.forEach(loc => {
+    // console.log(loc)
+    coordinates.push(loc.coordinates)
+    // Create marker
+    const marker = document.createElement('div');
+    marker.className = 'marker';
+    const img = document.createElement('img');
+    marker.appendChild(img)
+
+    // Add marker
+    new mapboxgl.Marker({
+        element: marker,
+        anchor: 'bottom'
+    })
+        .setLngLat(loc.coordinates)
+        .addTo(map);
+
+    // Add popup
+    new mapboxgl.Popup({
+        offset: 30
+    })
+        .setLngLat(loc.coordinates)
+        .setHTML(`<p>${loc.day} at ${loc.place}</p>`)
+        .addTo(map);
+
+    // Extend map bounds to include current location
+    bounds.extend(loc.coordinates);
+});
+console.log(coordinates)
+
+map.fitBounds(bounds, {
+    padding: {
+        top: 10,
+        bottom: 12,
+        left: 10,
+        right: 10
+    }
+});
+map.on('load', () => {
+    map.addSource('route', {
+        'type': 'geojson',
+        'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': coordinates
+            }
+        }
     });
-    // The marker, positioned at Uluru
-    const marker = new google.maps.Marker({
-        position: place,
-        map: map,
+
+    map.addLayer({
+        'id': 'route',
+        'type': 'line',
+        'source': 'route',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': 'green',
+            'line-width': 8
+        }
     });
+})
+// function initMap() {
+//     const map_coor = [JSON.parse(document.querySelector(".map").dataset.startlocations), JSON.parse(document.querySelector(".map").dataset.endlocations)]
+//     console.log(map_coor)
+    // const place = { lat: map_coor[1], lng: map_coor[0] };
+    // // The map, centered at Uluru
+    // map = new google.maps.Map(document.querySelector(".map"), {
+    //     zoom: 10,
+    //     center: place,
+    // });
+    // // The marker, positioned at Uluru
+    // const marker = new google.maps.Marker({
+    //     position: place,
+    //     map: map,
+    // });
 
     // marker.addListener('click', function () {
     //     // console.log(this);
@@ -33,7 +115,7 @@ function initMap() {
 
     // const infoWindow = new google.maps.InfoWindow();
 
-}
+// }
 
 
 

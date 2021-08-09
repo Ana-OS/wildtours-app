@@ -60,15 +60,20 @@ exports.monthlyTours = async (req, res) => {
 // show specific Tour
 exports.tour = async (req, res, next) => {
     if (mongoose.isValidObjectId(req.params.id)) {
-        const tour = await Tour.findById(req.params.id);
+        const tour = await Tour.findOne({ _id: req.params.id }).populate('reviews');
 
         res.render('tour', { tour })
+        // console.log(tour)
+
+        if (!tour) {
+            return next(new AppError('No such tour', 404))
+
+        }
     }
 
-    else {
 
-        return next(new AppError('No such tour', 400))
-    }
+
+
 
     // // res.render('tour', { tour })
     // if (!tour) {
@@ -90,9 +95,13 @@ exports.addTour = (req, res) => {
 // create a Tour
 exports.createTour = async (req, res) => {
     // console.log(req.body);
-    const tour = await (new Tour(req.body)).save();
-    // console.log(tour)
-    // res.redirect(`/tours/${tour._id}`)
+    const tour = await Tour.create(req.body)
+    if (!tour) {
+        console.log("poop")
+        return next(new AppError('something went wrong creating tour', 400));
+    }
+    console.log(tour)
+    res.redirect('/tours')
 }
 
 // render the edit form
@@ -106,7 +115,7 @@ exports.updateTour = async (req, res, next) => {
     const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true
-    });
+    }).exec();
 
     if (!tour) {
         return next(new AppError('No document found with that ID', 404));

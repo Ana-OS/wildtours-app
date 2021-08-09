@@ -1,16 +1,17 @@
 doctype html
 html
   head
-    title= `WildTours`
-    link(rel='stylesheet', href='/css/style.css')
-    link(rel="shortcut icon" type="image/png" href="/images/img/favicon.png")
-    link(href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
-    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
-    link(rel='stylesheet', href='/css/style.css')
-    script(defer src="/javascript/map.js")
-    script(defer src="/javascript/login.js")
-    meta(name="viewport" content="width=device-width, initial-scale=1")
+    block head
+        title= `WildTours`
+        link(rel='stylesheet', href='/css/style.css')
+        link(rel="shortcut icon" type="image/png" href="/images/img/favicon.png")
+        link(href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+        script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
+        link(rel='stylesheet', href='/css/style.css')
+        script(defer src="/javascript/map.js")
+        script(defer src="/javascript/login.js")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
   body
     .navbar.navbar-expand-sm.navbar-light(id="navbar-main")
         a.navbar-brand(href="/" )
@@ -38,11 +39,10 @@ html
                             a.dropdown-item(href="/myBookings") My bookings
                    
 
-    .content
-      block content
+    block content
         h2= tour.name
         h4= tour.description 
         p= tour.price
         .map(data-locations=`${JSON.stringify(tour.location.coordinates)}`)
     block scripts
-      script(async="false"  src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&callback=initMap`)
+    //-   script(async="false"  src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&callback=initMap`)

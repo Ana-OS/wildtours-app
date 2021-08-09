@@ -22,6 +22,8 @@ router.get('/tours/add', tourController.addTour);
 router.post('/tours', catchErrors(authController.protect), catchErrors(tourController.createTour))
 // get a specific tour
 router.get('/tours/:id', catchErrors(tourController.tour));
+// router.get('/tours/:slug', catchErrors(tourController.tour));
+
 // update tour
 router.get('/tours/:id/edit', catchErrors(tourController.editTour));
 router.post('/tours/:id', catchErrors(tourController.updateTour));

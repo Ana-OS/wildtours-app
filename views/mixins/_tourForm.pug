@@ -11,12 +11,24 @@ mixin tourForm(tour = {})
         //- if tour.photo
         //-     img(src=`/uploads/${tour.photo}`, alt=tour.name width=200)
         //- //- address, lng and lat
-        label(for="address") Address
-        input(type="text" id="address" name="location[address]" value=(tour.location && tour.location.address))
-        input(type="hidden" id="lng" name="location[coordinates][0]" value=(tour.location && tour.location.coordinates[0]))
-        input(type="hidden" id="lat" name="location[coordinates][1]" value=(tour.location && tour.location.coordinates[1]))
+        label(for="address") Tour Start location address
+        input(type="text" id="startLocation" name="startLocation[address]" value=(tour.startLocation && tour.startLocation.address))
+        input(type="hidden" id="lngStartLocation" name="startLocation[coordinates][0]" value=(tour.startLocation && tour.startLocation.coordinates[0]))
+        input(type="hidden" id="latStartLocation" name="startLocation[coordinates][1]" value=(tour.startLocation && tour.startLocation.coordinates[1]))
+
+        label(for="place") Tour Start Place Name
+        input(type="text" name="startLocation[place]" value=tour.place) 
+
+        label(for="address") Tour End location
+        input(type="text" id="endLocation" name="endLocation[address]" value=(tour.endLocation && tour.endLocation.address))
+        input(type="hidden" id="lngEndLocation" name="endLocation[coordinates][0]" value=(tour.endLocation && tour.endLocation.coordinates[0]))
+        input(type="hidden" id="latEndLocation" name="endLocation[coordinates][1]" value=(tour.endLocation && tour.endLocation.coordinates[1]))
+
+        label(for="place") Tour End Place Name
+        input(type="text" name="endLocation[place]" value=tour.place) 
+
         label(for="price") price
-        input(type="bernum" name="price" value=tour.price)   
+        input(type="number" name="price" value=tour.price)   
         label(for="rating") Rating
         input(type="number" name="rating" value=tour.rating)
         input(type="submit" value="Save →" class="button")
