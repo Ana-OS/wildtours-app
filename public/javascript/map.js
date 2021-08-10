@@ -2,8 +2,8 @@
 let locations = [JSON.parse(document.querySelector("#map").dataset.startlocations), JSON.parse(document.querySelector("#map").dataset.endlocations)]
 
 let extraLocations = JSON.parse(document.querySelector("#map").dataset.locations)
-
-for (let i = 0; i < extraLocations.length; i++) {
+console.log(extraLocations)
+for (i = extraLocations.length - 1; i >= 0; i--) {
     locations.splice(1, 0, extraLocations[i])
 }
 

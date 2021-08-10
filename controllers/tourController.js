@@ -63,7 +63,7 @@ exports.tour = async (req, res, next) => {
         const tour = await Tour.findOne({ _id: req.params.id }).populate('reviews');
 
         res.render('tour', { tour })
-        // console.log(tour)
+        console.log(tour)
 
         if (!tour) {
             return next(new AppError('No such tour', 404))

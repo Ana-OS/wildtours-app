@@ -25,20 +25,20 @@ mixin tourForm(tour = {})
             #extraLocations
                 h4 add more locations 
                 - let i = 0
+                div(id=`location${i}`)
+                    label(for="address") Address
+                    input(type="text" id="extralocations" name=`locations[${i}][address]` value=(tour.locations[i] && tour.locations[i].address))
+                    input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` value=(tour.locations[i] && tour.locations[i].coordinates[0]))
+                    input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]` value=(tour.locations[i] && tour.locations[i].coordinates[1]))
+                    label(for="place") Place Name
+                    input(type="text" name=`locations[${i}][place]` value=tour.locations[i].place) 
                 div(id=`location${i+=1}`)
                     label(for="address") Address
-                    input(type="text" id="locations" name="locations[address]")
-                    input(type="hidden" id="lnglocations" name="locations[coordinates][0]" )
-                    input(type="hidden" id="latlocations" name="locations[coordinates][1]" )
+                    input(type="text" id="extralocations" name=`locations[${i}][address]` value=(tour.locations[i] && tour.locations[i].address))
+                    input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` value=(tour.locations[i] && tour.locations[i].coordinates[0]))
+                    input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]` value=(tour.locations[i] && tour.locations[i].coordinates[1]))
                     label(for="place") Place Name
-                    input(type="text" name="locations[place]" ) 
-                div(id=`location${i+=1}`)
-                    label(for="address") Address
-                    input(type="text" id="locations" name="locations[address]")
-                    input(type="hidden" id="lnglocations" name="locations[coordinates][0]" )
-                    input(type="hidden" id="latlocations" name="locations[coordinates][1]" )
-                    label(for="place") Place Name
-                    input(type="text" name="locations[place]" )     
+                    input(type="text" name=`locations[${i}][place]` value=tour.locations[i].place)     
             div
                 h4 Tour End location 
                 label(for="address") Tour End location
