@@ -39,7 +39,7 @@ window.onload = function () {
             let lngExtraLocation = loc.getElementsByTagName("input")[1]
             // console.log(inputExtraLocation)
             // console.log(loc)\
-            console.log(latExtraLocation)
+            // console.log(latExtraLocation)
             const dropdownExtraLocation = new google.maps.places.Autocomplete(inputExtraLocation);
             // console.log(dropdown)
 

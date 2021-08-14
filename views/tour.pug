@@ -9,14 +9,15 @@ block content
   //- img.card-category(src=`/img/tours/${tour.imageCover}`)
 
   h2= tour.name
-  
+  .card-category
+    img(src=`/uploads/${tour.imageCover}`)
   p= tour.startDates.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
   h4= tour.description 
   p= `$ ${tour.price}`
   a(href=`/tours/${tour.id}/book`)  
     button.btn.btn-info Book Tour 
 
-  #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-locations=`${JSON.stringify(tour.locations) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`)
+  #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-locations=`${JSON.stringify(tour.locations) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`,  data-mapbox=`${process.env.MAPBOX_API_KEY}`)
   
   block scripts
     //- script(async="false"  src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&callback=initMap`)

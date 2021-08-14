@@ -19,14 +19,20 @@ router.get('/tours', catchErrors(tourController.allTours));
 router.get('/tours/monthly', catchErrors(tourController.monthlyTours));
 // create a tour
 router.get('/tours/add', tourController.addTour);
-router.post('/tours', catchErrors(authController.protect), catchErrors(tourController.createTour))
+router.post('/tours',
+    tourController.uploadTourImages,
+    catchErrors(tourController.resize),
+    catchErrors(tourController.createTour))
 // get a specific tour
 router.get('/tours/:id', catchErrors(tourController.tour));
 // router.get('/tours/:slug', catchErrors(tourController.tour));
 
 // update tour
 router.get('/tours/:id/edit', catchErrors(tourController.editTour));
-router.post('/tours/:id', catchErrors(tourController.updateTour));
+router.post('/tours/:id',
+    tourController.uploadTourImages,
+    catchErrors(tourController.resize),
+    catchErrors(tourController.updateTour));
 // delete tour
 router.delete('/tours/:id', catchErrors(tourController.deleteTour));
 
