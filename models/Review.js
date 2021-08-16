@@ -31,6 +31,13 @@ const reviewSchema = new mongoose.Schema(
     }
 );
 
+function autopopulate(next) {
+    this.populate('author');
+    next();
+}
+
+reviewSchema.pre('find', autopopulate);
+reviewSchema.pre('findOne', autopopulate);
 
 reviewSchema.statics.calcAverageRatings = async function (tourId) {
     const stats = await this.aggregate([

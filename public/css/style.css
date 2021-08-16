@@ -100,6 +100,20 @@
   height: 300px;
 }
 
+.container{
+  border: 3px solid blue;
+  display: flex;
+}
+.reviews{
+  width: 500px;
+  border:2px solid red;
+
+}
+.reviewForm{
+  width: 500px;
+  border:2px solid red;
+
+}
 
 /* MAP */
 .locations{
@@ -142,5 +156,66 @@
 .mapboxgl-popup-content.popUp_div {
   width:30px;
   border:2px solid blue;
+}
+
+
+/* REview form */
+.reviewer {
+  position: relative;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2rem;
+}
+.reviewer__stars {
+  display: flex;
+  justify-content: center;
+  color: grey
+}
+.reviewer__stars input {
+  display: none;
+}
+.reviewer__stars input:checked ~ label {
+  color: #f1cd39;
+}
+.reviewer__stars input + label {
+  font-size: 0;
+ /* These are in the opposite DOM order re-order them to be visually in normal order This is fine for accessibility because our labels have for() */
+}
+.reviewer__stars input + label:before {
+  content: '★';
+  font-size: 2rem;
+}
+.reviewer__stars input + label[for="star5"] {
+  order: 5;
+}
+.reviewer__stars input + label[for="star4"] {
+  order: 4;
+}
+.reviewer__stars input + label[for="star3"] {
+  order: 3;
+}
+.reviewer__stars input + label[for="star2"] {
+  order: 2;
+}
+.reviewer__stars input + label[for="star1"] {
+  order: 1;
+}
+.reviewer__stars input + label:hover, .reviewer__stars input + label:hover ~ label {
+  color: rgb(231, 177, 60);
+}
+.reviewer textarea {
+  border: 0;
+  outline: 0;
+  font-size: 2rem;
+  padding: 2rem;
+  height: 200px;
+}
+.reviewer__meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid grey;
+}
+.reviewer__meta > * {
+  flex: 1;
 }
 

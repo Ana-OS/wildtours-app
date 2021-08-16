@@ -7,19 +7,20 @@ const { addTour } = require('./tourController');
 
 
 exports.addReview = async (req, res, next) => {
-    const user = await User.findById(req.user.id)
+    // const user = await User.findById(req.user.id)
+    req.body.author = req.user._id;
+    req.body.tour = req.params.id;
 
-    if (!user) {
-        return next(new appError('please login sucker', 404))
+    const newReview = new Review(req.body);
+    await newReview.save();
+    console.log(newReview)
+    // res.redirect('back');
 
-    } else {
-        console.log("this is the add Review form")
-    }
 };
 
 exports.createReview = async (req, res, next) => {
-    // const user = await User.findById(req.user.id).select('name')
-    // const tour = await Tour.findById(req.params.tour)
+    const user = await User.findById(req.user.id).select('name')
+    const tour = await Tour.findById(req.params.tour)
     // console.log(req.params.id)
 
     if (!req.user) {
@@ -33,7 +34,7 @@ exports.createReview = async (req, res, next) => {
         tour: req.params.id
     });
 
-    console.log({ newReview })
+    console.log(newReview)
 
 };
 

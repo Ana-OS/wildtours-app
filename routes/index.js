@@ -85,6 +85,7 @@ router.patch('/updatePassword', catchErrors(authController.protect), catchErrors
 
 // get all reviews
 router.get('/tours/:id/reviews', catchErrors(reviewsController.reviews));
+
 // getting one review
 router.get('/reviews/:id', catchErrors(reviewsController.review));
 
@@ -92,8 +93,11 @@ router.get('/reviews/:id', catchErrors(reviewsController.review));
 router.patch('/reviews/:id', catchErrors(reviewsController.updateReview));
 
 // create Review
-router.get('/tours/:id/addReview', catchErrors(authController.protect), catchErrors(reviewsController.addReview));
-router.post('/tours/:id/addReview', catchErrors(authController.protect), catchErrors(reviewsController.createReview));
+// router.get('/tours/:id/addReview', catchErrors(authController.protect), catchErrors(reviewsController.addReview));
+router.post('/reviews/:id',
+    catchErrors(authController.protect),
+    catchErrors(reviewsController.addReview)
+);
 
 
 module.exports = router;

@@ -1,4 +1,6 @@
 extends layout
+include mixins/_reviewForm
+//- include mixins/_review
 block append head
   //- script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
   link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
@@ -11,11 +13,24 @@ block content
   h2= tour.name
   .card-category
     img(src=`/uploads/${tour.imageCover}`)
-  p= tour.startDates.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
-  h4= tour.description 
-  p= `$ ${tour.price}`
-  a(href=`/tours/${tour.id}/book`)  
-    button.btn.btn-info Book Tour 
+
+  .container
+    .tourInfo  
+      p= tour.startDates.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
+      h4= tour.description 
+      p= `$ ${tour.price}`
+      a(href=`/tours/${tour.id}/book`)  
+      button.btn.btn-info Book Tour 
+   
+  .reviews
+    if tour.reviews 
+      each review in tour.reviews 
+        img(src=`/uploads/${review.author.photo}` style={width:"50px", border_radius:"50px"})
+        p= review.description 
+          
+  //- if user 
+  //-   .reviewForm
+  //-     +reviewForm(tour)
 
   #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-locations=`${JSON.stringify(tour.locations) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`,  data-mapbox=`${process.env.MAPBOX_API_KEY}`)
   
@@ -24,5 +39,4 @@ block content
     script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
     //- link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
 
-  
   

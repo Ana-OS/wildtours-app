@@ -1,23 +1,37 @@
 mixin tourForm(tour = {})
-
     form(action=`/tours/${tour._id || ''}` method="POST" enctype="multipart/form-data" )
         h2 Info about the tour 
         label(for="name") Name
         input(type="text" name="name" value=tour.name)
         label(for="description") Description
         textarea(name="description")= tour.description
+        //- - const choices = ['Easy', 'Medium', 'Difficult']
+        - const difficulty = tour.difficulty || []
+            ul.difficulty
+            h3 Please choose one
+            //- each choice in choices
+            div
+            label easy
+                input(type="checkbox" value="easy"
+                name="difficulty" onclick= "onlyOne(this)") 
+            div 
+            label medium
+                input(type="checkbox"  value="medium"
+                name="difficulty" onclick= "onlyOne(this)") 
+            div  
+            label difficulty 
+                input(type="checkbox" value="difficulty"
+                name="difficulty" onclick="onlyOne(this)")              
         div.mt-5
             label(for="photo") Main photo
-            input(type='file', accept='image/*' name="imageCover" id="imageCover")
+            input(type='file', accept='image/*' name="imageCover" id="imageCover" value= (tour.imageCover || ""))
             if tour.imageCover
                 img(src=`/uploads/${tour.imageCover}`, alt=tour.name width=100)
         div.mt-5  
             label(for="photo") Other photos
-            input(type='file', accept='image/*' name="images" )
-            input(type='file', accept='image/*' name="images" )
-            if tour.images.length > 0
-                each image in tour.images
-                    img(src=`/uploads/${image}`, alt=tour.name width=100)    
+            input(type='file', accept='image/*' name="images" value= (tour.images[0]) || "")
+            input(type='file', accept='image/*' name="images" value= (tour.images[1]) || "")
+            input(type='file', accept='image/*' name="images" value= (tour.images[2]) || "")
         .locations
             h2 Info about the tour locations
             div
@@ -63,3 +77,5 @@ mixin tourForm(tour = {})
         label(for="rating") Rating
         input(type="number" name="rating" value=tour.rating)
         input(type="submit" value="Save →" class="button")
+block scripts
+    script(src="./javascript/tour_form.js")        
