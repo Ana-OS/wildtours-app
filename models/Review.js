@@ -4,12 +4,13 @@ const Tour = mongoose.model('Tour');
 const reviewSchema = new mongoose.Schema(
     {
         description: {
-            type: String
+            type: String,
+            required: 'Please leave a comment about this tour'
         },
         rating: {
             type: Number,
             min: 1,
-            masx: 5,
+            max: 5,
             required: 'Please rate this Tour'
         },
         createdAt: {
@@ -38,6 +39,7 @@ function autopopulate(next) {
 
 reviewSchema.pre('find', autopopulate);
 reviewSchema.pre('findOne', autopopulate);
+
 
 reviewSchema.statics.calcAverageRatings = async function (tourId) {
     const stats = await this.aggregate([
@@ -92,5 +94,7 @@ reviewSchema.post(/^findOneAnd/, async function () {
     // await this.findOne(); does NOT work here, query has already executed
     await this.review.constructor.calcAverageRatings(this.review.tour);
 });
+
+
 
 module.exports = mongoose.model('Review', reviewSchema);

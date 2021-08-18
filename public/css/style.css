@@ -115,6 +115,65 @@
 
 }
 
+.review {
+  background: white;
+  border: 1px solid rgb(230, 22, 22);
+  border-bottom: 0;
+  border-bottom: 1px solid grey;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* position: relative; */
+  padding-left: 5px;
+   display: flex;
+  flex-wrap: wrap
+}
+/* .review:before {
+  width: 5px;
+  left: 0;
+  content: '';
+  display: block;
+  position: absolute;
+  height: 100%;
+  background-attachment: fixed;
+} */
+.review__header {
+  border-bottom: 1px solid rgb(32, 201, 74);
+  /* display: flex;
+  flex-wrap: wrap */
+}
+/* .review__header > * {
+  border-right: 1px solid grey;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+} */
+.review__header > *:last-child {
+  border-right: 0;
+}
+.review__author {
+  justify-content: flex-start;
+  padding-left: 2rem;
+  display: flex;
+}
+.review__author .avatar {
+  margin-right: 2rem;
+}
+.review__time {
+  font-size: 1.2rem;
+  color: #999;
+}
+.review__stars {
+  color: rgb(238, 209, 44);
+}
+.review__body {
+  padding: 2rem;
+}
+.review p {
+  white-space: pre-wrap;
+}
+
 /* MAP */
 .locations{
   border:1px solid red

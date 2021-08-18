@@ -36,7 +36,7 @@ const tourSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
-        required: [true, 'A tour must have a price']
+        required: [true, 'A tour must have a price'],
     },
     description: {
         type: String,
@@ -46,7 +46,12 @@ const tourSchema = new mongoose.Schema({
         type: String,
         // required: [true, 'A tour must have a cover image']
     },
-    images: [String],
+    images: [
+        {
+            type: String,
+            required: [true, 'please upload 4 images']
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now(),
@@ -135,11 +140,32 @@ tourSchema.pre('save', function (next) {
     next();
 });
 
-tourSchema.post(/^findByIdAndUpdate/, function (next) {
-    this.slug = slugify(this.name, { lower: true });
-    next();
-});
 
+
+// tourSchema.post(/^findOneAnd/, async function () {
+//     if (this._update.$set.images) {
+//         // console.log(this._update.$set.images)
+//         const imageCover = this._update.$set.images.shift();
+//         this._update.$set.imageCover = imageCover
+//         await this.update()
+//     }
+//     // const imageCover = this._update.$set.images.shift()
+
+//     // this.slug = slugify(this.name, { lower: true });
+//     // const imageCover = this.images.shift()
+//     // this.imageCover = imagecover
+//     // await this.save()
+//     // next();
+// });
+
+// tourSchema.statics.last4Reviews = function () {
+//     return this.aggregate([
+//         { $group: { from: 'reviews', localField: '_id', foreignField: 'tour', as: 'reviews' } },
+//         { $sort: { createdAt: -1 } },
+//         // limit to at most 4
+//         { $limit: 4 }
+//     ])
+// }
 
 // instead of saying that a tour has many reviews we create a virtual attribute of reviews. reviews will be filled by each review that is refrencing THIS tour.id
 tourSchema.virtual('reviews', {
@@ -147,5 +173,6 @@ tourSchema.virtual('reviews', {
     foreignField: 'tour',
     localField: '_id'
 });
+
 
 module.exports = mongoose.model('Tour', tourSchema);

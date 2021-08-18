@@ -12,21 +12,29 @@ block content
 
   h2= tour.name
   .card-category
-    img(src=`/uploads/${tour.imageCover}`)
+    img(src="/uploads/tour-6112bb7772a80711082acb05-cover.jpeg")
 
   .container
     .tourInfo  
-      p= tour.startDates.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
+      //- p= tour.startDates.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
       h4= tour.description 
       p= `$ ${tour.price}`
       a(href=`/tours/${tour.id}/book`)  
       button.btn.btn-info Book Tour 
    
-  .reviews
     if tour.reviews 
-      each review in tour.reviews 
-        img(src=`/uploads/${review.author.photo}` style={width:"50px", border_radius:"50px"})
-        p= review.description 
+      each review in tour.reviews
+        .review
+          .review__header
+            .review__author
+              img.avatar(src=review.author.photo)
+              p= review.author.name
+            .review__stars(title=`Rated ${review.rating} our of 5 stars`)
+              = `★`.repeat(review.rating)
+              = `☆`.repeat(5 - review.rating)
+            //- time.review__time(datetime=review.created)= h.moment(review.created).fromNow()
+          .review__body
+            p= review.description
           
   //- if user 
   //-   .reviewForm

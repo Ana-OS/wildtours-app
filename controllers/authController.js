@@ -255,7 +255,7 @@ exports.updateProfile = async (req, res) => {
 // Only for rendered pages, no errors!
 exports.isLoggedIn = async (req, res, next) => {
     // 
-    console.log("I'm the loggedIn")
+    // console.log("I'm the loggedIn")
     if (req.cookies.jwt) {
         try {
             const decoded = await (jwt.verify)(

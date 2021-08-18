@@ -59,7 +59,6 @@ console.log(coordinates)
 
 
 map.on('load', () => {
-    console.log("poop")
     map.addSource('route', {
         'type': 'geojson',
         'data': {

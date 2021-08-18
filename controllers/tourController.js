@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Review = mongoose.model('Review');
 const Tour = mongoose.model('Tour');
 const { body, validationResult, query } = require('express-validator');
 const AppError = require('./../helpers/newError');
@@ -7,7 +8,6 @@ const sharp = require('sharp');
 const { expectCt } = require('helmet');
 // const uuid = require('uuid');
 
-// Tour image
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
@@ -28,38 +28,46 @@ exports.uploadTourImages = upload.fields([
     { name: 'images', maxCount: 3 }
 ]);
 
+// upload.single('image') req.file
+// upload.array('images', 5) req.files
+exports.resizeImageCover = async (req, res, next) => {
+    if (req.files.imageCover) {
+        // 1) Cover image
+        req.body.imageCover = `tour-${req.params.id}-cover.jpeg`;
+        await sharp(req.files.imageCover[0].buffer)
+            .resize(2000, 1333)
+            .toFormat('jpeg')
+            .jpeg({ quality: 90 })
+            .toFile(`public/uploads/${req.body.imageCover}`);
+        next();
+    } else {
+        return next();
+    }
+};
 
-exports.resize = async (req, res, next) => {
-    console.log(req.files)
-    if (!req.files.imageCover || !req.files.images) return next();
+exports.resizeTourImages = async (req, res, next) => {
+    if (req.files.images) {
 
-    // Cover Image
-    req.body.imageCover = `tour-${req.params.id}-cover.jpeg`;
+        let uploadedImages = [];
 
-    await sharp(req.files.imageCover[0].buffer)
-        .resize(2000, 1333)
-        .toFormat('jpeg')
-        .jpeg({ quality: 90 })
-        .toFile(`public/uploads/${req.body.imageCover}`);
+        await Promise.all(
+            req.files.images.map(async (file, i) => {
+                const filename = `tour-${req.params.id}-${i + 1}.jpeg`;
 
-    // images
-    req.body.images = [];
+                await sharp(file.buffer)
+                    .resize(2000, 1333)
+                    .toFormat('jpeg')
+                    .jpeg({ quality: 90 })
+                    .toFile(`public/uploads/${filename}`);
 
-    await Promise.all(
-        req.files.images.map(async (file, i) => {
-            const filename = `tour-poopii.jpeg`;
-
-            await sharp(file.buffer)
-                .resize(2000, 1333)
-                .toFormat('jpeg')
-                .jpeg({ quality: 90 })
-                .toFile(`public/uploads/${filename}`);
-
-            req.body.images.push(filename);
-        })
-    );
-    console.log(req.body)
-    next();
+                uploadedImages.push(filename);
+            })
+        );
+        req.uploadedImages = uploadedImages.sort()
+        next();
+    } else {
+        return next();
+    }
 };
 
 // show all tours
@@ -118,31 +126,18 @@ exports.monthlyTours = async (req, res) => {
 // show specific Tour
 exports.tour = async (req, res, next) => {
     if (mongoose.isValidObjectId(req.params.id)) {
-        const tour = await Tour.findOne({ _id: req.params.id }).populate('reviews');
-
-        res.render('tour', { tour })
-        // console.log(tour)
+        const tour = await Tour.findOne({ _id: req.params.id }).populate({
+            path: 'reviews', options: {
+                limit: 4, sort: { createdAt: -1 },
+            }
+        })
 
         if (!tour) {
             return next(new AppError('No such tour', 404))
-
         }
+        // console.log(tour)
+        res.render('tour', { tour })
     }
-
-
-
-
-
-    // // res.render('tour', { tour })
-    // if (!tour) {
-    //     console.log("poop")
-    //     return next(new AppError('No such tour', 400))
-
-    // }
-    // res.render('tour', { tour })
-
-    // res.json({ tour })
-    // console.log(tour.rating)
 };
 
 // add a tour
@@ -158,7 +153,7 @@ exports.createTour = async (req, res) => {
         console.log("poop")
         return next(new AppError('something went wrong creating tour', 400));
     }
-    console.log(tour)
+    // console.log(tour)
     res.redirect('/tours')
 }
 
@@ -170,16 +165,40 @@ exports.editTour = async (req, res) => {
 
 // update the tour info
 exports.updateTour = async (req, res, next) => {
-    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+    // console.log(req.uploadedImages)
+
+    const tourPromise = await Tour.findById(req.params.id)
+    // console.log(tourPromise.images)
+
+    // if (!tourPromise) {
+    //     return next(new AppError('No document found with that ID', 404));
+    // }
+
+    if (req.uploadedImages) {
+        for (let i = 0; i < req.uploadedImages.length; i++) {
+            tourPromise.images[i] = req.uploadedImages[i]
+        }
+    }
+
+
+
+    // let newTour = { ...req.body }
+    req.body.images = tourPromise.images
+
+    // console.log(newTour)
+    console.log("----------------------")
+
+
+
+
+    const tour = await Tour.findByIdAndUpdate({ _id: tourPromise._id }, req.body, {
         new: true,
         runValidators: true
     }).exec();
 
-    if (!tour) {
-        return next(new AppError('No document found with that ID', 404));
-    }
-    console.log(tour)
-    res.redirect(`/tours/${tour._id}`)
+
+
+    res.render('tour', { tour })
 }
 
 // delete tour

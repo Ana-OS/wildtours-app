@@ -21,7 +21,8 @@ router.get('/tours/monthly', catchErrors(tourController.monthlyTours));
 router.get('/tours/add', tourController.addTour);
 router.post('/tours',
     tourController.uploadTourImages,
-    catchErrors(tourController.resize),
+    catchErrors(tourController.resizeImageCover),
+    catchErrors(tourController.resizeTourImages),
     catchErrors(tourController.createTour))
 // get a specific tour
 router.get('/tours/:id', catchErrors(tourController.tour));
@@ -31,7 +32,8 @@ router.get('/tours/:id', catchErrors(tourController.tour));
 router.get('/tours/:id/edit', catchErrors(tourController.editTour));
 router.post('/tours/:id',
     tourController.uploadTourImages,
-    catchErrors(tourController.resize),
+    catchErrors(tourController.resizeImageCover),
+    catchErrors(tourController.resizeTourImages),
     catchErrors(tourController.updateTour));
 // delete tour
 router.delete('/tours/:id', catchErrors(tourController.deleteTour));

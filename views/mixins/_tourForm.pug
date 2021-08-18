@@ -22,16 +22,13 @@ mixin tourForm(tour = {})
             label difficulty 
                 input(type="checkbox" value="difficulty"
                 name="difficulty" onclick="onlyOne(this)")              
-        div.mt-5
-            label(for="photo") Main photo
-            input(type='file', accept='image/*' name="imageCover" id="imageCover" value= (tour.imageCover || ""))
-            if tour.imageCover
-                img(src=`/uploads/${tour.imageCover}`, alt=tour.name width=100)
+            div.mt-5  
+                input(type='file', accept='image/*' name="imageCover" id="imageCover" value= (tour.imageCover))
         div.mt-5  
-            label(for="photo") Other photos
-            input(type='file', accept='image/*' name="images" value= (tour.images[0]) || "")
-            input(type='file', accept='image/*' name="images" value= (tour.images[1]) || "")
-            input(type='file', accept='image/*' name="images" value= (tour.images[2]) || "")
+            label(for="photo") Photos
+            input(type='file', accept='image/*' name="images" value= tour.images[0])
+            input(type='file', accept='image/*' name="images" value= tour.images[1])
+            input(type='file', accept='image/*' name="images" value= tour.images[2])
         .locations
             h2 Info about the tour locations
             div
