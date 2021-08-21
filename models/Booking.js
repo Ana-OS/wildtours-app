@@ -9,10 +9,8 @@ const bookingSchema = new mongoose.Schema({
         type: Date,
         required: 'please provide a start date'
     },
-    endDate: {
-        type: Date,
-        required: 'please provide an end date'
-    },
+    numberOfPeople: Number,
+    totalAmount: Number,
     user: {
         type: mongoose.Schema.ObjectId,
         ref: 'User'
@@ -23,7 +21,6 @@ const bookingSchema = new mongoose.Schema({
     }
 
 });
-
 
 
 module.exports = mongoose.model('Booking', bookingSchema);

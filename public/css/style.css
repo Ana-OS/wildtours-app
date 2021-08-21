@@ -278,3 +278,20 @@
   flex: 1;
 }
 
+
+
+
+/*     FORM  */
+.extralocations{
+  border:2px solid red;
+}
+
+.hidden{
+  display: none;
+}
+
+.plus{
+  border: 1px solid blue;
+  width:40px;
+  border-radius: 50px;
+}

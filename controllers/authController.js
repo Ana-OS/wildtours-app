@@ -139,7 +139,7 @@ exports.protect = async (req, res, next) => {
     }
     //verify token. because it will run a callback function after verifying the token we promisify it so we can await the verification of that token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY)
-    console.log(decoded)
+    // console.log(decoded)
 
     // use the id in the token payload to check if user still exists using the id that is in the token's payload
     const currentUser = await User.findById(decoded.id)

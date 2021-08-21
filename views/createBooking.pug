@@ -1,12 +1,19 @@
 extends layout
 
 block content
-    form(action=`/tours/${tour.id}/book` method="POST")
-        each date in tour.startDates
-            input(type="checkbox" name="startDate" value=`${startDate}`)
-            //- input(type="date" name="name" value=Date.now())  
-            //- label(for="price") price
-            //- input(type="bernum" name="price" value=tour.price)   
-            //- label(for="rating") Rating
-            //- input(type="number" name="rating" value=tour.rating)
-            //- input(type="submit" value="Save →" class="button")
+    form(action=`/tours/${tour.id || ''}/book` method="POST")
+        h4.mb-5 When do you want to go?
+        each date, i in tour.startDates
+           .form-check.mt-3
+            input(class="form-check-input" type="radio" name="startDate" value= date)
+            //- input(type="hidden" name="endDate" value=tour.endDates[i])
+            label(class="form-check-label") #{date.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'}) } 
+        .tour-form  
+            label(for="price") How Many People
+            input(class="form-control" type="number" name="numberOfPeople" value=1)   
+        .form-group.mt-5       
+            label(for="price") Total Amount
+            input(class="form-control" type="number" name="totalAmount" value=tour.price)   
+                //- label(for="rating") Rating
+                //- input(type="number" name="rating" value=tour.rating)
+        input(type="submit" value="Save →" class="button")

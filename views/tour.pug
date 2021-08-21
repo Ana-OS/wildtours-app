@@ -12,15 +12,17 @@ block content
 
   h2= tour.name
   .card-category
-    img(src="/uploads/tour-6112bb7772a80711082acb05-cover.jpeg")
+  for image in tour.images
+    img(src=`/uploads/${image}`)
 
   .container
     .tourInfo  
-      //- p= tour.startDates.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
+      p= tour.startDates.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
       h4= tour.description 
       p= `$ ${tour.price}`
+      p= tour.maxGroupSize
       a(href=`/tours/${tour.id}/book`)  
-      button.btn.btn-info Book Tour 
+        button.btn.btn-info Book Tour 
    
     if tour.reviews 
       each review in tour.reviews
@@ -36,14 +38,29 @@ block content
           .review__body
             p= review.description
           
-  //- if user 
-  //-   .reviewForm
-  //-     +reviewForm(tour)
+  if user 
+    button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal") Review this tour
+
+    div(class="modal fade" id="modal" tabindex="-1" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h5.modal-title  Review this tour 
+          .modal-body 
+            form.form-group.reviewer(action=`/reviews/${tour._id}` method="POST")
+              textarea(name="description" placeholder="Leave a review")
+              .reviewer__meta
+                .reviewer__stars
+                  each num in [5,4,3,2,1]
+                      input(type="radio" required id=`star${num}` name="rating" value=num)
+                      label(for=`star${num}`) #{num} Stars
+              input.button(type="submit" value="Submit Review →")
+
 
   #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-locations=`${JSON.stringify(tour.locations) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`,  data-mapbox=`${process.env.MAPBOX_API_KEY}`)
   
   block scripts
-    //- script(async="false"  src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&callback=initMap`)
+
     script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
     //- link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
 

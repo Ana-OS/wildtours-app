@@ -1,4 +1,5 @@
 window.onload = function () {
+    console.log("I'm autocomplete")
     const map = document.querySelector(".map");
 
     //---------------------       Start Location     ----------------//
@@ -34,7 +35,7 @@ window.onload = function () {
     if (extraLocation.length > 0) {
 
         extraLocation.forEach(loc => {
-            let inputExtraLocation = loc.getElementsByTagName("input")[0]
+            inputExtraLocation = loc.getElementsByTagName("input")[0]
             let latExtraLocation = loc.getElementsByTagName("input")[2]
             let lngExtraLocation = loc.getElementsByTagName("input")[1]
             // console.log(inputExtraLocation)

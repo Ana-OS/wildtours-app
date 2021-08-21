@@ -5,7 +5,7 @@ const { body, validationResult, query } = require('express-validator');
 const AppError = require('./../helpers/newError');
 const multer = require('multer');
 const sharp = require('sharp');
-const { expectCt } = require('helmet');
+// const { expectCt } = require('helmet');
 // const uuid = require('uuid');
 
 const multerStorage = multer.memoryStorage();
@@ -31,43 +31,39 @@ exports.uploadTourImages = upload.fields([
 // upload.single('image') req.file
 // upload.array('images', 5) req.files
 exports.resizeImageCover = async (req, res, next) => {
-    if (req.files.imageCover) {
-        // 1) Cover image
-        req.body.imageCover = `tour-${req.params.id}-cover.jpeg`;
-        await sharp(req.files.imageCover[0].buffer)
-            .resize(2000, 1333)
-            .toFormat('jpeg')
-            .jpeg({ quality: 90 })
-            .toFile(`public/uploads/${req.body.imageCover}`);
-        next();
-    } else {
-        return next();
-    }
+    // console.log(req.files.images)
+    if (!req.files || !req.files.imageCover) { return next() }
+
+    // req.body.imageCover = `tour-${req.params.id}-cover.jpeg`;
+    // await sharp(req.files.imageCover[0].buffer)
+    //     .resize(2000, 1333)
+    //     .toFormat('jpeg')
+    //     .jpeg({ quality: 90 })
+    //     .toFile(`public/uploads/${req.body.imageCover}`);
+    // next();
+
 };
 
 exports.resizeTourImages = async (req, res, next) => {
-    if (req.files.images) {
+    if (!req.files || !req.files.images) { return next() }
 
-        let uploadedImages = [];
+    let uploadedImages = [];
 
-        await Promise.all(
-            req.files.images.map(async (file, i) => {
-                const filename = `tour-${req.params.id}-${i + 1}.jpeg`;
+    await Promise.all(
+        req.files.images.map(async (file, i) => {
+            const filename = `tour-${req.params.id}-${i + 1}.jpeg`;
 
-                await sharp(file.buffer)
-                    .resize(2000, 1333)
-                    .toFormat('jpeg')
-                    .jpeg({ quality: 90 })
-                    .toFile(`public/uploads/${filename}`);
+            await sharp(file.buffer)
+                .resize(500, 500)
+                .toFormat('jpeg')
+                .jpeg({ quality: 90 })
+                .toFile(`public/uploads/${filename}`);
 
-                uploadedImages.push(filename);
-            })
-        );
-        req.uploadedImages = uploadedImages.sort()
-        next();
-    } else {
-        return next();
-    }
+            uploadedImages.push(filename);
+        })
+    );
+    req.uploadedImages = uploadedImages.sort()
+    next();
 };
 
 // show all tours
@@ -135,8 +131,10 @@ exports.tour = async (req, res, next) => {
         if (!tour) {
             return next(new AppError('No such tour', 404))
         }
+
+        res.json(tour)
         // console.log(tour)
-        res.render('tour', { tour })
+        // res.render('tour', { tour })
     }
 };
 
@@ -166,6 +164,7 @@ exports.editTour = async (req, res) => {
 // update the tour info
 exports.updateTour = async (req, res, next) => {
     // console.log(req.uploadedImages)
+    console.log(req.body)
 
     const tourPromise = await Tour.findById(req.params.id)
     // console.log(tourPromise.images)
@@ -175,29 +174,16 @@ exports.updateTour = async (req, res, next) => {
     // }
 
     if (req.uploadedImages) {
-        for (let i = 0; i < req.uploadedImages.length; i++) {
-            tourPromise.images[i] = req.uploadedImages[i]
-        }
+        for (let i = 0; i < req.uploadedImages.length; i++) { tourPromise.images[i] = req.uploadedImages[i] }
     }
-
-
 
     // let newTour = { ...req.body }
     req.body.images = tourPromise.images
-
-    // console.log(newTour)
-    console.log("----------------------")
-
-
-
-
     const tour = await Tour.findByIdAndUpdate({ _id: tourPromise._id }, req.body, {
         new: true,
         runValidators: true
     }).exec();
-
-
-
+    console.log(tour)
     res.render('tour', { tour })
 }
 

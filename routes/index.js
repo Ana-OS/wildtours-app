@@ -41,8 +41,8 @@ router.delete('/tours/:id', catchErrors(tourController.deleteTour));
 
 //////     Booking Routes     //////
 
-// get booking
-router.get('/tours/:id/book', catchErrors(authController.protect), bookingsController.bookingForm);
+// get booking  form
+router.get('/tours/:id/book', catchErrors(authController.protect), catchErrors(bookingsController.bookingForm));
 
 // create booking
 router.post('/tours/:id/book', catchErrors(bookingsController.createBooking));
@@ -52,6 +52,14 @@ router.get('/myBookings', catchErrors(bookingsController.userBookings));
 
 // get soecific booking 
 router.get('/myBookings/:id', catchErrors(bookingsController.booking))
+
+// edit form specific booking
+router.get('/myBookings/:id/edit', catchErrors(bookingsController.editBookingForm))
+
+// submit changes
+
+// routes.post('/myBookings/:id', catchErrors(bookingsController.booking))
+
 
 // router.delete('/myBookings')
 router.delete('/myBookings/:id', catchErrors(bookingsController.deleteBooking))

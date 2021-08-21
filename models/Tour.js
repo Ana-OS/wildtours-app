@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify')
-const AppError = require('./../helpers/newError');
+// const AppError = require('./../helpers/newError');
 
 
 const tourSchema = new mongoose.Schema({
@@ -20,9 +20,9 @@ const tourSchema = new mongoose.Schema({
     },
     maxGroupSize: {
         type: Number,
-        // required: [true, 'A tour must have a group size']
+        required: [true, 'A tour must have a group size']
     },
-    difficulty: String,
+    difficulty: [String],
     ratingsAverage: {
         type: Number,
         default: 4.5,
@@ -58,6 +58,7 @@ const tourSchema = new mongoose.Schema({
         select: false
     },
     startDates: [Date],
+    endDates: [Date],
     startLocation: {
         type: {
             type: String,
@@ -86,11 +87,9 @@ const tourSchema = new mongoose.Schema({
             coordinates: [Number],
             address: {
                 type: String,
-                required: 'You must supply an address!'
             },
             place: {
                 type: String,
-                required: 'please supply a start place!'
             },
             day: Number
         }
@@ -141,6 +140,13 @@ tourSchema.pre('save', function (next) {
 });
 
 
+tourSchema.virtual('bookings', {
+    ref: 'Booking',
+    foreignField: 'tour',
+    localField: '_id',
+    count: true
+})
+
 
 // tourSchema.post(/^findOneAnd/, async function () {
 //     if (this._update.$set.images) {
@@ -171,7 +177,8 @@ tourSchema.pre('save', function (next) {
 tourSchema.virtual('reviews', {
     ref: 'Review',
     foreignField: 'tour',
-    localField: '_id'
+    localField: '_id',
+
 });
 
 

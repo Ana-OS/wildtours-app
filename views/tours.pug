@@ -5,7 +5,7 @@ block content
         each tour in tours    
             a(href=`/tours/${tour.id}`)  
                 .card-trip
-                    img.cover_image(src=`/img/tours/${tour.imageCover}`)
+                    img.cover_image(src=`/uploads/${tour.imageCover}`)
                     .card-trip-infos 
                         div 
                             h2= tour.name 
