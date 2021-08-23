@@ -2,18 +2,17 @@ body { padding: 0; margin: 0;}
 
 /* layout navbar */
 #navbar-main {
-  border:1px solid red;
   justify-content: space-between;
   background: white;
   display: flex;
   align-items: center;
-  /* /* height: 70px; */
   position: fixed;  
   top: -10px;
   left: 0;
   right: 0;
   z-index: 50;
   background: #fff;
+  color:rgb(96, 95, 95);
 }
 
 #navbar-main .navbar-collapse {
@@ -21,7 +20,13 @@ body { padding: 0; margin: 0;}
 }
 .navbar-nav .nav-item{
   display: block;
-  width:150px;
+  width:200px;
+  text-align:center;
+  color:rgb(96, 95, 95);
+}
+
+#logout a{
+  color:rgb(96, 95, 95);
 }
 
 .navbar-nav .nav-item p.user-name{
@@ -30,13 +35,14 @@ body { padding: 0; margin: 0;}
   font-size:30px;
 }
 
+.user-name{text-transform:capitalize;}
+
 .navbar-nav .nav-item a{
   padding-top:18px;
   font-size:30px;
  }
 
 #navbar-main .navbar-brand img {
-  border:1px solid red; 
   border-radius: 50%;
   width: 122px;
 }
@@ -47,8 +53,16 @@ body { padding: 0; margin: 0;}
   border-radius: 50%;
 }
 
+.dropdown a.dropdown-item{
+  font-size:20px;
+}
 
-/*  All tours */
+.account-form{
+  border:1px solid red;
+}
+
+
+                                          /*  All tours */
 body > .container-fluid{
   margin-top:140px;
 }
@@ -117,8 +131,11 @@ body> .container-fluid ~ .container-fluid {
 .tour-title{
   margin-top:148px;
 }
-.title{
+.title h1{
   text-align:center;
+  font-size: 70px;
+  letter-spacing: 2.2px;
+  color:rgb(96, 95, 95);
 }
 
 .container {
@@ -150,19 +167,6 @@ p.tour-price span{
   font-size: 20px;
 }
 
-
-
-.card-category img{
-  background-size: cover;
-  background-position: center;
-  width:300px;
-  height: 300px;
-}
-
-.container{
-  border: 3px solid blue;
-  display: flex;
-}
 .reviews{
   width: 500px;
   border:2px solid red;
@@ -174,64 +178,48 @@ p.tour-price span{
 
 }
 
-.review {
-  background: white;
-  border: 1px solid rgb(230, 22, 22);
-  border-bottom: 0;
-  border-bottom: 1px solid grey;
-  margin-bottom: 2rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: relative; 
-  padding-left: 5px;
-  display: flex;
-  flex-wrap: wrap;
-} 
-review:before {
-  width: 5px;
-  left: 0;
-  content: '';
-  display: block;
-  position: absolute;
-  height: 100%;
-  background-attachment: fixed;
-} 
-.review__header {
-  border-bottom: 1px solid rgb(32, 201, 74);
-  /* display: flex;
-  flex-wrap: wrap */
-} 
-.review__header > * {
-  border-right: 1px solid grey;
-  padding: 0.2rem;
-  display: flex;
-  align-items: center;
-  flex: 1;
-  justify-content: center;
-} 
-.review__header > *:last-child {
-  border-right: 0;
+.reviews-wrapper{
+  background-color: rgb(255, 255, 255);
+  color:black;
+  font-size:20px;
 }
-.review__author {
-  justify-content: flex-start;
-  padding-left: 2rem;
-  display: flex;
-}
-.review__author .avatar {
-  margin-right: 2rem;
-}
-.review__time {
-  font-size: 1.2rem;
-  color: #999;
+.author-name:first-letter{
+  text-transform:capitalize;
 }
 .review__stars {
   color: rgb(238, 209, 44);
 }
-.review__body {
-  padding: 2rem;
+
+/* footer */
+.footer {
+  background: #F4F4F4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+  padding: 0px 50px;
+  color: rgba(0,0,0,0.3);
 }
-.review p {
-  white-space: pre-wrap;
+.footer-links {
+  display: flex;
+  align-items: center;
 }
+.footer-links a {
+  color: black;
+  opacity: 0.15;
+  text-decoration: none !important;
+  font-size: 24px;
+  padding: 0px 10px;
+  font-family: 'FontAwesome' !important;
+}
+
+.footer-links a i {
+  font-style:normal;
+}
+.footer-copyright{
+  border:2px solid red;
+}
+
 
 /* MAP */
 .locations{
@@ -247,26 +235,6 @@ review:before {
   border:1px solid red;
 }
 
-/* .marker {
-  background-image: url('../img/pin.png');
-  background-size: cover;
-  width: 32px;
-  height: 40px;
-  cursor: pointer;
-} */
-
-/* .mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-center .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-left .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-right .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip{
-    display:none !important;
-    border-radius:50px !important;
-} */
 .mapboxgl-popup {
   max-width: 150px !important;
   max-height:20px !important;
@@ -372,3 +340,11 @@ review:before {
   width:40px;
   border-radius: 50px;
 }
+
+
+
+                /*  Login*/
+
+.form--login{
+  margin-top:148px;
+}               

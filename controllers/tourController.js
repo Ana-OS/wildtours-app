@@ -124,7 +124,7 @@ exports.tour = async (req, res, next) => {
     if (mongoose.isValidObjectId(req.params.id)) {
         const tour = await Tour.findOne({ _id: req.params.id }).populate({
             path: 'reviews', options: {
-                limit: 4, sort: { createdAt: -1 },
+                limit: 2, sort: { createdAt: -1 },
             }
         })
 

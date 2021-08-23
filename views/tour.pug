@@ -15,17 +15,17 @@ block content
   .container-fluid.tour-title
     .row.justify-content-center
       .col-12.title
-        h2.mt-5= tour.name
+        h1.mt-5= tour.name
       
     .row.justify-content-center.flex-nowrap.mt-5
       for image in tour.images
         .card
           img.card-img.img-fluid(src=`/uploads/${image}`)
 
-  .container-fluid.info
+  .container-fluid.info.mt-5
     .row.flex-nowrap.tour-info
       .col-lg-6.mt-5 
-        p.pt-4.pb-5= tour.description  
+        p.pt-4.pb-5.mt-4= tour.description  
       .col-lg-6.mt-5.mb-5.description
         p.tour-date.ml-5.mr-5.mt-5= `Dates Available:  ${tour.startDates[0].toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})}` 
         p.tour-price= `$${tour.price} per person   `
@@ -42,39 +42,47 @@ block content
       .col-12
         #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-locations=`${JSON.stringify(tour.locations) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`,  data-mapbox=`${process.env.MAPBOX_API_KEY}`)
 
-  .container-fluid
+  .container-fluid.reviews-wrapper
     .row 
-      .col-12.wrapper  
-        if tour.reviews 
-          each review in tour.reviews
-            .review
-              .review__header
-                .review__author
-                  img.avatar(src=review.author.photo)
-                  p= review.author.name
-                .review__stars(title=`Rated ${review.rating} our of 5 stars`)
-                  = `★`.repeat(review.rating)
-                  = `☆`.repeat(5 - review.rating)
-                //- time.review__time(datetime=review.created)= h.moment(review.created).fromNow()
-              .review__body
-                p= review.description
-              
-      if user 
-        button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal") Review this tour
+      if tour.reviews 
+        each review in tour.reviews
+          .col-6 
+            //- img.avatar(src=review.author.photo)
+            p.mt-5.author-name= review.author.name
+            p= `"${review.description}"`
+                     
+            .review__stars(title=`Rated ${review.rating} our of 5 stars`)
+              = `★`.repeat(review.rating)
+              = `☆`.repeat(5 - review.rating)
+        if user 
+          button(type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal") Review this tour
 
-        div(class="modal fade" id="modal" tabindex="-1" aria-hidden="true")
-          .modal-dialog
-            .modal-content
-              .modal-header
-                h5.modal-title  Review this tour 
-              .modal-body 
-                form.form-group.reviewer(action=`/reviews/${tour._id}` method="POST")
-                  textarea(name="description" placeholder="Leave a review")
-                  .reviewer__meta
-                    .reviewer__stars
-                      each num in [5,4,3,2,1]
-                          input(type="radio" required id=`star${num}` name="rating" value=num)
-                          label(for=`star${num}`) #{num} Stars
-                  input.button(type="submit" value="Submit Review →")    
-    
+          div(class="modal fade" id="modal" tabindex="-1" aria-hidden="true")
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  h5.modal-title  Review this tour 
+                .modal-body 
+                  form.form-group.reviewer(action=`/reviews/${tour._id}` method="POST")
+                    textarea(name="description" placeholder="Leave a review")
+                    .reviewer__meta
+                      .reviewer__stars
+                        each num in [5,4,3,2,1]
+                            input(type="radio" required id=`star${num}` name="rating" value=num)
+                            label(for=`star${num}`) #{num} Stars
+                    input.button(type="submit" value="Submit Review →")    
+  .container-fluid.footer
+    .row
+      .col-6
+        .footer-links 
+          a(href="#")
+            i.fab.fa-github
+          a(href="#")  
+            i.fab.fa-instagram
+          a(href="#")
+            i.fab.fa-facebook
+          a(href="#")
+            i.fab.fa-twitter
+          a(href="#")
+            i.fab.fa-linkedin
   block scripts 
