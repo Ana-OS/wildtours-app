@@ -3,7 +3,6 @@ extends layout
 include mixins/_tourForm
 
 block append head
-    script(defer src="/javascript/autocompleteMap.js")
     script(defer src="/javascript/tour_form.js")
 
 block content
@@ -12,3 +11,4 @@ block content
     +tourForm(tour)
 block scripts
     script(src=`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAP_KEY}&libraries=places`)
+    script(src="/javascript/autocompleteMap.js")

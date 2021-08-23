@@ -1,17 +1,27 @@
 extends layout
 
 block content
-    .tours-wrapper
-        each tour in tours    
-            a(href=`/tours/${tour.id}`)  
-                .card-trip
-                    img.cover_image(src=`/uploads/${tour.imageCover}`)
-                    .card-trip-infos 
-                        div 
-                            h2= tour.name 
-                            p= tour.difficulty
-                            p= tour.description.split('').slice(0, 50).concat("...").join('')
-                            svg.card__icon
-                                use(xlink:href='/img/tours/icons.svg#icon-map-pin')
-                            span.ml-2.mt-3= tour.startLocation.address
-                        h2.card-trip-pricing= `${tour.price} €`
+    each tour in tours  
+        .container-fluid
+            .row  
+                a(href=`/tours/${tour.id}`)  
+                    .col-sm-12.col-lg-12.banner
+                        .card.bg-dark.text-white
+                            img.card-img.cover(src=`/uploads/${tour.imageCover}`)
+                            .card-img-overlay
+                                h1= tour.name 
+                                .card-block
+                                    span.price= `$ ${tour.price}`
+                                    span.know-more Details >>
+                                   
+                              
+                        //- h2.card-trip-pricing= `${tour.price} €`
+
+
+
+//-                <div class="container">
+//-     <h1>Le Wagon brings <strong>tech skills</strong> to <strong>creative people</strong>!</h1>
+//-     <p>Change your life and learn to code at one of our campuses around the world.</p>
+//-     <a class="btn btn-flat" href="#">Apply now</a>
+//-   </div>
+//- </div>           

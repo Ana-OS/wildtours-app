@@ -42,31 +42,31 @@ mixin tourForm(tour = {})
                 - let i = 0
                 div(id=`location${i}` class="hidden form-group mt-5")
                     label(for="address") Address
-                    input(class="form-control" type="text" id="extralocations" name=`locations[${i}][address]` value=(tour.locations[i] && tour.locations[i].address))
-                    input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` value=(tour.locations[i] && tour.locations[i].coordinates[0]))
-                    input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]` value=(tour.locations[i] && tour.locations[i].coordinates[1]))
+                    input(class="form-control" type="text" id="extralocations" name=`locations[${i}][address]`)
+                    input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` )
+                    input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]`)
                     label(for="place") Place Name
-                    input(class="form-control"  type="text" name=`locations[${i}][place]` value=tour.locations[i].place) 
+                    input(class="form-control"  type="text" name=`locations[${i}][place]`) 
                     label(for="place") Day of arrival here
-                    input(class="form-control"  type="number" name=`locations[${i}][day]` value=tour.locations[i].day) 
+                    input(class="form-control"  type="number" name=`locations[${i}][day]`) 
                 div(id=`location${i+=1}` class="hidden form-group mt-5")
                     label(for="address") Address
-                    input(class="form-control" type="text" id="extralocations" name=`locations[${i}][address]` value=(tour.locations[i] && tour.locations[i].address))
-                    input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` value=(tour.locations[i] && tour.locations[i].coordinates[0]))
-                    input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]` value=(tour.locations[i] && tour.locations[i].coordinates[1]))
+                    input(class="form-control" type="text" id="extralocations" name=`locations[${i}][address]`)
+                    input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]`)
+                    input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]`)
                     label(for="place") Place Name
-                    input(class="form-control"  type="text" name=`locations[${i}][place]` value=(tour.locations || tour.locations[i].place)) 
-                    //- label(for="place") Day of arrival here
-                    //- input(class="form-control"  type="number" name=`locations[${i}][day]` value=tour.locations[i].day)   
+                    input(class="form-control"  type="text" name=`locations[${i}][place]`) 
+                    label(for="place") Day of arrival here
+                    input(class="form-control"  type="number" name=`locations[${i}][day]`)   
                 div(id=`location${i+=1}` class="hidden form-group mt-1")
                     label(for="address") Address
                     input(class="form-control" type="text" id="extralocations" name=`locations[${i}][address]` value=(tour.locations[i] && tour.locations[i].address))
-                    input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` value=(tour.locations[i] && tour.locations[i].coordinates[0]))
-                    input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]` value=(tour.locations[i] && tour.locations[i].coordinates[1]))
-                    //- label(for="place") Place Name
-                    //- input(class="form-control" type="text" name=`locations[${i}][place]` value=tour.locations[i].place) 
-                    //- label(for="place") Day of arrival here
-                    //- input(class="form-control" type="number" name=`locations[${i}][day]` value=tour.locations[i].day)   
+                    input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` )
+                    input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]` )
+                    label(for="place") Place Name
+                    input(class="form-control" type="text" name=`locations[${i}][place]` value=tour.locations[i].place) 
+                    label(for="place") Day of arrival here
+                    input(class="form-control" type="number" name=`locations[${i}][day]` value=tour.locations[i].day)   
         .form-group.mt-5
             h4 Tour End location 
             label(for="address") Tour End location

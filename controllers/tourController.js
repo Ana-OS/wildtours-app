@@ -34,13 +34,13 @@ exports.resizeImageCover = async (req, res, next) => {
     // console.log(req.files.images)
     if (!req.files || !req.files.imageCover) { return next() }
 
-    // req.body.imageCover = `tour-${req.params.id}-cover.jpeg`;
-    // await sharp(req.files.imageCover[0].buffer)
-    //     .resize(2000, 1333)
-    //     .toFormat('jpeg')
-    //     .jpeg({ quality: 90 })
-    //     .toFile(`public/uploads/${req.body.imageCover}`);
-    // next();
+    req.body.imageCover = `tour-${req.params.id}-cover.jpeg`;
+    await sharp(req.files.imageCover[0].buffer)
+        .resize(2600, 1190)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`public/uploads/${req.body.imageCover}`);
+    next();
 
 };
 
@@ -132,9 +132,9 @@ exports.tour = async (req, res, next) => {
             return next(new AppError('No such tour', 404))
         }
 
-        res.json(tour)
-        // console.log(tour)
-        // res.render('tour', { tour })
+
+        console.log(tour)
+        res.render('tour', { tour })
     }
 };
 
@@ -164,7 +164,7 @@ exports.editTour = async (req, res) => {
 // update the tour info
 exports.updateTour = async (req, res, next) => {
     // console.log(req.uploadedImages)
-    console.log(req.body)
+    // console.log(req.body)
 
     const tourPromise = await Tour.findById(req.params.id)
     // console.log(tourPromise.images)
@@ -183,7 +183,7 @@ exports.updateTour = async (req, res, next) => {
         new: true,
         runValidators: true
     }).exec();
-    console.log(tour)
+    // console.log(tour.locations)
     res.render('tour', { tour })
 }
 

@@ -1,8 +1,13 @@
-
 let locations = [JSON.parse(document.querySelector("#map").dataset.startlocations), JSON.parse(document.querySelector("#map").dataset.endlocations)]
 let extraLocations = JSON.parse(document.querySelector("#map").dataset.locations)
 let coordinates = []
-for (i = extraLocations.length - 1; i >= 0; i--) { locations.splice(1, 0, extraLocations[i]) }
+
+for (i = extraLocations.length - 1; i >= 0; i--) {
+    if (extraLocations[i].address !== "") {
+        locations.splice(1, 0, extraLocations[i])
+    }
+}
+
 
 mapboxgl.accessToken = document.querySelector("#map").dataset.mapbox
 
@@ -14,36 +19,15 @@ var map = new mapboxgl.Map({
 });
 
 const bounds = new mapboxgl.LngLatBounds();
-console.log(locations)
 
 locations.forEach(loc => {
     coordinates.push(loc.coordinates)
-    const marker = document.createElement('div');
-    marker.className = 'marker';
-
-    new mapboxgl.Marker({
-        element: marker,
-        anchor: 'bottom'
+    new mapboxgl.Popup({
+        offset: 30
     })
         .setLngLat(loc.coordinates)
+        .setHTML(`<p>Day ${loc.day}: ${loc.place}</p>`)
         .addTo(map);
-    if (typeof loc.day === "string") {
-        new mapboxgl.Popup({
-            offset: 30
-        })
-            .setLngLat(loc.coordinates)
-            .setHTML(`<p>${loc.day} at ${loc.place}</p>`)
-            .addTo(map);
-
-    }
-    else {
-        new mapboxgl.Popup({
-            offset: 30
-        })
-            .setLngLat(loc.coordinates)
-            .setHTML(`<p>day ${loc.day}: ${loc.place}</p>`)
-            .addTo(map);
-    }
     bounds.extend(loc.coordinates);
 });
 
@@ -55,7 +39,7 @@ map.fitBounds(bounds, {
         right: 10
     }
 });
-console.log(coordinates)
+// console.log(coordinates)
 
 
 map.on('load', () => {
