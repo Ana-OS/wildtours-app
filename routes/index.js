@@ -88,6 +88,7 @@ router.post('/forgotpassword', catchErrors(authController.forgotPassword));
 router.patch('/resetToken/:token', catchErrors(authController.resetPassword));
 router.patch('/updatePassword', catchErrors(authController.protect), catchErrors(authController.updatePassword));
 
+router.get('/myTours', catchErrors(userController.myTours));
 
 
 

@@ -1,25 +1,27 @@
 extends layout
 
 block content
-    .container-fluid.account-form
+    .container-fluid
         .row.justify-content-center
-            .col-sm-12.col-lg-6
+            .col-12
+            .title
+                h2 Edit Profile
+        .row.justify-content-center
+            .col-12
             form.form.form--edit
-            h2 Edit Profile
-                .form__group
-                    label.mt-5.form__label(for='name')
-                    input#name.form__input(type='text', value=`${user.name}`, required)
-                .form__group
+                .form-group
+                    label.mt-5(for='name') Name
+                    input#name(class="form-control" type='text', value=`${user.name}`, required)
+                .form-group
                     label.form__label(for='email') Email address
-                    input#email.form__input(type='email', value=`${user.email}`,placeholder='your@example.com', required)
-                .form__group.ma-bt-md
-                    img(src=`/uploads/${user.photo}`, alt=`${user.name}`)
-                .form__group.ma-bt-md
-                    label.form__label(for='photo') 
-                    input.form__upload(type='file', accept='image/*', id='photo', name='photo')
+                    input#email(class="form-control" type='email', value=`${user.email}`,placeholder='your@example.com', required)
+                .form-group.ma-bt-md
+                    img.img-fluid(src=`/uploads/${user.photo}`, alt=`${user.name}`)
+                .form-group.ma-bt-md
+                    label(for='photo') 
+                    input.form__upload(class="form-control-file" type='file', accept='image/*', id='photo', name='photo')
                     //- .form__group.ma-bt-md
                     //- a(href="/")
                     //- button.btn.btn-light Delete My Account 
-
-                .form__group
-                    button.btn.btn--green enter
+                .form-group
+                    button.mt-5.btn.btn-outline-success submit

@@ -113,12 +113,10 @@ const tourSchema = new mongoose.Schema({
             default: "End Tour"
         }
     },
-    guides: [
-        {
-            type: mongoose.Schema.ObjectId,
-            ref: 'User'
-        }
-    ]
+    author: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    }
 },
     {
         toJSON: { virtuals: true },

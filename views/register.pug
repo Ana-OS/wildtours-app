@@ -1,22 +1,27 @@
 extends layout
-block head 
 
 block content
-    h2 Create Account
-     form.form.form-user-data
-            .form__group
-                label.form__label(for='name') Name
-                input#name.form__input(type='text',  required, name='name')
-            .form__group.ma-bt-md
-                label.form__label(for='email') Email address
-                input#email.form__input(type='email', required, name='email')
-                label.form__label(for='password') Password
-                input#password.form__input(type='password', placeholder='••••••••')
-            .form__group.ma-bt-md
-                label.form__label(for='password') Confirm Password
-                input#confirm_password.form__input(type='password', placeholder='••••••••')
-            .form__group.form__photo-upload
-                input.form__upload(type='file', accept='image/*', id='photo', name='photo')
-                label(for='photo') Choose new photo 
-            .form__group.right
-                button.btn.btn--small.btn--green Save
+    .container-fluid
+        .row.justify-content-center
+            .col-12
+            .title
+                h2 Create Account
+        .row.justify-content-center
+            .col-12        
+            form.form.form-user-data
+                    .form-group
+                        label(for='name') Name
+                        input#name.form-control(type='text',  required, name='name')
+                    .form__group.ma-bt-md
+                        label.form__label(for='email') Email address
+                        input#email.form__input(type='email', required, name='email')
+                        label.form__label(for='password') Password
+                        input#password.form__input(type='password', placeholder='••••••••')
+                    .form__group.ma-bt-md
+                        label.form__label(for='password') Confirm Password
+                        input#confirm_password.form__input(type='password', placeholder='••••••••')
+                    .form__group.form__photo-upload
+                        input.form__upload(type='file', accept='image/*', id='photo', name='photo')
+                        label(for='photo') Choose new photo 
+                    .form__group.right
+                        button.btn.btn--small.btn--green Save

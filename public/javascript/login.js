@@ -94,7 +94,7 @@ if (userEditData) {
         form.append('email', document.getElementById('email').value);
         form.append('photo', document.getElementById('photo').files[0]);
         // console.log(form)
-        console.log(form);
+        // console.log(form);
 
         fetch("http://localhost:3001/updateProfile", {
             method: "POST",

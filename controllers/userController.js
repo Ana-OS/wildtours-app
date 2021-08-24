@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Tour = mongoose.model('Tour');
 const jwt = require('jsonwebtoken');
 const { catchErrors } = require('../handlers/errorHandler');
 const appError = require('../helpers/newError');
@@ -24,5 +25,9 @@ exports.updateProfile = async (req, res, next) => {
     res.render('account')
 }
 
+exports.myTours = async (req, res, next) => {
+    const myTours = await Tour.find({ author: req.user._id })
+    res.json(myTours)
+}
 
 // const reviews = await Review.find({ tour: req.params.id })

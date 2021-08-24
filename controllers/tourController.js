@@ -133,7 +133,7 @@ exports.tour = async (req, res, next) => {
         }
 
 
-        console.log(tour)
+        console.log(tour.author)
         res.render('tour', { tour })
     }
 };
@@ -179,6 +179,7 @@ exports.updateTour = async (req, res, next) => {
 
     // let newTour = { ...req.body }
     req.body.images = tourPromise.images
+    req.body.author = req.user
     const tour = await Tour.findByIdAndUpdate({ _id: tourPromise._id }, req.body, {
         new: true,
         runValidators: true
