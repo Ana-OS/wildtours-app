@@ -16,7 +16,7 @@ const createToken = (id) => {
     return jwt.sign({ id }, process.env.SECRET_KEY, { expiresIn: process.env.EXPIRE });
 };
 
-const sendToken = (user, res) => {
+const sendToken = (user, res, next) => {
     const token = createToken(user._id);
     const cookieOptions = {
         expires: new Date(
@@ -70,7 +70,6 @@ exports.resize = async (req, res, next) => {
 
 // create the user for the first time
 exports.createUser = async (req, res, next) => {
-    console.log(`Im the req.file ${req.file}`)
 
     const user = await User.create({
         name: req.body.name,
@@ -79,8 +78,6 @@ exports.createUser = async (req, res, next) => {
         confirmPassword: req.body.confirmPassword,
         photo: req.file.filename
     });
-    // console.log({ user })
-    // send the token to the client side
 
     if (!user) {
         return next(new AppError('failed creating an account', 404))
@@ -88,6 +85,7 @@ exports.createUser = async (req, res, next) => {
     }
     req.user = user;
     res.locals.user = user;
+
     sendToken(user, res)
 };
 

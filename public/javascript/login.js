@@ -78,7 +78,9 @@ if (userDataForm) {
             body: form
         }).then(response => response.json())
             .then(res => {
-                console.log(res)
+                window.setTimeout(() => {
+                    location.assign('/');
+                }, 500);
 
             });
 

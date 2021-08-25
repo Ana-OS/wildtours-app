@@ -20,7 +20,7 @@ body { padding: 0; margin: 0;}
 }
 .navbar-nav .nav-item{
   display: block;
-  width:200px;
+  width:270px;
   text-align:center;
   color:rgb(96, 95, 95);
 }
@@ -141,7 +141,6 @@ body> .container-fluid ~ .container-fluid {
 
 .container {
   padding: 0;
-  border:2px solid green;
 } 
 
 .tour-info{
@@ -223,9 +222,7 @@ p.tour-price span{
 
 
 /* MAP */
-.locations{
-  border:1px solid red
-}
+
 .container-fluid.map{
   padding:0;
   margin:0 auto;
@@ -327,7 +324,14 @@ p.tour-price span{
 
 
 
-/*     FORM  */
+/*  TOUR   FORM  */
+.new_tour{
+  margin-top: 148px;
+}
+
+.edit_tour{
+  margin-top: 148px;
+}
 .extralocations{
   border:2px solid red;
 }

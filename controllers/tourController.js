@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Review = mongoose.model('Review');
 const Tour = mongoose.model('Tour');
-const { body, validationResult, query } = require('express-validator');
 const AppError = require('./../helpers/newError');
 const multer = require('multer');
 const sharp = require('sharp');
@@ -131,16 +130,13 @@ exports.tour = async (req, res, next) => {
         if (!tour) {
             return next(new AppError('No such tour', 404))
         }
-
-
-        console.log(tour.author)
         res.render('tour', { tour })
     }
 };
 
 // add a tour
 exports.addTour = (req, res) => {
-    res.render('editTour', { title: "Create your tour" })
+    res.render('createTour', { title: "Create your tour" })
 }
 
 // create a Tour
@@ -163,28 +159,18 @@ exports.editTour = async (req, res) => {
 
 // update the tour info
 exports.updateTour = async (req, res, next) => {
-    // console.log(req.uploadedImages)
-    // console.log(req.body)
-
     const tourPromise = await Tour.findById(req.params.id)
-    // console.log(tourPromise.images)
-
-    // if (!tourPromise) {
-    //     return next(new AppError('No document found with that ID', 404));
-    // }
 
     if (req.uploadedImages) {
         for (let i = 0; i < req.uploadedImages.length; i++) { tourPromise.images[i] = req.uploadedImages[i] }
     }
 
-    // let newTour = { ...req.body }
     req.body.images = tourPromise.images
     req.body.author = req.user
     const tour = await Tour.findByIdAndUpdate({ _id: tourPromise._id }, req.body, {
         new: true,
         runValidators: true
     }).exec();
-    // console.log(tour.locations)
     res.render('tour', { tour })
 }
 

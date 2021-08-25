@@ -12,16 +12,17 @@ block content
                     .form-group
                         label(for='name') Name
                         input#name.form-control(type='text',  required, name='name')
-                    .form__group.ma-bt-md
+                    .form-group.ma-bt-md
                         label.form__label(for='email') Email address
-                        input#email.form__input(type='email', required, name='email')
+                        input#email.form-control(type='email', required, name='email')
+                    .form-group    
                         label.form__label(for='password') Password
-                        input#password.form__input(type='password', placeholder='••••••••')
-                    .form__group.ma-bt-md
+                        input#password.form-control(type='password', placeholder='••••••••')
+                    .form-group.ma-bt-md
                         label.form__label(for='password') Confirm Password
-                        input#confirm_password.form__input(type='password', placeholder='••••••••')
-                    .form__group.form__photo-upload
-                        input.form__upload(type='file', accept='image/*', id='photo', name='photo')
+                        input#confirm_password.form-control(type='password', placeholder='••••••••')
+                    .form-group.mt-3
+                        input.form-control-file(type='file', accept='image/*', id='photo', name='photo')
                         label(for='photo') Choose new photo 
-                    .form__group.right
-                        button.btn.btn--small.btn--green Save
+                    .form-group
+                        button.mt-3.btn.btn-outline-success submit
