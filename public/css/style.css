@@ -234,12 +234,12 @@ p.tour-price span{
 }
 
 .mapboxgl-popup {
-  max-width: 150px !important;
-  max-height:20px !important;
+  max-width: 250px !important;
+  max-height:80px !important;
 }
 
 .popUp_div {
-  max-width: 60px;
+  max-width: 100px;
   max-height:20px;
   border-radius: 50px !important;
   border:2px solid blue;
@@ -251,18 +251,13 @@ p.tour-price span{
   font-family: 'Lato', sans-serif;
   padding: 25px 5px 10px 5px !important;
   font-size: 15px;
-  -webkit-box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15) !important;
+
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15) !important;
-}
-.mapboxgl-popup-content.popUp_div {
-  width:30px;
-  border:2px solid blue;
 }
 
 
 /* REview form */
 .reviewer {
-  border:2px solid red;
   position: relative;
   box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
   margin-bottom: 2rem;
@@ -307,7 +302,7 @@ p.tour-price span{
 .reviewer textarea {
   border: 0;
   outline: 0;
-  font-size: 2rem;
+  font-size: 1rem;
   padding: 2rem;
   height: 200px;
 }
@@ -332,9 +327,6 @@ p.tour-price span{
 .edit_tour{
   margin-top: 148px;
 }
-.extralocations{
-  border:2px solid red;
-}
 
 .hidden{
   display: none;
@@ -353,3 +345,8 @@ p.tour-price span{
 .form--login{
   margin-top:148px;
 }               
+
+.card-footer a, a:hover, a:visited, a:active {
+  color: inherit;
+  text-decoration: none;
+ }

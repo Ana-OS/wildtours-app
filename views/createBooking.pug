@@ -1,19 +1,16 @@
 extends layout
 
 block content
-    form(action=`/tours/${tour.id || ''}/book` method="POST")
-        h4.mb-5 When do you want to go?
-        each date, i in tour.startDates
-           .form-check.mt-3
-            input(class="form-check-input" type="radio" name="startDate" value= date)
-            //- input(type="hidden" name="endDate" value=tour.endDates[i])
-            label(class="form-check-label") #{date.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'}) } 
-        .tour-form  
-            label(for="price") How Many People
-            input(class="form-control" type="number" name="numberOfPeople" value=1)   
-        .form-group.mt-5       
-            label(for="price") Total Amount
-            input(class="form-control" type="number" name="totalAmount" value=tour.price)   
-                //- label(for="rating") Rating
-                //- input(type="number" name="rating" value=tour.rating)
-        input(type="submit" value="Save →" class="button")
+    .container-fluid
+        form(action=`/tours/${tour.id}/book` method="POST")
+            .form-group
+                h5.mb-5 Full name
+                input(class="form-control" type="text"  value=tour.price)   
+                label(class="form-check-label") #{tour.startDate.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'}) } 
+            .tour-form  
+                label(for="price") How Many People
+                input(class="form-control" type="number" name="numberOfPeople" value=1)   
+            .form-group.mt-5       
+                label(for="price") Total Amount
+                input(class="form-control" type="number" name="totalAmount" value=tour.price)   
+            input(type="submit" value="Save →" class="button")

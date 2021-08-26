@@ -26,8 +26,10 @@ exports.updateProfile = async (req, res, next) => {
 }
 
 exports.myTours = async (req, res, next) => {
-    const myTours = await Tour.find({ author: req.user._id })
-    res.json(myTours)
+    const tours = await Tour.find({ author: req.user._id })
+    console.log(tours)
+    res.render('myTours', { tours })
+
 }
 
 // const reviews = await Review.find({ tour: req.params.id })

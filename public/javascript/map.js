@@ -1,5 +1,6 @@
 let locations = [JSON.parse(document.querySelector("#map").dataset.startlocations), JSON.parse(document.querySelector("#map").dataset.endlocations)]
 let extraLocations = JSON.parse(document.querySelector("#map").dataset.locations)
+// console.log(extraLocations[1].coordinates)
 let coordinates = []
 
 for (i = extraLocations.length - 1; i >= 0; i--) {
@@ -22,12 +23,33 @@ const bounds = new mapboxgl.LngLatBounds();
 
 locations.forEach(loc => {
     coordinates.push(loc.coordinates)
-    new mapboxgl.Popup({
-        offset: 30
+    const marker = document.createElement('div');
+    marker.className = 'marker';
+
+    new mapboxgl.Marker({
+        element: marker,
+        anchor: 'bottom'
     })
         .setLngLat(loc.coordinates)
-        .setHTML(`<p>Day ${loc.day}: ${loc.place}</p>`)
         .addTo(map);
+
+    if (typeof loc.day === "string") {
+        new mapboxgl.Popup({
+            offset: 30
+        })
+            .setLngLat(loc.coordinates)
+            .setHTML(`<p>${loc.day} at ${loc.place}</p>`)
+            .addTo(map);
+
+    }
+    else {
+        new mapboxgl.Popup({
+            offset: 30
+        })
+            .setLngLat(loc.coordinates)
+            .setHTML(`<p>day ${loc.day}: ${loc.place}</p>`)
+            .addTo(map);
+    }
     bounds.extend(loc.coordinates);
 });
 

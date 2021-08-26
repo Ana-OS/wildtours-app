@@ -293,11 +293,3 @@ exports.logout = (req, res) => {
     // send to client side that the user is loggedout
     res.json({ message: "logged out" })
 };
-
-// exports.deleteAccount = async (req, res, next) => {
-//     const user = await User.findOneAndDelete({ _id: req.user.id });
-//     if (!user) {
-//         return next(new appError('something went wrong', 500))
-//     }
-// }
-

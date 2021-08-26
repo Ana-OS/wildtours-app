@@ -27,7 +27,7 @@ block content
       .col-lg-6.mt-5 
         p.pt-4.pb-5.mt-4= tour.description  
       .col-lg-6.mt-5.mb-5.description
-        p.tour-date.ml-5.mr-5.mt-5= `Dates Available:  ${tour.startDates[0].toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})}` 
+        p.tour-date.ml-5.mr-5.mt-5= `Dates Available:  ${tour.startDate.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})}` 
         p.tour-price= `$${tour.price} per person   `
           span *Flights not included
         p= `Group size up to ${tour.maxGroupSize}`
@@ -55,22 +55,24 @@ block content
               = `★`.repeat(review.rating)
               = `☆`.repeat(5 - review.rating)
         if user 
-          button.mt-5(type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal") Review this tour
+          button(type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal") Review this tour
 
           div(class="modal fade" id="modal" tabindex="-1" aria-hidden="true")
             .modal-dialog
               .modal-content
                 .modal-header
-                  h5.modal-title  Review this tour 
+                  h5.modal-title  Review tour 
                 .modal-body 
-                  form.form-group.reviewer(action=`/reviews/${tour._id}` method="POST")
-                    textarea(name="description" placeholder="Leave a review")
+                  form.reviewer(action=`/reviews/${tour._id}` method="POST")
+                   .form-group
+                    textarea.form-control(name="description" placeholder="Leave a review")
+                  .form-group  
                     .reviewer__meta
                       .reviewer__stars
                         each num in [5,4,3,2,1]
-                            input(type="radio" required id=`star${num}` name="rating" value=num)
-                            label(for=`star${num}`) #{num} Stars
-                    input.button(type="submit" value="Submit Review →")    
+                            input(type="radio" class="form-check-input" required id=`star${num}` name="rating" value=num)
+                            label.form-check-label(for=`star${num}`) #{num} Stars
+                    input.btn.btn-outline-success(type="submit" value="Submit")
   .container-fluid.footer
     .row
       .col-6

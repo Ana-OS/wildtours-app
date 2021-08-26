@@ -160,6 +160,9 @@ exports.editTour = async (req, res) => {
 // update the tour info
 exports.updateTour = async (req, res, next) => {
     const tourPromise = await Tour.findById(req.params.id)
+    if (req.body.startDate > req.body.endDate) {
+        return next(new AppError('Your tour end date can\'t be before the start date', 300));
+    }
 
     if (req.uploadedImages) {
         for (let i = 0; i < req.uploadedImages.length; i++) { tourPromise.images[i] = req.uploadedImages[i] }
@@ -171,6 +174,8 @@ exports.updateTour = async (req, res, next) => {
         new: true,
         runValidators: true
     }).exec();
+
+    // console.log(tour)
     res.render('tour', { tour })
 }
 

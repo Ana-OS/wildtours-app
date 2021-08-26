@@ -29,8 +29,6 @@ if (loginForm) {
                 console.log(res)
                 // console.log(res.data.user.name)
                 if (res.data) {
-                    console.log(`res user logged in`)
-                    // console.log(res)
                     window.alert('success', 'Logged in successfully!');
                     window.setTimeout(() => {
                         location.assign('/');
@@ -51,10 +49,10 @@ if (logout) {
         fetch("http://localhost:3001/logout")
             .then(response => response.json())
             .then(res => {
-                console.log(res)
                 if (res.message == "logged out") {
-                    console.log("logge outd")
-                    location.reload()
+                    window.setTimeout(() => {
+                        location.assign('/');
+                    }, 700);
                 }
             });
     });

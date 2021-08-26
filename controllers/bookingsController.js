@@ -7,9 +7,7 @@ const appError = require('../helpers/newError');
 
 exports.bookingForm = async (req, res) => {
     const tour = await Tour.findOne({ _id: req.params.id })
-    // console.log(tour)
     res.render('createBooking', { tour })
-
 }
 
 
