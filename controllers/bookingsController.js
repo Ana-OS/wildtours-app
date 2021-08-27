@@ -52,11 +52,12 @@ exports.booking = async (req, res) => {
 exports.userBookings = async (req, res, next) => {
     const toursProjection = {
         name: true,
+        startDate: true,
         imageCover: true
     };
-
     const allBookings = await Booking.find({ user: req.user }).populate('tour', toursProjection)
     // console.log(allBookings)
-    // res.render('myBookings', { allBookings })
+    res.render('myBookings', { allBookings })
+    // res.json(allBookings)
 
 }

@@ -1,21 +1,33 @@
 extends layout
 
 block content
-    .tours-wrapper
-    h2 Your bookings 
-        if allBookings.length > 0
-        each booking in allBookings
-            a(href=`/tours/${booking.tour.id}`)  
-                .card-trip
-                    img.cover_image(src=`/img/tours/${booking.tour.imageCover}`)
-                    .card-trip-infos 
-                        div 
-                        h4 your booking dates
-                            p= booking.startDate
-                            p= booking.endtDate
-                            P= booking._id
-            button.btn.btn-danger(id="deleteBooking" data-bookingid=`${booking._id}`) Delete Booking    
-        else 
-            p Sorry you have no bookings   
-            a(href="/tours")  
-                button.btn.btn-info See Tours
+    .container-fluid
+        h2 Your bookings: 
+        .card-deck
+            each booking in allBookings
+                .card
+                    if allBookings.length > 0
+                    each booking in allBookings
+                        a(href=`/tours/${booking.tour._id}`)  
+                                img.card-img-top(src=`/uploads/${booking.tour.imageCover}`)
+                                .card-body 
+                                    h4 your booking dates
+                                    p= booking.tour.startDate.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
+                        //- button.btn.btn-danger(id="deleteBooking" data-bookingid=`${booking._id}`) Delete Booking    
+                    else 
+                        p Sorry you have no bookings   
+                        a(href="/tours")  
+                            button.btn.btn-info See Tours .container-fluid
+        //- .card-deck
+        //-     each tour in tours
+        //-         .card
+        //-             img.card-img-top(src=`/uploads/${tour.imageCover}`)
+        //-             .card-body 
+        //-                 h5.card-title= tour.name 
+        //-                 p.card-text= tour.description.substring(0,220) + "..."
+        //-             .card-footer.d-flex.justify-content-around
+        //-                 a(href=`/tours/${tour.id}/edit`)   
+        //-                     p.mt-2 edit    
+        //-                 a(href=`/tours/${tour.id}/delete`)   
+        //-                     p.mt-2 delete    
+        //-                 //- p(onclick="history.back()") back     

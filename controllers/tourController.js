@@ -159,9 +159,15 @@ exports.editTour = async (req, res) => {
 
 // update the tour info
 exports.updateTour = async (req, res, next) => {
+    const today = new Date()
+    const startDate = new Date(req.body.startDate)
+
     const tourPromise = await Tour.findById(req.params.id)
     if (req.body.startDate > req.body.endDate) {
         return next(new AppError('Your tour end date can\'t be before the start date', 300));
+    }
+    else if (startDate < today) {
+        return next(new AppError('The tour can\'t start in the past', 300))
     }
 
     if (req.uploadedImages) {
