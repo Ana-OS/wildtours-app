@@ -1,6 +1,5 @@
 extends layout
 include mixins/_reviewForm
-//- include mixins/_review
 block append head
   script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
   link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
@@ -9,15 +8,12 @@ block append head
 
 
 block content
-  //-.card-category(style={background: "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg)"})
-
-  //- img.card-category(src=`/img/tours/${tour.imageCover}`)
   .container-fluid.tour-title
     .row.justify-content-center
       .col-12.title
         h1.mt-5= tour.name
       
-    .row.justify-content-center.flex-nowrap.mt-5.tour-pics
+    .row.justify-content-center.flex-nowrap.mt-5
       for image in tour.images
         .card
           img.card-img.img-fluid(src=`/uploads/${image}`)
@@ -43,11 +39,10 @@ block content
         #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-locations=`${JSON.stringify(tour.locations) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`,  data-mapbox=`${process.env.MAPBOX_API_KEY}`)
 
   .container-fluid.reviews-wrapper
-    .row
+    .row 
       if tour.reviews 
         each review in tour.reviews
-          .col-6.reviews 
-            //- img.avatar(src=review.author.photo)
+          .col-6 
             p.mt-5.author-name= review.author.name
             p= `"${review.description}"`
                      
@@ -55,7 +50,7 @@ block content
               = `★`.repeat(review.rating)
               = `☆`.repeat(5 - review.rating)
         if user 
-          button(type="button" class="mt-4 ml-4 btn btn-dark new-review" data-toggle="modal" data-target="#modal") Review this tour
+          button(type="button" class=" mt-5 btn btn-dark" data-toggle="modal" data-target="#modal") Review this tour
 
           div(class="modal fade" id="modal" tabindex="-1" aria-hidden="true")
             .modal-dialog
@@ -63,16 +58,7 @@ block content
                 .modal-header
                   h5.modal-title  Review tour 
                 .modal-body 
-                  form.reviewer(action=`/reviews/${tour._id}` method="POST")
-                   .form-group
-                    textarea.form-control(name="description" placeholder="Leave a review")
-                  .form-group  
-                    .reviewer__meta
-                      .reviewer__stars
-                        each num in [5,4,3,2,1]
-                            input(type="radio" class="form-check-input" required id=`star${num}` name="rating" value=num)
-                            label.form-check-label(for=`star${num}`) #{num} Stars
-                    input.btn.btn-outline-success(type="submit" value="Submit")
+                  +reviewForm(tour)
   .container-fluid.footer
     .row
       .col-6

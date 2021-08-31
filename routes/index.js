@@ -106,8 +106,7 @@ router.patch('/reviews/:id', catchErrors(reviewsController.updateReview));
 // create Review
 // router.get('/tours/:id/addReview', catchErrors(authController.protect), catchErrors(reviewsController.addReview));
 router.post('/reviews/:id',
-    catchErrors(authController.protect),
-    catchErrors(reviewsController.addReview)
+    catchErrors(reviewsController.createReview)
 );
 
 

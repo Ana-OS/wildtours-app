@@ -340,7 +340,7 @@ p.tour-price span{
                 /*  Login*/
 
 .form--login{
-  margin-top:148px;
+  margin-top:200px;
 }               
 
 .card-footer a, a:hover, a:visited, a:active {
@@ -349,7 +349,14 @@ p.tour-price span{
  }
 
  
- 
+ /* User Pages */
+ .my_bookings{
+   margin-top:148px;
+ }
+
+ .success{
+  margin-top:190px;
+ }
 
  /* Media queries */
 
@@ -410,9 +417,16 @@ p.tour-price span{
   .tour-info{
     font-size: 20px;
   }
+  .tour-info.about {
+    border-bottom: 2px solid white;
+  }
   .about {
     margin-top:0 !important;
   }
+  .about p{
+    border-bottom: 2px solid white;
+  }
+  
   .description{
     margin-top:0 !important;
   }
@@ -427,6 +441,7 @@ p.tour-price span{
     margin-top:0 !important;
     padding-bottom:20px !important;
     font-size: 20px;
+    border-bottom: none;
   }
   .book{ 
     margin-top:0 !important;

@@ -1,33 +1,22 @@
 extends layout
 
 block content
-    .container-fluid
-        h2 Your bookings: 
-        .card-deck
-            each booking in allBookings
-                .card
-                    if allBookings.length > 0
-                    each booking in allBookings
-                        a(href=`/tours/${booking.tour._id}`)  
-                                img.card-img-top(src=`/uploads/${booking.tour.imageCover}`)
-                                .card-body 
-                                    h4 your booking dates
-                                    p= booking.tour.startDate.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
-                        //- button.btn.btn-danger(id="deleteBooking" data-bookingid=`${booking._id}`) Delete Booking    
-                    else 
-                        p Sorry you have no bookings   
-                        a(href="/tours")  
-                            button.btn.btn-info See Tours .container-fluid
-        //- .card-deck
-        //-     each tour in tours
-        //-         .card
-        //-             img.card-img-top(src=`/uploads/${tour.imageCover}`)
-        //-             .card-body 
-        //-                 h5.card-title= tour.name 
-        //-                 p.card-text= tour.description.substring(0,220) + "..."
-        //-             .card-footer.d-flex.justify-content-around
-        //-                 a(href=`/tours/${tour.id}/edit`)   
-        //-                     p.mt-2 edit    
-        //-                 a(href=`/tours/${tour.id}/delete`)   
-        //-                     p.mt-2 delete    
-        //-                 //- p(onclick="history.back()") back     
+    .container.my_bookings.text-center
+        if allBookings.length === 0 
+            h2 You dont have any bookings yet
+            a(href="/tours")  
+                button.btn.btn-info.mt-5 See Tours
+        else                    
+            h2.mb-5 Your bookings: 
+            .row.justify-content-center
+                each booking in allBookings
+                    div(class="card" style="max-width: 450px")
+                        if allBookings.length > 0
+                        each booking in allBookings
+                            a(href=`/tours/${booking.tour._id}`)  
+                                    img.card-img-top(src=`/uploads/${booking.tour.imageCover}`)
+                                    .card-body 
+                                        h4 your booking dates
+                                        p= booking.tour.startDate.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})
+                            button.btn.btn-outline-danger(id="deleteBooking" data-bookingid=`${booking._id}`) Delete Booking    
+                    

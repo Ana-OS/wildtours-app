@@ -4,8 +4,6 @@ const Tour = mongoose.model('Tour');
 const AppError = require('./../helpers/newError');
 const multer = require('multer');
 const sharp = require('sharp');
-// const { expectCt } = require('helmet');
-// const uuid = require('uuid');
 
 const multerStorage = multer.memoryStorage();
 
@@ -27,10 +25,7 @@ exports.uploadTourImages = upload.fields([
     { name: 'images', maxCount: 3 }
 ]);
 
-// upload.single('image') req.file
-// upload.array('images', 5) req.files
 exports.resizeImageCover = async (req, res, next) => {
-    // console.log(req.files.images)
     if (!req.files || !req.files.imageCover) { return next() }
 
     req.body.imageCover = `tour-${req.params.id}-cover.jpeg`;
@@ -87,20 +82,18 @@ exports.allTours = async (req, res) => {
         else {
             const queriedTours = await Tour.find(querySearch);
             res.render('tours', { tours: queriedTours })
-            // res.send("poop")
         }
 
     } else {
         const tours = await Tour.find();
         res.render('tours', { tours })
-        // console.log("no query")
     }
 };
 
 // number of tours per month
 exports.monthlyTours = async (req, res) => {
     const monthlyTours = await Tour.aggregate([
-        {    // unwinde the array of startDates
+        {
             $unwind: '$startDates'
         },
         {
@@ -141,13 +134,11 @@ exports.addTour = (req, res) => {
 
 // create a Tour
 exports.createTour = async (req, res) => {
-    // console.log(req.body);
     const tour = await Tour.create(req.body)
     if (!tour) {
         console.log("poop")
         return next(new AppError('something went wrong creating tour', 400));
     }
-    // console.log(tour)
     res.redirect('/tours')
 }
 
@@ -180,15 +171,11 @@ exports.updateTour = async (req, res, next) => {
         new: true,
         runValidators: true
     }).exec();
-
-    // console.log(tour)
     res.render('tour', { tour })
 }
 
 // delete tour
 exports.deleteTour = async (req, res) => {
-    const tour = await Tour.findByIdAndDelete({ _id: req.params.id })
+    const tour = await Tour.findOneAndDelete({ _id: req.params.id })
     res.redirect('/tours')
 }
-
-

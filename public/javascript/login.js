@@ -2,7 +2,8 @@ const loginForm = document.querySelector('.form--login');
 const logout = document.querySelector("#logout");
 const userDataForm = document.querySelector('.form-user-data');
 const userEditData = document.querySelector('.form--edit');
-const deleteTour = document.querySelector("#deleteBooking");
+const deleteBooking = document.querySelector("#deleteBooking");
+const newReview = document.querySelector(".reviewer");
 
 // console.log(register)
 // console.log(account)
@@ -113,8 +114,8 @@ if (userEditData) {
     })
 }
 
-if (deleteTour) {
-    deleteTour.addEventListener("click", () => {
+if (deleteBooking) {
+    deleteBooking.addEventListener("click", () => {
         // console.log(deleteTour.dataset.bookingid)
 
         const url = `/myBookings/${deleteTour.dataset.bookingid}`;
@@ -135,3 +136,4 @@ if (deleteTour) {
     })
 
 }
+

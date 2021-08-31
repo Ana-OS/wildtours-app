@@ -1,21 +1,24 @@
 extends layout
 
-
 block content
-    .container-fluid
-        .card-deck
-            each tour in tours
-                .card
-                    img.card-img-top(src=`/uploads/${tour.imageCover}`)
-                    .card-body 
-                        h5.card-title= tour.name 
-                        p.card-text= tour.description.substring(0,220) + "..."
-                    .card-footer.d-flex.justify-content-around
-                        a(href=`/tours/${tour.id}/edit`)   
-                            p.mt-2 edit    
-                        a(href=`/tours/${tour.id}/delete`)   
-                            p.mt-2 delete    
-                        //- p(onclick="history.back()") back     
-
-
-block scripts 
+    .container.my_bookings.text-center
+        if tours.length === 0 
+            h2 You dont have any tours yet
+            a(href="/tours/add")  
+            button.btn-btn-info Create a Tour
+        else                    
+            h2.mb-5 Your tours: 
+            .row.justify-content-center
+                 each tour in tours
+                    div(class="card" style="max-width: 450px")
+                        a(href=`/tours/${tour._id}`)  
+                                img.card-img-top(src=`/uploads/${tour.imageCover}`)
+                                .card-body 
+                                    h4= tour.name
+                                    p= tour.description.slice(0,125) + ("...")
+                                .card-footer.justify-content-between
+                                    a(href=`/tours/${tour.id}/edit`)   
+                                        button.btn.btn-outline-info.mt-2 edit    
+                                    a(href=`/tours/${tour.id}/delete`)   
+                                        button.btn.btn-outline-danger.mt-2 delete    
+  block scripts 

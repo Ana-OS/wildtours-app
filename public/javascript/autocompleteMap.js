@@ -46,12 +46,9 @@ if (extraLocation.length > 0) {
         inputExtraLocation.addEventListener('keydown', (e) => {
             if (e.keyCode === 13) e.preventDefault();
         });
-
     })
-    // console.log(inputExtraLocation)
-
 }
-// console.log(typeof (extraLocation))
+
 
 
 // --------------          End Location       ---------------//
@@ -75,3 +72,6 @@ dropdownEndLocation.addListener('place_changed', () => {
 inputEndLocation.addEventListener('keydown', (e) => {
     if (e.keyCode === 13) e.preventDefault();
 });
+
+
+

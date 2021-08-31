@@ -1,11 +1,11 @@
 mixin reviewForm(tour)
-  form.reviewer(action=`/reviews/${tour._id}` method="POST")
-    .form-group
-      textarea.form-control(name="description" placeholder="Leave a review")
-    .form-group  
-      .reviewer__meta
-        .reviewer__stars
-          each num in [5,4,3,2,1]
-              input(type="radio" class="form-check-input" required id=`star${num}` name="rating" value=num)
-              label.form-check-label(for=`star${num}`) #{num} Stars
-      input.butn-btn-light-success(type="submit" value="Submit")
+    form.reviewer(action=`/reviews/${tour._id}` method="POST")
+      .form-group
+        textarea.form-control(name="description" placeholder="Leave a review")
+      .form-group  
+        .reviewer__meta
+          .reviewer__stars
+            each num in [5,4,3,2,1]
+                input(type="radio" class="form-check-input" required id=`star${num}` name="rating" value=num)
+                label.form-check-label(for=`star${num}`) #{num} Stars
+        input.btn.btn-outline-success(type="submit" value="Submit")
