@@ -17,14 +17,14 @@ block content
       .col-12.title
         h1.mt-5= tour.name
       
-    .row.justify-content-center.flex-nowrap.mt-5
+    .row.justify-content-center.flex-nowrap.mt-5.tour-pics
       for image in tour.images
         .card
           img.card-img.img-fluid(src=`/uploads/${image}`)
 
   .container-fluid.info.mt-5
-    .row.flex-nowrap.tour-info
-      .col-lg-6.mt-5 
+    .row.tour-info
+      .col-lg-6.mt-5.about 
         p.pt-4.pb-5.mt-4= tour.description  
       .col-lg-6.mt-5.mb-5.description
         p.tour-date.ml-5.mr-5.mt-5= `Dates Available:  ${tour.startDate.toLocaleString('en-us', {day: 'numeric', month: 'long', year: 'numeric'})}` 
@@ -43,10 +43,10 @@ block content
         #map(data-startlocations=`${JSON.stringify(tour.startLocation) }`, data-locations=`${JSON.stringify(tour.locations) }`, data-endlocations=`${JSON.stringify(tour.endLocation) }`,  data-mapbox=`${process.env.MAPBOX_API_KEY}`)
 
   .container-fluid.reviews-wrapper
-    .row 
+    .row
       if tour.reviews 
         each review in tour.reviews
-          .col-6 
+          .col-6.reviews 
             //- img.avatar(src=review.author.photo)
             p.mt-5.author-name= review.author.name
             p= `"${review.description}"`
@@ -55,7 +55,7 @@ block content
               = `★`.repeat(review.rating)
               = `☆`.repeat(5 - review.rating)
         if user 
-          button(type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal") Review this tour
+          button(type="button" class="mt-4 ml-4 btn btn-dark new-review" data-toggle="modal" data-target="#modal") Review this tour
 
           div(class="modal fade" id="modal" tabindex="-1" aria-hidden="true")
             .modal-dialog

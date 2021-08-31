@@ -169,8 +169,6 @@ p.tour-price span{
 
 .reviews{
   width: 500px;
-  border:2px solid red;
-
 }
 .reviewForm{
   width: 500px;
@@ -230,7 +228,6 @@ p.tour-price span{
 #map{
   width:100%;
   height:600px;
-  border:1px solid red;
 }
 
 .mapboxgl-popup {
@@ -351,9 +348,128 @@ p.tour-price span{
   text-decoration: none;
  }
 
- /* Booking */
- .iti__flag {background-image: url("public/flags.png");}
+ 
+ 
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .iti__flag {background-image: url("path/to/flags@2x.png");}
-}
+ /* Media queries */
+
+ @media screen and (max-width: 768px){
+  body > .container-fluid{
+    margin-top:100px;
+  }
+  #navbar-main .navbar-brand img {
+    margin-top:10px;
+    width: 90px;
+  }
+  .card-img-overlay h1 {
+    letter-spacing: 2px;
+    font-size: 35px;
+  }
+  .card-block {
+    width: 170px;
+  }
+  .card-block .price{
+    font-size: 13px;
+  }
+  
+  .card-block .know-more{ 
+    font-size: 13px;
+  }
+  
+  .card-block>span {
+    padding: .2em 8px;
+    font-size: 10px;
+  }
+  
+ }
+
+ @media screen and (max-width: 613px) {
+
+
+ }
+
+
+ @media screen and (max-width: 576px) {
+  .tour-title{
+    margin-top:100px;
+  }
+  .title h1{
+    margin-top:10px !important;
+    text-align:center;
+    font-size: 35px;
+    letter-spacing: 2.2px;
+    color:rgb(96, 95, 95);
+  }
+  .tour-pics{
+    margin-top:10px !important;
+  }
+
+  .info{
+    margin-top:10px !important;
+  }
+  .tour-info{
+    font-size: 20px;
+  }
+  .about {
+    margin-top:0 !important;
+  }
+  .description{
+    margin-top:0 !important;
+  }
+
+  p.tour-price{
+    font-size: 25px !important;
+  }
+  p.tour-price span{
+    font-size: 10px !important;
+  }
+  p.tour-date{
+    margin-top:0 !important;
+    padding-bottom:20px !important;
+    font-size: 20px;
+  }
+  .book{ 
+    margin-top:0 !important;
+  }
+  .description.book button{ 
+    margin-top:0 !important;
+  }
+
+  body > .container-fluid{
+    margin-top:95px;
+  }
+  #navbar-main .navbar-brand img {
+    margin-top:10px;
+    width: 70px;
+  }
+  .card-img-overlay h1 {
+    letter-spacing: 2px;
+    font-size: 25px;
+  }
+  .card-block {
+    bottom: 20px;
+    padding: 2px 0;
+    width: 150px;
+  }
+  .card-block .price{
+    font-size: 10px;
+  }
+  
+  .card-block .know-more{ 
+    font-size: 10px;
+  }
+  
+  .card-block>span {
+    padding: .2em 8px;
+    font-size: 10px;
+  }
+
+  .reviews p{
+    font-size:10px;
+  }
+
+  .new-review{
+    margin-top:20px;
+  }
+
+ }
