@@ -12,13 +12,12 @@ block content
                  each tour in tours
                     div(class="card" style="max-width: 450px")
                         a(href=`/tours/${tour._id}`)  
-                                img.card-img-top(src=`/uploads/${tour.imageCover}`)
-                                .card-body 
-                                    h4= tour.name
-                                    p= tour.description.slice(0,125) + ("...")
-                                .card-footer.justify-content-between
-                                    a(href=`/tours/${tour.id}/edit`)   
-                                        button.btn.btn-outline-info.mt-2 edit    
-                                    a(href=`/tours/${tour.id}/delete`)   
-                                        button.btn.btn-outline-danger.mt-2 delete    
-  block scripts 
+                            img.card-img-top(src=`/uploads/${tour.imageCover}`)
+                            .card-body 
+                                h4= tour.name
+                                p= tour.description.slice(0,125) + ("...")
+                            .card-footer.justify-content-between
+                                a(href=`/tours/${tour.id}/edit`)   
+                                    button.btn.btn-outline-info.mt-2 edit    
+                                a(href=`/tours/${tour.id}/delete`)   
+                                    button.btn.btn-outline-danger.mt-2 delete    

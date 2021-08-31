@@ -20,15 +20,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: 'please provide a password',
         minlength: 6,
-        // select: false prevents the password to show in an output
-        // select: false
     },
     confirmPassword: {
         type: String,
         required: 'please confirm your password',
         select: false,
         validates: {
-            // only works on save or create
             validator: function (el) {
                 return el === this.password
             },
@@ -48,18 +45,11 @@ const userSchema = new mongoose.Schema({
 );
 
 userSchema.pre('save', async function (next) {
-    // isMofified comes from Mongo db
     if (!this.isModified('password')) return next();
-
-    // if password is indeed modified or created for the first time then hash it
     this.password = await bcrypt.hash(this.password, 12)
-    // and because this is all made pre saving user we save the confirmed password back to undefined. confirmPassword is required as an input but not to be persisting db
     this.confirmPassword = undefined;
     next();
 });
-
-
-// comparePasswords is an instance method that can be called on the userSchema model. bcrypt.compares is provided by bcrypt
 
 userSchema.methods.comparePassword = async function (candidatePassword, userPassword) {
     { return await bcrypt.compare(candidatePassword, userPassword) };

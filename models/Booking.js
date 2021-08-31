@@ -5,10 +5,6 @@ const bookingSchema = new mongoose.Schema({
         type: Date,
         default: Date.now(),
     },
-    // startDate: {
-    //     type: Date,
-    //     required: 'please provide a start date'
-    // },
     firstName: String,
     Middle: String,
     LastName: String,

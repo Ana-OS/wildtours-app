@@ -5,19 +5,15 @@ const userEditData = document.querySelector('.form--edit');
 const deleteBooking = document.querySelector("#deleteBooking");
 const newReview = document.querySelector(".reviewer");
 
-// console.log(register)
-// console.log(account)
-
 if (loginForm) {
     loginForm.addEventListener('submit', e => {
         e.preventDefault();
 
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        // console.log({ email })
-        // console.log({ password })
 
-        fetch("http://localhost:3001/login", {
+
+        fetch("/login", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -27,8 +23,6 @@ if (loginForm) {
         })
             .then(response => response.json())
             .then(res => {
-                console.log(res)
-                // console.log(res.data.user.name)
                 if (res.data) {
                     window.alert('success', 'Logged in successfully!');
                     window.setTimeout(() => {
@@ -47,7 +41,7 @@ if (loginForm) {
 
 if (logout) {
     logout.addEventListener('click', () => {
-        fetch("http://localhost:3001/logout")
+        fetch("/logout")
             .then(response => response.json())
             .then(res => {
                 if (res.message == "logged out") {
@@ -72,7 +66,7 @@ if (userDataForm) {
         // console.log(form)
         console.log(form);
 
-        fetch("http://localhost:3001/register", {
+        fetch("/register", {
             method: "POST",
             body: form
         }).then(response => response.json())
@@ -97,7 +91,7 @@ if (userEditData) {
         // console.log(form)
         // console.log(form);
 
-        fetch("http://localhost:3001/updateProfile", {
+        fetch("/updateProfile", {
             method: "POST",
             body: form
         }).then(response => response.json())
@@ -123,7 +117,7 @@ if (deleteBooking) {
         // console.log(`http://localhost:3001${url}`)
 
 
-        fetch(`http://localhost:3001${url}`, {
+        fetch(`${url}`, {
             method: "DELETE",
             body: null
         })

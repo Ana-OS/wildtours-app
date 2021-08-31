@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Booking = mongoose.model('Booking');
 const Tour = mongoose.model('Tour');
 const { catchErrors } = require('../handlers/errorHandler');
-const appError = require('../helpers/newError');
+
 
 
 // prompt the registrations form
@@ -29,11 +29,3 @@ exports.myTours = async (req, res, next) => {
     res.render('myTours', { tours })
 }
 
-
-exports.myBookings = async (req, res, next) => {
-    const bookings = await Booking.find({ author: req.user._id })
-    console.log(bookings)
-    // res.render('myTours', { bookings })
-}
-
-// const reviews = await Review.find({ tour: req.params.id })

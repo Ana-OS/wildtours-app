@@ -3,7 +3,6 @@ const User = mongoose.model('User');
 const crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 const { catchErrors } = require('../handlers/errorHandler');
-// const promisify = require('promisify');
 const { options } = require('../routes');
 const sendMail = require('../helpers/email');
 const AppError = require('../helpers/newError');
@@ -81,7 +80,6 @@ exports.createUser = async (req, res, next) => {
 
     if (!user) {
         return next(new AppError('failed creating an account', 404))
-        // res.send("provide a")
     }
     req.user = user;
     res.locals.user = user;
@@ -94,15 +92,12 @@ exports.createUser = async (req, res, next) => {
 exports.loginUser = async (req, res, next) => {
     const email = req.body.email
     const password = req.body.password
-    // console.log(`this is the req. body ${req.body.email}`)
 
     if (!email || !password) {
         return next(new AppError('please provide an email and a password', 404))
     }
 
-    // .select allows to get the password even though it is not accessible in the model
     const user = await User.findOne({ email }).select('+password');
-    // console.log({ user })
     // compare the password in the DB with the one user provided in login
 
     if (!user || !(await user.comparePassword(password, user.password))) {
@@ -137,7 +132,6 @@ exports.protect = async (req, res, next) => {
     }
     //verify token. because it will run a callback function after verifying the token we promisify it so we can await the verification of that token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY)
-    // console.log(decoded)
 
     // use the id in the token payload to check if user still exists using the id that is in the token's payload
     const currentUser = await User.findById(decoded.id)
@@ -169,11 +163,8 @@ exports.forgotPassword = async (req, res, next) => {
 
     // update the user with the new encrypted token in the DB skipping the validation for the rest of the fields
     await user.save({ validateBeforeSave: false });
-    // console.log(user)
     // email the link with the new token to the user
     const resetURL = `${req.protocol}://${req.hostname}:${process.env.PORT}/resetToken/${newToken} `;
-    // console.log(resetURL)
-
     const message = `click in the link to reset your password.${resetURL} `;
     try {
         await sendMail({
@@ -210,26 +201,6 @@ exports.resetPassword = async (req, res) => {
     const token = createToken(user._id);
 };
 
-
-// exports.updatePassword = async (req, res) => {
-//     // 1) Get user from collection
-//     const user = await User.findById(req.user.id).select('+password');
-
-//     // // 2) Check if POSTed current password is correct
-//     if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-//         return next(new AppError('Wrong password', 401));
-//     }
-//     // 3) If so, update password
-//     user.password = req.body.password;
-//     user.passwordConfirm = req.body.passwordConfirm;
-
-//     await user.save();
-//     // User.findByIdAndUpdate will NOT work as intended! We need "user.save" so we can apply all the ".pre('save')" instance methods to the user
-
-//     // // 4) Log user in, send JWT
-//     sendToken(user, res);
-// };
-
 exports.updateProfile = async (req, res) => {
     let updateBody = {
         name: req.body.name,
@@ -252,8 +223,6 @@ exports.updateProfile = async (req, res) => {
 
 // Only for rendered pages, no errors!
 exports.isLoggedIn = async (req, res, next) => {
-    // 
-    // console.log("I'm the loggedIn")
     if (req.cookies.jwt) {
         try {
             const decoded = await (jwt.verify)(
@@ -272,8 +241,6 @@ exports.isLoggedIn = async (req, res, next) => {
             if (currentUser.hasChangedPassword(decoded.iat)) {
                 return next();
             }
-
-            //         // THERE IS A LOGGED IN USER
             req.user = currentUser;
             res.locals.user = currentUser;
 
