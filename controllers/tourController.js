@@ -124,6 +124,8 @@ exports.tour = async (req, res, next) => {
             return next(new AppError('No such tour', 404))
         }
         res.render('tour', { tour })
+    } else {
+        return next(new AppError('We couldn\'t find that tour', 404))
     }
 };
 
@@ -137,7 +139,7 @@ exports.createTour = async (req, res) => {
     const tour = await Tour.create(req.body)
     if (!tour) {
         console.log("poop")
-        return next(new AppError('something went wrong creating tour', 400));
+        return next(new AppError('something went wrong creating tour', 500));
     }
     res.redirect('/tours')
 }

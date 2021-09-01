@@ -1,7 +1,7 @@
 mixin reviewForm(tour)
     form.reviewer(action=`/reviews/${tour._id}` method="POST")
       .form-group
-        textarea.form-control(name="description" placeholder="Leave a review")
+        textarea.form-control(name="description" placeholder="Leave a review" required)
       .form-group  
         .reviewer__meta
           .reviewer__stars

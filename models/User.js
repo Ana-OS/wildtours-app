@@ -58,14 +58,10 @@ userSchema.methods.comparePassword = async function (candidatePassword, userPass
 
 userSchema.methods.hasChangedPassword = function (JWTTimestamps) {
     if (this.passwordChangedAt) {
-        // JWTT is in seconds somwe need
-        // since passwordChangedAt is a date we need to get it in miliseconds with getTime(); parseInt to have it as an integer. Because the tokenTimestamp is in seconds we do miliseconds /1000 so we can have both in seconds
         const changedTimestamp = parseInt(
             this.passwordChangedAt.getTime() / 1000,
             10
         );
-
-        // se o timstamp em que o token foi criado for menor que a data em que o user alterou a password então retorna true = o token for criado apenas depois da pass ter sido alterada portanto tudo ok
         return JWTTimestamp < changedTimestamp;
     };
 };
@@ -73,12 +69,8 @@ userSchema.methods.hasChangedPassword = function (JWTTimestamps) {
 userSchema.methods.resetPassword = function () {
     // create the token that will be sent to the user
     const newToken = crypto.randomBytes(32).toString('hex');
-
-    // encrypt that new token for safety reasons and save it to the DB  (we'll later compare both)
     this.passwordResetToken = crypto.createHash('sha256').update(newToken).digest('hex');
-    // save to the DB the date when we created the new token plus a few seconds more so we can have the time to await on the result where we call this instance method
     this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
-
     return newToken;
 };
 
@@ -86,7 +78,6 @@ userSchema.virtual('bookings', {
     ref: 'Booking',
     foreignField: 'user',
     localField: '_id'
-}
-);
+});
 
 module.exports = mongoose.model('User', userSchema);

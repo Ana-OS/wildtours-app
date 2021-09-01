@@ -14,30 +14,6 @@ const DB = process.env.DATABASE.replace(
     process.env.DB_PASS
 );
 
-
-// const start = async () => {
-//     try {
-//         mongoose.connect(DB, {
-//             useNewUrlParser: true,
-//             useCreateIndex: true,
-//             useUnifiedTopology: true,
-//             useFindAndModify: false
-//         })
-//         console.log("connected")
-//     }
-//     catch (err) {
-//         console.log(err)
-//     }
-
-
-//     const app = require('./app');
-//     const port = process.env.PORT || 3001;
-//     app.listen(port, () => {
-//         console.log(`Express running → PORT ${port}`);
-//     });
-// };
-
-
 // start();
 mongoose
     .connect(DB, {

@@ -5,7 +5,8 @@ const reviewSchema = new mongoose.Schema(
     {
         description: {
             type: String,
-            required: 'Please leave a comment about this tour'
+            required: 'Please leave a comment about this tour',
+
         },
         rating: {
             type: Number,
