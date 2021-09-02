@@ -75,8 +75,7 @@ if (userDataForm) {
                     location.assign('/');
                 }, 500);
 
-            });
-
+            })
     })
 }
 

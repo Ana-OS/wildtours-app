@@ -1,3 +1,4 @@
+const { crossOriginResourcePolicy } = require('helmet');
 const AppError = require('../helpers/newError');
 
 exports.catchErrors = (fn) => {
@@ -8,14 +9,18 @@ exports.catchErrors = (fn) => {
 
 
 const handleCastErrorDB = err => {
-  const message = "Invalid path dude.!";
+  const message = "Invalid path !";
   return new AppError(message, 400);
 };
 
 const handleDuplicateFieldsDB = err => {
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
+  // console.log(err.message)
+  const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
+  // console.log(value);
+  // console.log(value)
   const message = `Duplicate field value: ${value}. Please use another value!`;
   return new AppError(message, 400);
+
 };
 
 const handleValidationErrorDB = err => {
@@ -36,31 +41,24 @@ const devError = (err, req, res) => {
 
 
 const prodError = (err, req, res) => {
+  console.log(err)
 
   if (err.isOperational) {
-    if (err.message === "incorrect email or password. Please review your access info")
-      return res.status(err.statusCode).json({
-        title: 'Something went wrong!',
-        msg: err.message
-      });
-    else {
-      return res.render('error', {
-        title: 'Something went wrong!',
-        msg: err.message
-      });
-    }
-
+    return res.render('error', {
+      title: 'Something went wrong!',
+      msg: err.message
+    });
   }
 
   // // 1) Log error
   console.error('ERROR 💥', err);
   //  2) Send generic message
-  return res.status(err.statusCode).render('error', {
+  return res.render('error', {
     title: 'Something went wrong!',
     msg: 'please try again later'
   });
-};
 
+}
 
 
 
@@ -80,6 +78,7 @@ exports.globalErrorHandler = (err, req, res, next) => {
     error.name = err.name
     error.message = err.message
 
+    // console.log(error.name)
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === 'ValidationError') error = handleValidationErrorDB(error);

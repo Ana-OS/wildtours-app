@@ -70,7 +70,6 @@ exports.resize = async (req, res, next) => {
 // create the user for the first time
 exports.createUser = async (req, res, next) => {
     let newUser = { ...req.body }
-
     if (newUser.photo == "undefined") {
         newUser.photo = "default.jpg"
     }
@@ -78,7 +77,6 @@ exports.createUser = async (req, res, next) => {
         newUser.photo = req.file.filename
     }
     const user = await User.create(newUser);
-
     if (!user) {
         return next(new AppError('failed creating an account', 404))
     }
