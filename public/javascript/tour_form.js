@@ -2,7 +2,6 @@ window.onload = function () {
     const addLocationsBtn = document.querySelector(".extralocations")
     // const extraLocations = document.querySelector("#extraLocationsContainer")
     const locationsForm = document.querySelectorAll("[id^='location']")
-    // console.log(locationsForm[0])
 
     // console.log(extraLocations.children[0])
     let i = 0

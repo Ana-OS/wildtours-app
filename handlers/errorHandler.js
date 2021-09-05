@@ -1,4 +1,3 @@
-const { crossOriginResourcePolicy } = require('helmet');
 const AppError = require('../helpers/newError');
 
 exports.catchErrors = (fn) => {
@@ -7,20 +6,15 @@ exports.catchErrors = (fn) => {
   };
 };
 
-
 const handleCastErrorDB = err => {
   const message = "Invalid path !";
   return new AppError(message, 400);
 };
 
 const handleDuplicateFieldsDB = err => {
-  // console.log(err.message)
   const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
-  // console.log(value);
-  // console.log(value)
-  const message = `Duplicate field value: ${value}. Please use another value!`;
+  const message = `Duplicate field: ${value}. Please use another value!`;
   return new AppError(message, 400);
-
 };
 
 const handleValidationErrorDB = err => {
@@ -31,6 +25,7 @@ const handleValidationErrorDB = err => {
 
 
 const devError = (err, req, res) => {
+
   return res.status(err.statusCode).json({
     status: err.status,
     error: err,
@@ -41,9 +36,22 @@ const devError = (err, req, res) => {
 
 
 const prodError = (err, req, res) => {
-  console.log(err)
-
-  if (err.isOperational) {
+  console.log(err.message)
+  if (err.message.startsWith("Duplicate field")) {
+    return res.status(err.statusCode).json({
+      status: err.status,
+      error: err,
+      message: err.message,
+      stack: err.stack
+    });
+  } else if (err.message.startsWith('incorrect email or password.')) {
+    return res.status(err.statusCode).json({
+      status: err.status,
+      error: err,
+      message: err.message,
+      stack: err.stack
+    });
+  } else if (err.isOperational) {
     return res.render('error', {
       title: 'Something went wrong!',
       msg: err.message
@@ -53,14 +61,20 @@ const prodError = (err, req, res) => {
   // // 1) Log error
   console.error('ERROR 💥', err);
   //  2) Send generic message
-  return res.render('error', {
-    title: 'Something went wrong!',
-    msg: 'please try again later'
-  });
-
+  if (err.message.startsWith("Cannot read property 'length'")) {
+    return res.status(err.statusCode).json({
+      status: err.status,
+      error: err,
+      message: err.message,
+      stack: err.stack
+    });
+  } else {
+    return res.render('error', {
+      title: 'Something went wrong!',
+      msg: "please try again later!"
+    });
+  }
 }
-
-
 
 
 exports.globalErrorHandler = (err, req, res, next) => {
@@ -78,9 +92,9 @@ exports.globalErrorHandler = (err, req, res, next) => {
     error.name = err.name
     error.message = err.message
 
-    // console.log(error.name)
+    // console.log(error)
     if (error.name === 'CastError') error = handleCastErrorDB(error);
-    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+    if (error.code === 11000) { error = handleDuplicateFieldsDB(error); }
     if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
     if (error.name === 'JsonWebTokenError') error = handleJWTError();
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();

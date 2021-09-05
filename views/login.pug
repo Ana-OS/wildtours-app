@@ -8,7 +8,7 @@ block content
                 h2 Login to your account
         .row.justify-content-center
             .col-12
-            form.form--login
+            form.form--login(action="/login" method="POST")
                 .form-group
                     label(for='email') Email address
                     input#email.form-control(type='email', placeholder='your@example.com', required)

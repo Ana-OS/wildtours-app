@@ -17,10 +17,10 @@ block content
                         input#email.form-control(type='email', required, name='email')
                     .form-group    
                         label.form__label(for='password') Password
-                        input#password.form-control(type='password', placeholder='••••••••')
+                        input#password.form-control(type='password', name="password", placeholder='••••••••')
                     .form-group.ma-bt-md
-                        label.form__label(for='password') Confirm Password
-                        input#confirm_password.form-control(type='password', placeholder='••••••••')
+                        label.form__label(for='confirmPassword') Confirm Password
+                        input#confirm_password.form-control(type='password', name='confirmPassword' placeholder='••••••••')
                     .form-group.mt-3
                         input.form-control-file(type='file', accept='image/*', id='photo', name='photo')
                         label(for='photo') Choose new photo 

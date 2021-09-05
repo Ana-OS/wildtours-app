@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const crypto = require('crypto');
 var jwt = require('jsonwebtoken');
-const { catchErrors } = require('../handlers/errorHandler');
-const { options } = require('../routes');
 const sendMail = require('../helpers/email');
 const AppError = require('../helpers/newError');
 const multer = require('multer');
@@ -28,13 +26,14 @@ const sendToken = (user, res, next) => {
     res.cookie('jwt', token, cookieOptions);
     // Remove password from output
     user.password = undefined;
-
     res.send({
+        status: 'success',
         token,
         data: {
             user
         }
     });
+
 };
 
 
@@ -70,19 +69,13 @@ exports.resize = async (req, res, next) => {
 // create the user for the first time
 exports.createUser = async (req, res, next) => {
     let newUser = { ...req.body }
-    if (newUser.photo == "undefined") {
-        newUser.photo = "default.jpg"
-    }
-    else {
-        newUser.photo = req.file.filename
-    }
+    if (req.file) { newUser.photo = req.file.filename }
+    else { newUser.photo = "default.jpg" }
     const user = await User.create(newUser);
-    if (!user) {
-        return next(new AppError('failed creating an account', 404))
-    }
     req.user = user;
     res.locals.user = user;
     sendToken(user, res)
+
 };
 
 
@@ -99,7 +92,7 @@ exports.loginUser = async (req, res, next) => {
     // compare the password in the DB with the one user provided in login
 
     if (!user || !(await user.comparePassword(password, user.password))) {
-        return next(new appError('incorrect email or password. Please review your access info', 404))
+        return next(new AppError('incorrect email or password. Please review your access info', 404))
     }
     req.user = user;
     res.locals.user = user;
@@ -128,7 +121,7 @@ exports.protect = async (req, res, next) => {
     if (!token) {
         return res.send('Please login');
     }
-    //verify token. because it will run a callback function after verifying the token we promisify it so we can await the verification of that token
+    //verify token. because
     const decoded = await jwt.verify(token, process.env.SECRET_KEY)
 
     // use the id in the token payload to check if user still exists using the id that is in the token's payload
@@ -139,10 +132,9 @@ exports.protect = async (req, res, next) => {
         return res.send('password has been changed')
     };
 
-    //create a user field in the request with all its data so we can use it in the next function
+    //create a user field in the request with all its data 
     req.user = currentUser;
     res.locals.user = currentUser;
-
     // allow user to the next route
     next()
 };
@@ -153,7 +145,7 @@ exports.forgotPassword = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email })
 
     if (!user) {
-        return next(new appError('the email you provided is not registered', 404))
+        return next(new AppError('the email you provided is not registered', 404))
     };
 
     // generate new token calling the instance method on user
@@ -204,16 +196,15 @@ exports.updateProfile = async (req, res) => {
         name: req.body.name,
         email: req.body.email,
     }
-    if (req.file) {
-        updateBody.photo = req.file.filename
-    }
+    if (req.file) { updateBody.photo = req.file.filename }
+    else { newUser.photo = "default.jpg" }
+
     //  3) Update user document
     const updatedUser = await User.findByIdAndUpdate(req.user.id,
         updateBody, {
         new: true,
         runValidators: false
-    });
-
+    }).exec();
     //  4) Log user in, send JWT
     sendToken(updatedUser, res);
 };
@@ -252,9 +243,8 @@ exports.isLoggedIn = async (req, res, next) => {
 
 exports.logout = (req, res) => {
     res.cookie('jwt', 'loggedout', {
-        expires: new Date(Date.now() + 1 * 1000),
+        expires: new Date(Date.now() + 10 * 1000),
         httpOnly: true
     });
-    // send to client side that the user is loggedout
-    res.json({ message: "logged out" })
+    res.status(200).json({ status: 'success' });
 };

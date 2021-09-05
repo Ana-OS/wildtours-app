@@ -40,12 +40,10 @@ exports.review = async (req, res, next) => {
 
 exports.reviews = async (req, res, next) => {
     if (req.params.tour) filter = { tour: req.params.id }
-
     const reviews = await Review.find({ tour: req.params.id })
     res.json(reviews)
 };
 
 exports.updateReview = async (req, res, next) => {
     const review = await Review.findOneAndUpdate({ _id: req.params.id }, req.body)
-    console.log({ review })
 }

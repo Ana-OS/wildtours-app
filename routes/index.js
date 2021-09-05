@@ -6,9 +6,9 @@ const authController = require('../controllers/authController');
 const reviewsController = require('../controllers/reviewsController');
 const bookingsController = require('../controllers/bookingsController');
 const { catchErrors } = require('../handlers/errorHandler');
-+
 
-    router.use(authController.isLoggedIn)
+
+router.use(authController.isLoggedIn)
 
 
 //////     Tour Routes     //////
@@ -70,7 +70,7 @@ router.delete('/myBookings/:id', catchErrors(bookingsController.deleteBooking))
 // create 
 router.get('/register', userController.register);
 router.post('/register', authController.upload,
-    catchErrors(authController.resize), catchErrors(authController.createUser), catchErrors(tourController.allTours));
+    catchErrors(authController.resize), catchErrors(authController.createUser));
 // login
 router.get('/login', userController.login);
 router.post('/login', catchErrors(authController.loginUser));

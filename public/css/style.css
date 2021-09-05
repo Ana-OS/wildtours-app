@@ -358,9 +358,39 @@ p.tour-price span{
   margin-top:190px;
  }
 
+
+ /* alert */
+
+ .alert {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 9999;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 1.6rem 10rem;
+  -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+}
+.alert--success {
+  background-color: #20bf6b;
+}
+.alert--error {
+  background-color: #eb4d4b;
+}
+
  /* Media queries */
 
  @media screen and (max-width: 768px){
+  .title{
+    margin-top:100px;
+  }
   body > .container-fluid{
     margin-top:100px;
   }
@@ -387,11 +417,18 @@ p.tour-price span{
     padding: .2em 8px;
     font-size: 10px;
   }
-  
+  .alert {
+    font-size: .8rem;
+  }
  }
 
  @media screen and (max-width: 613px) {
-
+  .title{
+    margin-top:100px;
+  }
+  .alert {
+    font-size: .6rem;
+  }
 
  }
 
@@ -485,6 +522,10 @@ p.tour-price span{
 
   .new-review{
     margin-top:20px;
+  }
+
+  .alert {
+    font-size: .6rem;
   }
 
  }

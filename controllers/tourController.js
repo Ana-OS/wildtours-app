@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Review = mongoose.model('Review');
 const Tour = mongoose.model('Tour');
 const AppError = require('./../helpers/newError');
 const multer = require('multer');
@@ -119,7 +118,6 @@ exports.tour = async (req, res, next) => {
                 limit: 2, sort: { createdAt: -1 },
             }
         })
-
         if (!tour) {
             return next(new AppError('No such tour', 404))
         }
