@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Tour = mongoose.model('Tour');
 const Booking = mongoose.model('Booking');
-const appError = require('../helpers/newError');
+const AppError = require('../helpers/newError');
 
 
 exports.bookingForm = async (req, res) => {
@@ -10,7 +10,7 @@ exports.bookingForm = async (req, res) => {
 }
 
 exports.createBooking = async (req, res, next) => {
-    if (!req.user) { return next(new appError('please login', 401)) }
+    if (!req.user) { return next(new AppError('please login', 401)) }
     const tour = await Tour.findById(req.params.id)
     let newBooking = { ...req.body }
     if (newBooking.numberOfPeople > tour.maxGroupSize) { return next(new appError('number of reservations exceeds the maximum group limit', 400)) }

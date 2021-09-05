@@ -3,8 +3,6 @@ const Booking = mongoose.model('Booking');
 const Tour = mongoose.model('Tour');
 const { catchErrors } = require('../handlers/errorHandler');
 
-
-
 // prompt the registrations form
 exports.register = (req, res) => {
     res.render("register")
