@@ -28,6 +28,5 @@ Here is a working live demo: [WildTours](https://wildtours.herokuapp.com/)
   * Create and delete a review
   * Flash messages to warn or greet the users
   * Responsive web design
-  * Display tour location using Mapbox
-  * Display start, stop and end points on the map
+  * Display tour locations using Mapbox
   * Book a tour
