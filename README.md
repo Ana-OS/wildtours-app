@@ -1,6 +1,6 @@
 # WildTours
 
-* A website where users can view nature tours in the nature with the option to register/login to create or edit their own tours and leave reviews on others
+* A website where users can view tours in the nature with the option to register/login to create or edit their own tours and leave reviews on others
 * Built with Node.js, Express, HTML with PUG templates, CSS, JavaScript, Bootstrap, MongoDB and Mapbox.
 
 # View online
