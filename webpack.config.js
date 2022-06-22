@@ -1,6 +1,4 @@
 // /*
-//   Okay folks, want to learn a little bit about webpack?
-// */
 
 // const path = require('path');
 // const webpack = require('webpack');
