@@ -7,16 +7,16 @@ const sharp = require('sharp');
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith('image')) {
-        cb(null, true);
-    } else {
-        cb(new AppError('Not an image! Please upload only images.', 400), false);
-    }
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images.', 400), false);
+  }
 };
 
 const upload = multer({
-    storage: multerStorage,
-    fileFilter: multerFilter
+  storage: multerStorage,
+  fileFilter: multerFilter
 });
 
 exports.uploadTourImages = upload.fields([
@@ -29,10 +29,10 @@ exports.resizeImageCover = async (req, res, next) => {
 
     req.body.imageCover = `tour-${req.params.id}-cover.jpeg`;
     await sharp(req.files.imageCover[0].buffer)
-        .resize(2600, 1190)
-        .toFormat('jpeg')
-        .jpeg({ quality: 90 })
-        .toFile(`public/uploads/${req.body.imageCover}`);
+      .resize(2600, 1190)
+      .toFormat('jpeg')
+      .jpeg({ quality: 90 })
+      .toFile(`public/uploads/${req.body.imageCover}`);
     next();
 
 };
@@ -43,17 +43,17 @@ exports.resizeTourImages = async (req, res, next) => {
     let uploadedImages = [];
 
     await Promise.all(
-        req.files.images.map(async (file, i) => {
-            const filename = `tour-${req.params.id}-${i + 1}.jpeg`;
+      req.files.images.map(async (file, i) => {
+        const filename = `tour-${req.params.id}-${i + 1}.jpeg`;
 
-            await sharp(file.buffer)
-                .resize(500, 500)
-                .toFormat('jpeg')
-                .jpeg({ quality: 90 })
-                .toFile(`public/uploads/${filename}`);
+        await sharp(file.buffer)
+          .resize(500, 500)
+          .toFormat('jpeg')
+          .jpeg({ quality: 90 })
+          .toFile(`public/uploads/${filename}`);
 
-            uploadedImages.push(filename);
-        })
+        uploadedImages.push(filename);
+      })
     );
     req.uploadedImages = uploadedImages.sort()
     next();
@@ -61,69 +61,66 @@ exports.resizeTourImages = async (req, res, next) => {
 
 // show all tours
 exports.allTours = async (req, res) => {
+  if (Object.keys(req.query).length > 0) {
+    let querySearch = { ...req.query }
+    const searchableFields = ["name", "price", "difficulty"];
 
-    if (Object.keys(req.query).length > 0) {
-        let querySearch = { ...req.query }
-        const searchableFields = ["name", "price", "difficulty"];
+    querySearch = Object.keys(querySearch)
+      .filter(key => searchableFields.includes(key))
+      .reduce((obj, key) => {
+          obj[key] = querySearch[key];
+          return obj;
+      }, {});
 
-        querySearch = Object.keys(querySearch)
-            .filter(key => searchableFields.includes(key))
-            .reduce((obj, key) => {
-                obj[key] = querySearch[key];
-                return obj;
-            }, {});
-
-        console.log(querySearch);
-
-        if (Object.keys(querySearch).length === 0) {
-            res.send("sorry no results ")
-        }
-        else {
-            const queriedTours = await Tour.find(querySearch);
-            res.render('tours', { tours: queriedTours })
-        }
-
-    } else {
-        const tours = await Tour.find();
-        res.render('tours', { tours })
+    // console.log(querySearch);
+    if (Object.keys(querySearch).length === 0) {
+      res.send("sorry, no results ")
     }
+    else {
+      const queriedTours = await Tour.find(querySearch);
+      res.render('tours', { tours: queriedTours })
+    }
+  } else {
+    const tours = await Tour.find();
+    res.render('tours', { tours })
+  }
 };
 
 // number of tours per month
 exports.monthlyTours = async (req, res) => {
     const monthlyTours = await Tour.aggregate([
-        {
-            $unwind: '$startDates'
+      {
+        $unwind: '$startDates'
+      },
+      {
+        $match: {
+            rating: { $gte: 4 }
         },
-        {
-            $match: {
-                rating: { $gte: 4 }
-            },
-        },
-        {
-            $group: {
-                _id: '$name'
-            }
+      },
+      {
+        $group: {
+            _id: '$name'
         }
+      }
     ]);
-    res.send(monthlyTours)
+  res.send(monthlyTours)
 }
 
 
 // show specific Tour
 exports.tour = async (req, res, next) => {
     if (mongoose.isValidObjectId(req.params.id)) {
-        const tour = await Tour.findOne({ _id: req.params.id }).populate({
-            path: 'reviews', options: {
-                limit: 2, sort: { createdAt: -1 },
-            }
-        })
-        if (!tour) {
-            return next(new AppError('No such tour', 404))
+      const tour = await Tour.findOne({ _id: req.params.id }).populate({
+        path: 'reviews', options: {
+            limit: 2, sort: { createdAt: -1 },
         }
-        res.render('tour', { tour })
+      })
+      if (!tour) {
+        return next(new AppError('No such tour', 404))
+      }
+      res.render('tour', { tour })
     } else {
-        return next(new AppError('We couldn\'t find that tour', 404))
+      return next(new AppError('We couldn\'t find that tour', 404))
     }
 };
 
@@ -134,10 +131,11 @@ exports.addTour = (req, res) => {
 
 // create a Tour
 exports.createTour = async (req, res) => {
-    const tour = await Tour.create(req.body)
+    let newTour =  { ...req.body }
+    newTour.author = req.user
+    const tour = await Tour.create(newTour)
     if (!tour) {
-        console.log("poop")
-        return next(new AppError('something went wrong creating tour', 500));
+      return next(new AppError('something went wrong creating tour', 500));
     }
     res.redirect('/tours')
 }

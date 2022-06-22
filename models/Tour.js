@@ -44,7 +44,7 @@ const tourSchema = new mongoose.Schema({
     },
     images: [
         {
-            type: String
+          type: String
         }
     ],
     createdAt: {
@@ -109,14 +109,14 @@ const tourSchema = new mongoose.Schema({
         }
     },
     author: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
     }
 },
-    {
-        toJSON: { virtuals: true },
-        toObject: { virtuals: true }
-    }
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
 );
 
 

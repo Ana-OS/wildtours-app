@@ -4,12 +4,12 @@ mixin newTourForm()
         .form-group
             label(for="name") Name
             input(type="text" name="name"  class="form-control")
-        .form-group    
+        .form-group
             label(for="description") Description
             textarea(name="description" class="form-control" rows="3")
-        .form-group  
+        .form-group
             label(for="maxGroupSize") Maximum Group Size
-            input(type="number" name="maxGroupSize"  class="form-control")    
+            input(type="number" name="maxGroupSize"  class="form-control")
         - const choices = ['Easy', 'Medium', 'Difficult']
         - const difficulty = []
             .form-group
@@ -18,16 +18,16 @@ mixin newTourForm()
             each choice in choices
                 .form-check.mb-1
                     input(class="form-check-input" type="radio" id=choice value=choice name="difficulty")
-                    label( class="form-check-label" for=choice) #{choice}       
-        .form-group.mt-5  
+                    label( class="form-check-label" for=choice) #{choice}
+        .form-group.mt-5
             label(for="photo") Cover Photo
             input(class="form-control-file" type='file', accept='image/*' name="imageCover" id="imageCover" )
-        .form-group.mt-5  
+        .form-group.mt-5
             label(for="photo") Photos
             input(class="form-control-file mt-2" type='file', accept='image/*' name="images" )
             input(class="form-control-file mt-2" type='file', accept='image/*' name="images" )
             input(class="form-control-file mt-2" type='file', accept='image/*' name="images" )
-        .locations.form-group.mt-5  
+        .locations.form-group.mt-5
             h2 Info about the tour locations
             .form-group.mt-5
                 h4 Tour Start location address
@@ -36,8 +36,8 @@ mixin newTourForm()
                 input(type="hidden" id="lngStartLocation" name="startLocation[coordinates][0]" )
                 input(type="hidden" id="latStartLocation" name="startLocation[coordinates][1]" )
                 label(for="place") Tour Start Place Name
-                input(class="form-control" type="text" name="startLocation[place]" ) 
-            h5.mt-4 Add up to 3 more locations 
+                input(class="form-control" type="text" name="startLocation[place]" )
+            h5.mt-4 Add up to 3 more locations
             btn.btn.btn-info.extralocations +
             #extraLocationsContainer.form-group.mt-5
                 - let i = 0
@@ -47,48 +47,47 @@ mixin newTourForm()
                     input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` )
                     input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]`)
                     label(for="place") Place Name
-                    input(class="form-control"  type="text" name=`locations[${i}][place]`) 
+                    input(class="form-control"  type="text" name=`locations[${i}][place]`)
                     label(for="place") Day of arrival here
-                    input(class="form-control"  type="number" name=`locations[${i}][day]`) 
+                    input(class="form-control"  type="number" name=`locations[${i}][day]`)
                 div(id=`location${i+=1}` class="hidden form-group mt-5")
                     label(for="address") Address
                     input(class="form-control" type="text" id="extralocations" name=`locations[${i}][address]`)
                     input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]`)
                     input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]`)
                     label(for="place") Place Name
-                    input(class="form-control"  type="text" name=`locations[${i}][place]`) 
+                    input(class="form-control"  type="text" name=`locations[${i}][place]`)
                     label(for="place") Day of arrival here
-                    input(class="form-control"  type="number" name=`locations[${i}][day]`)   
+                    input(class="form-control"  type="number" name=`locations[${i}][day]`)
                 div(id=`location${i+=1}` class="hidden form-group mt-1")
                     label(for="address") Address
                     input(class="form-control" type="text" id="extralocations" name=`locations[${i}][address]`)
                     input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` )
                     input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]` )
                     label(for="place") Place Name
-                    input(class="form-control" type="text" name=`locations[${i}][gplace]` ) 
+                    input(class="form-control" type="text" name=`locations[${i}][gplace]` )
                     label(for="place") Day of arrival here
                     input(class="form-control" type="number" name=`locations[${i}][day]`)
         .form-group.mt-5
-            h4 Tour End location 
+            h4 Tour End location
             label(for="address") Tour End location
             input(class="form-control" class="form-control" type="text" id="endLocation" name="endLocation[address]")
             input(type="hidden" id="lngEndLocation" name="endLocation[coordinates][0]" )
             input(type="hidden" id="latEndLocation" name="endLocation[coordinates][1]")
             label(for="place") Tour End Place Name
-            input(class="form-control" type="text" name="endLocation[place]") 
+            input(class="form-control" type="text" name="endLocation[place]")
         .row.justify-content-center
             .col-xm-12.col-md-4.col-lg-4.ml-5.mr-5
                 h2 Start Date
                 label(for="Start Date") Start Date
-                input(class="form-control" type="date" name="startDate"  required)      
+                input(class="form-control" type="date" name="startDate"  required)
             .col-xm-12.col-md-4.col-lg-4.mr-5.ml-5
                 h2 End Date
                 label(for="End date") End date
-                input(class="form-control" type="date" name="endDate"  required)        
+                input(class="form-control" type="date" name="endDate"  required)
         .form-group.mt-5
             h2 Tour Price
             label(for="price") price
-            input(class="form-control" type="number" name="price" place )   
-        btn.btn.btn(type="submit" value="Save →" )
+            input(class="form-control" type="number" name="price" place )
+        button.btn.btn-info(type="submit" value="Save →" ) Save
 
-    

@@ -5,20 +5,15 @@ const app = express();
 const routes = require('./routes/index');
 const { globalErrorHandler } = require('./handlers/errorHandler');
 const AppError = require('./helpers/newError');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const mongoSanitize = require('express-mongo-sanitize');
-// const helmet = require('helmet');
 const xss = require('xss-clean');
 const cors = require('cors');
 
 
 app.use(cors())
-// Set security HTTP headers
-// app.use(helmet());
-
-// Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
 
 // Data sanitization against XSS

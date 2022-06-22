@@ -17,13 +17,15 @@ router.use(authController.isLoggedIn)
 router.get('/', catchErrors(tourController.allTours));
 router.get('/tours', catchErrors(tourController.allTours));
 router.get('/tours/monthly', catchErrors(tourController.monthlyTours));
+
 // create a tour
 router.get('/tours/add', catchErrors(authController.protect), tourController.addTour);
 router.post('/tours',
-    tourController.uploadTourImages,
-    catchErrors(tourController.resizeImageCover),
-    catchErrors(tourController.resizeTourImages),
-    catchErrors(tourController.createTour))
+  tourController.uploadTourImages,
+  catchErrors(tourController.resizeImageCover),
+  catchErrors(tourController.resizeTourImages),
+  catchErrors(tourController.createTour))
+
 // get a specific tour
 router.get('/tours/:id', catchErrors(tourController.tour));
 // router.get('/tours/:slug', catchErrors(tourController.tour));
@@ -31,12 +33,13 @@ router.get('/tours/:id', catchErrors(tourController.tour));
 // update tour
 router.get('/tours/:id/edit', catchErrors(tourController.editTour));
 router.post('/tours/:id',
-    tourController.uploadTourImages,
-    catchErrors(tourController.resizeImageCover),
-    catchErrors(tourController.resizeTourImages),
-    catchErrors(tourController.updateTour));
+  tourController.uploadTourImages,
+  catchErrors(tourController.resizeImageCover),
+  catchErrors(tourController.resizeTourImages),
+  catchErrors(tourController.updateTour));
+
 // delete tour
-router.delete('/tours/:id', catchErrors(tourController.deleteTour));
+router.get('/tours/:id/delete', catchErrors(tourController.deleteTour));
 
 
 //////     Booking Routes     //////
@@ -50,7 +53,7 @@ router.post('/tours/:id/book', catchErrors(bookingsController.createBooking));
 // get all User Bookings
 router.get('/myBookings', catchErrors(bookingsController.userBookings));
 
-// get soecific booking 
+// get soecific booking
 router.get('/myBookings/:id', catchErrors(bookingsController.booking))
 
 // edit form specific booking
@@ -62,12 +65,12 @@ router.get('/myBookings/:id/edit', catchErrors(bookingsController.editBookingFor
 
 
 // router.delete('/myBookings')
-router.delete('/myBookings/:id', catchErrors(bookingsController.deleteBooking))
+router.get('/myBookings/:id/delete', catchErrors(bookingsController.deleteBooking))
 
 
 //////     User Routes     //////
 
-// create 
+// create
 router.get('/register', userController.register);
 router.post('/register', authController.upload,
     catchErrors(authController.resize), catchErrors(authController.createUser));

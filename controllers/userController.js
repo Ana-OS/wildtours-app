@@ -23,6 +23,8 @@ exports.updateProfile = async (req, res, next) => {
 }
 
 exports.myTours = async (req, res, next) => {
+  console.log("this is user controller")
+  console.log(req.user._id)
     const tours = await Tour.find({ author: req.user._id })
     res.render('myTours', { tours })
 }
