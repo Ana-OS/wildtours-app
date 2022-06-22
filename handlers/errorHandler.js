@@ -25,7 +25,6 @@ const handleValidationErrorDB = err => {
 
 
 const devError = (err, req, res) => {
-
   return res.status(err.statusCode).json({
     status: err.status,
     error: err,
@@ -36,7 +35,7 @@ const devError = (err, req, res) => {
 
 
 const prodError = (err, req, res) => {
-  console.log(err.message)
+  // console.log(err.message)
   if (err.message.startsWith("Duplicate field")) {
     return res.status(err.statusCode).json({
       status: err.status,
