@@ -5,19 +5,27 @@ const bookingSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  firstName: String,
+  firstName: {
+    type: String,
+    required: [true, 'Please provide your first name'],
+  },
   Middle: String,
-  LastName: String,
-  phoneNumber: Number,
-  emergencyNumber: Number,
+  lastName: {
+    type: String,
+    required: [true, 'Please provide your last name'],
+  },
+  phoneNumber:  {
+    type: Number,
+    required: [true, 'Please provide your phone number'],
+  },
   totalAmount: Number,
   user: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User'
+    type: mongoose.Schema.ObjectId,
+    ref: 'User'
   },
   tour: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Tour'
+    type: mongoose.Schema.ObjectId,
+    ref: 'Tour'
   }
 });
 

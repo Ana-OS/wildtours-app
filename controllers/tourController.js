@@ -87,24 +87,24 @@ exports.allTours = async (req, res) => {
 };
 
 // number of tours per month
-exports.monthlyTours = async (req, res) => {
-    const monthlyTours = await Tour.aggregate([
-      {
-        $unwind: '$startDates'
-      },
-      {
-        $match: {
-            rating: { $gte: 4 }
-        },
-      },
-      {
-        $group: {
-            _id: '$name'
-        }
-      }
-    ]);
-  res.send(monthlyTours)
-}
+// exports.monthlyTours = async (req, res) => {
+//     const monthlyTours = await Tour.aggregate([
+//       {
+//         $unwind: '$startDates'
+//       },
+//       {
+//         $match: {
+//             rating: { $gte: 4 }
+//         },
+//       },
+//       {
+//         $group: {
+//             _id: '$name'
+//         }
+//       }
+//     ]);
+//   res.send(monthlyTours)
+// }
 
 
 // show specific Tour
@@ -126,13 +126,15 @@ exports.tour = async (req, res, next) => {
 
 // add a tour
 exports.addTour = (req, res) => {
-    res.render('createTour', { title: "Create your tour" })
+  res.render('createTour', { title: "Create your tour" })
 }
 
 // create a Tour
 exports.createTour = async (req, res) => {
+  console.log(req.body)
     let newTour =  { ...req.body }
     newTour.author = req.user
+    console.log(`new Tour ${newTour}`)
     const tour = await Tour.create(newTour)
     if (!tour) {
       return next(new AppError('something went wrong creating tour', 500));

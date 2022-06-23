@@ -6,22 +6,21 @@ block content
             .col-sm-12.col-lg-6
                 form(action=`/tours/${tour.id}/book` method="POST")
                     .form-group
-                        label(for='firstname') First Name 
-                        input(class="form-control" type="text") 
+                        label(for='firstName') First Name
+                        input(class="form-control" type="text" name="firstName")
                     .form-group
-                        label(for='middletname') Middle Name 
-                        input(class="form-control" type="text") 
+                        label(for='middletName') Middle Name
+                        input(class="form-control" type="text")
                     .form-group
-                        label(for='lasttname') Last Name 
-                        input(class="form-control" type="text")        
-                    .tour-form  
-                        label.mt-3(for="phonenumber") Your Phone Number
-                        input(class="form-control" type="number" name="phoneNumber")   
-                    .form-group.mt-5       
+                        label(for='lastName') Last Name
+                        input(class="form-control" type="text" name="lastName")
+                    .tour-form
+                        label.mt-3(for="phoneNumber") Your Phone Number
+                        input(class="form-control" type="number" name="phoneNumber")
+                    .form-group.mt-5
                         label(for="price") Total Amount $
-                        input(class="form-control" type="number" name="totalAmount" value=tour.price)   
+                        input(class="form-control" type="number" name="totalAmount" value=tour.price)
                     .form-group
                         button.mt-5.btn.btn-outline-success finish booking
 
 
-        

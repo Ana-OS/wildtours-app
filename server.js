@@ -27,6 +27,7 @@ mongoose
 const port = process.env.PORT || 3001;
 const app = require('./app');
 const server = app.listen(port, () => {
+  // console.log(process)
     console.log(`App running on port ${port}...`);
 });
 

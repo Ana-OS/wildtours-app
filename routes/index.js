@@ -19,7 +19,7 @@ router.get('/tours', catchErrors(tourController.allTours));
 router.get('/tours/monthly', catchErrors(tourController.monthlyTours));
 
 // create a tour
-router.get('/tours/add', catchErrors(authController.protect), tourController.addTour);
+router.get('/tours/add', catchErrors(authController.protect), catchErrors(tourController.addTour));
 router.post('/tours',
   tourController.uploadTourImages,
   catchErrors(tourController.resizeImageCover),

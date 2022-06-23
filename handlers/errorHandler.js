@@ -4,7 +4,7 @@ exports.catchErrors = (fn) => {
   return function (req, res, next) {
     return fn(req, res, next).catch(next);
   };
-};
+}
 
 const handleCastErrorDB = err => {
   const message = "Invalid path !";
@@ -19,7 +19,7 @@ const handleDuplicateFieldsDB = err => {
 
 const handleValidationErrorDB = err => {
   const errors = Object.values(err.errors).map(el => el.message);
-  const message = `Invalid input data. ${errors.join('. ')}`;
+  const message = `Invalid input. ${errors.join('. ')}`;
   return new AppError(message, 400);
 };
 
@@ -76,13 +76,13 @@ const prodError = (err, req, res) => {
 }
 
 
-exports.globalErrorHandler = (err, req, res, next) => {
-  err.statusCode = err.statusCode || '500';
-  err.status = err.status || 'error';
+  exports.globalErrorHandler = (err, req, res, next) => {
+    err.statusCode = err.statusCode || '500';
+    err.status = err.status || 'error';
 
-  // if it is in dev env just show the entire error
-  if (process.env.NODE_ENV === "development") {
-    devError(err, req, res)
+    // if it is in dev env just show the entire error
+    if (process.env.NODE_ENV === "development") {
+      devError(err, req, res)
   }
 
   // if it is in prod show the customized error messages
@@ -101,5 +101,4 @@ exports.globalErrorHandler = (err, req, res, next) => {
     // else we just pass it to the prodError function as it is
     prodError(error, req, res)
   }
-
 };

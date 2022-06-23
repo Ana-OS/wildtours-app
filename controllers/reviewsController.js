@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Review = mongoose.model('Review');
 const User = mongoose.model('User');
 const Tour = mongoose.model('Tour');
-const appError = require('../helpers/newError');
+const appError = require('../helpers/newError').default;
 // const { addTour } = require('./tourController');
 
 

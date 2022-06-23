@@ -3,13 +3,13 @@ mixin newTourForm()
         h2 Info about the tour
         .form-group
             label(for="name") Name
-            input(type="text" name="name"  class="form-control")
+            input(type="text" name="name"  class="form-control" required)
         .form-group
             label(for="description") Description
-            textarea(name="description" class="form-control" rows="3")
+            textarea(name="description" class="form-control" rows="3" required)
         .form-group
             label(for="maxGroupSize") Maximum Group Size
-            input(type="number" name="maxGroupSize"  class="form-control")
+            input(type="number" name="maxGroupSize"  class="form-control" required)
         - const choices = ['Easy', 'Medium', 'Difficult']
         - const difficulty = []
             .form-group
@@ -17,7 +17,7 @@ mixin newTourForm()
             h3 Please choose one difficulty leavel
             each choice in choices
                 .form-check.mb-1
-                    input(class="form-check-input" type="radio" id=choice value=choice name="difficulty")
+                    input(class="form-check-input" type="radio" id=choice value=choice name="difficulty" required)
                     label( class="form-check-label" for=choice) #{choice}
         .form-group.mt-5
             label(for="photo") Cover Photo
@@ -43,7 +43,7 @@ mixin newTourForm()
                 - let i = 0
                 div(id=`location${i}` class="hidden form-group mt-5")
                     label(for="address") Address
-                    input(class="form-control" type="text" id="extralocations" name=`locations[${i}][address]`)
+                    input(class="form-control" type="text" id="extralocations" name=`locations[${i}][address]` required)
                     input(type="hidden" id="lnglocations" name=`locations[${i}][coordinates][0]` )
                     input(type="hidden" id="latlocations" name=`locations[${i}][coordinates][1]`)
                     label(for="place") Place Name

@@ -18,7 +18,10 @@ const tourSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'A tour must have a group size']
     },
-    difficulty: [String],
+    difficulty: {
+      type: [String],
+      required: [true, 'Please select a difficulty level']
+    },
     ratingsAverage: {
         type: Number,
         default: 4.5,
@@ -121,10 +124,10 @@ const tourSchema = new mongoose.Schema({
 
 
 // before saving the model slugify the name
-tourSchema.pre('save', function (next) {
-    this.slug = slugify(this.name, { lower: true });
-    next();
-});
+// tourSchema.pre('save', function (next) {
+//     this.slug = slugify(this.name, { lower: true });
+//     next();
+// });
 
 
 tourSchema.virtual('bookings', {
